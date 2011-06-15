@@ -1,0 +1,11 @@
+Package: pim
+Type: Package
+Title: Probabilistic Index Models
+Version: 1.0.1
+Date: 2011-06-08
+Author: Jan De Neve
+Maintainer: <JanR.DeNeve@Ugent.be>
+Description: Fit a probabilistic index model. 
+Depends: nleqslv
+License: GPL-2
+LazyLoad: yes
