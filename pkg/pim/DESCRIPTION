@@ -2,10 +2,11 @@ Package: pim
 Type: Package
 Title: Probabilistic Index Models
 Version: 1.0.2
-Date: 2011-06-08
+Date: 2012-02-08
+Authors@R: c(person('Jan','De Neve', role = c('aut','cre'), email = 'JanR.DeNeve@UGent.be'))
 Author: Jan De Neve
-Maintainer: <JanR.DeNeve@Ugent.be>
+Maintainer: Jan De Neve <JanR.DeNeve@Ugent.be>
 Description: Fit a probabilistic index model. 
-Depends: nleqslv
-License: GPL-2
-LazyLoad: yes
+Depends: R (>= 2.12), nleqslv, survival4
+License: GPL (>= 2)
+URL: http://pim.r-forge.r-project.org/
