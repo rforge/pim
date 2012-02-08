@@ -7,6 +7,6 @@ Authors@R: c(person('Jan','De Neve', role = c('aut','cre'), email = 'JanR.DeNeve
 Author: Jan De Neve
 Maintainer: Jan De Neve <JanR.DeNeve@Ugent.be>
 Description: Fit a probabilistic index model. 
-Depends: R (>= 2.12), nleqslv, survival4
+Depends: R (>= 2.12), nleqslv
 License: GPL (>= 2)
 URL: http://pim.r-forge.r-project.org/
