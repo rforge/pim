@@ -1,5 +1,5 @@
 pim.default <-
-function(Z , PO, gL, gR, linkfunction, logical.formula, ...)
+function(Z , PO, gL, gR, linkfunction,...)
 { 
 	Z <- as.matrix(Z)
 	PO <- as.numeric(PO)

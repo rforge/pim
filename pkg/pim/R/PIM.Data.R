@@ -7,7 +7,7 @@ function(data)
 	left.tmp <- unlist(mapply(seq,rep(1,(n-1)), 1:(n-1)))
 	right.tmp <- unlist(mapply(rep, 2:n, 1:(n-1)))
 	data.tmp <- as.data.frame(matrix(nrow=n*(n-1)/2, ncol=(1+2*d+2)))
-	names(data.tmp) <- c("PO",paste(names(data)[-1],"L",sep=""),paste(names(data)[-1],"R",sep=""),"groupL","groupR")
+	names(data.tmp) <- c("PO",paste(names(data)[-1],"L",sep=""),paste(names(data)[-1],"R",sep=""),"group.L","group.R")
 	data.tmp[,1] <- c(data[left.tmp,1] < data[right.tmp,1]) + 0.5*c(data[left.tmp,1] == data[right.tmp,1])
 	data.tmp[,2:(d+1)] <- data[left.tmp,-1]
 	data.tmp[,(d+2):(2*d+1)] <- data[right.tmp,-1]
