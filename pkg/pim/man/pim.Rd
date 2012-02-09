@@ -2,6 +2,8 @@
 
 \name{pim}
 \alias{pim}
+\alias{pim.default}
+\alias{pim.formula}
 %- Also NEED an '\alias' for EACH other topic documented here.
 \title{
 Fitting Probabilistic Index Models
@@ -10,8 +12,8 @@ Fitting Probabilistic Index Models
 'pim' is used to fit probabilistic index models. 
 }
 \usage{
-pim(formula , data, linkfunction = "logit", boolean.formula = 'FALSE')
 pim(Z, ...)
+\method{pim}{formula}(formula , data = list(), linkfunction = "logit", boolean.formula = FALSE, ...)
 }
 %- maybe also 'usage' for other objects documented here.
 \arguments{

@@ -1,7 +1,6 @@
 PIM.SandwichEstimator <-
 function(U, U.diff, g1, g2)
 {
-	if (!exists("rowsum")) require(survival4)
 	usum1.tmp <- rowsum(U,g1,reorder=F)
 	usum2.tmp <- rowsum(U,g2,reorder=F)
 	usum1  <- matrix(nrow=length(union(g1,g2)),ncol=ncol(usum1.tmp),0)
