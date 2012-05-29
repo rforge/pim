@@ -27,6 +27,7 @@ function(formula, data = list(), linkfunction = "logit", boolean.formula = FALSE
         est$linkfunction <- linkfunction
 	est$PIMdata <- data.tmp
 	est$data <- data
+	est$Z <- Z
         est	
 }
 
