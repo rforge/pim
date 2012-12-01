@@ -104,13 +104,13 @@ Here \verb|FEV| stands for the forced expiratory volume ($FEV$), \verb|Age| for 
 > library('pim')
 > pim.fit1 <- pim(FEV ~ Age*Smoke-1, data = FEVData, link="logit", 
 + 								poset=oldpimposet, estimator=estimator.nleqslv(ignore.error=TRUE), 
-+ 								keep.data=TRUE)
++ 								keep.data=TRUE, interpretation="regular")
 > pim.fit1
 \end{Sinput}
 \begin{Soutput}
 Call:
-pim(frm = FEV ~ Age * Smoke - 1, data = FEVData, link = "logit", 
-    poset = oldpimposet, estimator = estimator.nleqslv(ignore.error = TRUE), 
+pim(formula = FEV ~ Age * Smoke - 1, data = FEVData, link = "logit", 
+    poset = oldpimposet, interpretation = "regular", estimator = estimator.nleqslv(ignore.error = TRUE), 
     keep.data = TRUE)
 
 Coefficients:
@@ -139,8 +139,8 @@ The \texttt{summary()} function gives the estimates and corresponding standard e
 \end{Sinput}
 \begin{Soutput}
 Call:
-pim(frm = FEV ~ Age * Smoke - 1, data = FEVData, link = "logit", 
-    poset = oldpimposet, estimator = estimator.nleqslv(ignore.error = TRUE), 
+pim(formula = FEV ~ Age * Smoke - 1, data = FEVData, link = "logit", 
+    poset = oldpimposet, interpretation = "regular", estimator = estimator.nleqslv(ignore.error = TRUE), 
     keep.data = TRUE)
 
                 Estimate Std. Error Z value  Pr(>|z|)    
@@ -220,13 +220,13 @@ Here \verb|mental| stands for the mental impairment ($MI$), \verb|ses| for the s
 \begin{Sinput}
 > pim.fit2a <- pim(mental ~ ses + life -1, data = MHData, link="logit", 
 + 								 poset=oldpimposet, estimator=estimator.nleqslv(ignore.error=TRUE), 
-+ 								 keep.data=TRUE)
++ 								 keep.data=TRUE, interpretation="regular")
 > summary(pim.fit2a)
 \end{Sinput}
 \begin{Soutput}
 Call:
-pim(frm = mental ~ ses + life - 1, data = MHData, link = "logit", 
-    poset = oldpimposet, estimator = estimator.nleqslv(ignore.error = TRUE), 
+pim(formula = mental ~ ses + life - 1, data = MHData, link = "logit", 
+    poset = oldpimposet, interpretation = "regular", estimator = estimator.nleqslv(ignore.error = TRUE), 
     keep.data = TRUE)
 
            Estimate Std. Error Z value Pr(>|z|)   
@@ -259,14 +259,14 @@ in R becomes
 \begin{Sinput}
 > pim.fit2b <- pim(mental ~ ses + life + L(ses) + L(life) - 1, data = MHData, link="logit", 
 + 								 poset=oldpimposetbft, estimator=estimator.nleqslv(ignore.error=TRUE), 
-+ 								 keep.data=TRUE)
++ 								 keep.data=TRUE, interpretation="regular")
 > summary(pim.fit2b)
 \end{Sinput}
 \begin{Soutput}
 Call:
-pim(frm = mental ~ ses + life + L(ses) + L(life) - 1, data = MHData, 
-    link = "logit", poset = oldpimposetbft, estimator = estimator.nleqslv(ignore.error = TRUE), 
-    keep.data = TRUE)
+pim(formula = mental ~ ses + life + L(ses) + L(life) - 1, data = MHData, 
+    link = "logit", poset = oldpimposetbft, interpretation = "regular", 
+    estimator = estimator.nleqslv(ignore.error = TRUE), keep.data = TRUE)
 
            Estimate Std. Error Z value Pr(>|z|)   
 ses_R-_L  -0.670723   0.382665 -1.7528 0.079642 . 
@@ -302,7 +302,7 @@ Here \verb|income| denotes the household income ($HI$) while \verb|foodexp| deno
 > pim.fit3 <- pim(foodexp ~ I((R(income)-L(income))/sqrt(R(income)+L(income)))-1, 
 + 								data = Engeldata, link="logit", poset=oldpimposetbft, 
 + 								estimator=estimator.nleqslv(ignore.error=TRUE), 
-+ 								keep.data=TRUE, 
++ 								keep.data=TRUE, interpretation="regular", 
 + 								extra.nicenames=data.frame(
 + 									org="I((R(income)-L(income))/sqrt(R(income)+L(income)))", 
 + 									nice="weightedincomediff", stringsAsFactors=FALSE))
@@ -310,10 +310,10 @@ Here \verb|income| denotes the household income ($HI$) while \verb|foodexp| deno
 \end{Sinput}
 \begin{Soutput}
 Call:
-pim(frm = foodexp ~ I((R(income) - L(income))/sqrt(R(income) + 
+pim(formula = foodexp ~ I((R(income) - L(income))/sqrt(R(income) + 
     L(income))) - 1, data = Engeldata, link = "logit", poset = oldpimposetbft, 
-    estimator = estimator.nleqslv(ignore.error = TRUE), keep.data = TRUE, 
-    extra.nicenames = data.frame(org = "I((R(income)-L(income))/sqrt(R(income)+L(income)))", 
+    interpretation = "regular", estimator = estimator.nleqslv(ignore.error = TRUE), 
+    keep.data = TRUE, extra.nicenames = data.frame(org = "I((R(income)-L(income))/sqrt(R(income)+L(income)))", 
         nice = "weightedincomediff", stringsAsFactors = FALSE))
 
                    Estimate Std. Error Z value  Pr(>|z|)    
@@ -353,24 +353,26 @@ In R this becomes
 > Y <- model.matrix(~ X)%*%c(1,2,3) + rnorm(n)
 > data.tmp <- data.frame(Y, X)
 > pim.fit4 <- pim(Y ~ X-1, data = data.tmp, link = "probit", poset=oldpimposet, 
-+ 								estimator=estimator.nleqslv(ignore.error=TRUE), keep.data=TRUE)
++ 								estimator=estimator.nleqslv(ignore.error=TRUE), keep.data=TRUE, 
++ 								interpretation="regular")
 > summary(pim.fit4)
 \end{Sinput}
 \begin{Soutput}
 Call:
-pim(frm = Y ~ X - 1, data = data.tmp, link = "probit", poset = oldpimposet, 
-    estimator = estimator.nleqslv(ignore.error = TRUE), keep.data = TRUE)
+pim(formula = Y ~ X - 1, data = data.tmp, link = "probit", poset = oldpimposet, 
+    interpretation = "regular", estimator = estimator.nleqslv(ignore.error = TRUE), 
+    keep.data = TRUE)
 
          Estimate Std. Error Z value  Pr(>|z|)    
-X_R-_L_B  1.38692    0.20960   6.617 3.665e-11 ***
-X_R-_L_C  2.05416    0.19683  10.436 < 2.2e-16 ***
+X_R-_L_B  1.41689    0.21376  6.6283 3.396e-11 ***
+X_R-_L_C  2.23012    0.20036 11.1305 < 2.2e-16 ***
 ---
 Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1 
 \end{Soutput}
 \end{Schunk}
 The estimated model is given by
 \[
-\Phi^{-1}\left( \hatprob{Y \leqs Y'| X, X'} \right)= 1.39 (X'_B - X_B) + 2.05 (X'_C - X_C).
+\Phi^{-1}\left( \hatprob{Y \leqs Y'| X, X'} \right)= 1.42 (X'_B - X_B) + 2.23 (X'_C - X_C).
 \]
 
 Note that PIMs are semiparametric, thus the normality assumption is not required to obtain consistent and asymptotically normally distributed estimators. The linear model merely serves as a guide on how $Z$ can be constructed based on the predictors $X$ and $X'$.

@@ -4,4 +4,4 @@
 \contentsline {section}{\numberline {4}Mack-Skillings}{4}{section.4}
 \contentsline {section}{\numberline {5}Brown-Hettmansperger}{5}{section.5}
 \contentsline {section}{\numberline {6}Jonckheere-Terpstra}{7}{section.6}
-\contentsline {section}{\numberline {7}Mack-Wolfe}{8}{section.7}
+\contentsline {section}{\numberline {7}Mack-Wolfe}{9}{section.7}

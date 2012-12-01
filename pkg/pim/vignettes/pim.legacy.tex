@@ -58,14 +58,16 @@ Code to check the equivalence (note this includes a legacy implementation):
 > 	library(pim)
 > 	set.seed(1)
 > 	wmw1<-demo.WilcoxonMannWhitney()
-> 	wmw1$pim2<-pim(y~F(x)-1, data=wmw1$dta, link="identity", poset=pairwiseposet, varianceestimator=varianceestimator.H0(), keep.data=TRUE, verbosity=0)
+> 	wmw1$pim2<-pim(y~F(x)-1, data=wmw1$dta, link="identity", poset=pairwiseposet, 
++ 								 varianceestimator=varianceestimator.H0(), keep.data=TRUE, verbosity=0, 
++ 								 interpretation="regular")
 > 	wmw1$pim2
 \end{Sinput}
 \begin{Soutput}
 Call:
-pim(frm = y ~ F(x) - 1, data = wmw1$dta, link = "identity", poset = pairwiseposet, 
-    varianceestimator = varianceestimator.H0(), keep.data = TRUE, 
-    verbosity = 0)
+pim(formula = y ~ F(x) - 1, data = wmw1$dta, link = "identity", 
+    poset = pairwiseposet, interpretation = "regular", varianceestimator = varianceestimator.H0(), 
+    keep.data = TRUE, verbosity = 0)
 
 Coefficients:
 x_R_L_1_2 
@@ -130,13 +132,14 @@ Code to check the equivalence (note this includes a legacy implementation):
 \begin{Schunk}
 \begin{Sinput}
 > 	kw1<-demo.KruskalWallis()
-> 	kw1$pim3<-pim(y~F(x)-1, data=kw1$dta, link="identity", poset=fullposet, force.marginal=TRUE, varianceestimator=varianceestimator.H0(), keep.data=TRUE, verbosity=0)
+> 	kw1$pim3<-pim(y~F(x)-1, data=kw1$dta, link="identity", poset=fullposet, interpretation="marginal", 
++ 								varianceestimator=varianceestimator.H0(), keep.data=TRUE, verbosity=0)
 > 	kw1$pim3
 \end{Sinput}
 \begin{Soutput}
 Call:
-pim(frm = y ~ F(x) - 1, data = kw1$dta, link = "identity", poset = fullposet, 
-    force.marginal = TRUE, varianceestimator = varianceestimator.H0(), 
+pim(formula = y ~ F(x) - 1, data = kw1$dta, link = "identity", 
+    poset = fullposet, interpretation = "marginal", varianceestimator = varianceestimator.H0(), 
     keep.data = TRUE, verbosity = 0)
 
 Coefficients:
@@ -208,14 +211,17 @@ Code to check the equivalence (note this includes a legacy implementation):
 \begin{Schunk}
 \begin{Sinput}
 > 	mss1<-demo.MackSkillings()
-> 	mss1$pim1<-pim(y~F(x)-1, data=mss1$dta, link="identity", blocking.variables="b", poset=fullposet, force.marginal=TRUE, varianceestimator=varianceestimator.H0(), keep.data=TRUE, verbosity=0)
+> 	mss1$pim1<-pim(y~F(x)-1, data=mss1$dta, link="identity", blocking.variables="b", 
++ 								 poset=fullposet, interpretation="marginal", 
++ 								 varianceestimator=varianceestimator.H0(), keep.data=TRUE, verbosity=0)
 > 	mss1$pim1
 \end{Sinput}
 \begin{Soutput}
 Call:
-pim(frm = y ~ F(x) - 1, data = mss1$dta, link = "identity", blocking.variables = "b", 
-    poset = fullposet, force.marginal = TRUE, varianceestimator = varianceestimator.H0(), 
-    keep.data = TRUE, verbosity = 0)
+pim(formula = y ~ F(x) - 1, data = mss1$dta, link = "identity", 
+    blocking.variables = "b", poset = fullposet, interpretation = "marginal", 
+    varianceestimator = varianceestimator.H0(), keep.data = TRUE, 
+    verbosity = 0)
 
 Coefficients:
     x_R_1     x_R_2     x_R_3 
@@ -285,14 +291,16 @@ Code to check the equivalence (note this includes a legacy implementation):
 \begin{Schunk}
 \begin{Sinput}
 > 	bh1<-demo.BrownHettmansperger()
-> 	bh1$pim1<-pim(y~F(x)-1, data=bh1$dta, link="identity", poset=fullposet, varianceestimator=varianceestimator.H0(), keep.data=TRUE, verbosity=0)
+> 	bh1$pim1<-pim(y~F(x)-1, data=bh1$dta, link="identity", poset=fullposet, 
++ 								varianceestimator=varianceestimator.H0(), keep.data=TRUE, verbosity=0, 
++ 								interpretation="regular")
 > 	bh1$pim1
 \end{Sinput}
 \begin{Soutput}
 Call:
-pim(frm = y ~ F(x) - 1, data = bh1$dta, link = "identity", poset = fullposet, 
-    varianceestimator = varianceestimator.H0(), keep.data = TRUE, 
-    verbosity = 0)
+pim(formula = y ~ F(x) - 1, data = bh1$dta, link = "identity", 
+    poset = fullposet, interpretation = "regular", varianceestimator = varianceestimator.H0(), 
+    keep.data = TRUE, verbosity = 0)
 
 Coefficients:
 x_R_L_1_2 x_R_L_1_3 x_R_L_2_3 
@@ -362,14 +370,16 @@ Code to check the equivalence (note this includes a legacy implementation):
 \begin{Schunk}
 \begin{Sinput}
 > 	jt1<-demo.JonckheereTerpstra(force.balanced=FALSE)
-> 	jt1$pim1<-pim(y~F(x)-1, data=jt1$dta, link="identity", poset=pairwiseposet, varianceestimator=varianceestimator.H0(), keep.data=TRUE, verbosity=0)
+> 	jt1$pim1<-pim(y~F(x)-1, data=jt1$dta, link="identity", poset=pairwiseposet, 
++ 								varianceestimator=varianceestimator.H0(), keep.data=TRUE, verbosity=0, 
++ 								interpretation="regular")
 > 	jt1$pim1
 \end{Sinput}
 \begin{Soutput}
 Call:
-pim(frm = y ~ F(x) - 1, data = jt1$dta, link = "identity", poset = pairwiseposet, 
-    varianceestimator = varianceestimator.H0(), keep.data = TRUE, 
-    verbosity = 0)
+pim(formula = y ~ F(x) - 1, data = jt1$dta, link = "identity", 
+    poset = pairwiseposet, interpretation = "regular", varianceestimator = varianceestimator.H0(), 
+    keep.data = TRUE, verbosity = 0)
 
 Coefficients:
 x_R_L_1_2 x_R_L_1_3 x_R_L_1_4 x_R_L_2_3 x_R_L_2_4 x_R_L_3_4 
@@ -465,14 +475,16 @@ Code to check the equivalence (note this includes a legacy implementation):
 \begin{Schunk}
 \begin{Sinput}
 > 	mw1<-demo.MackWolfe(force.balanced=FALSE)
-> 	mw1$pim1<-pim(y~F(x)-1, data=mw1$dta, link="identity", poset=pairwiseposet, varianceestimator=varianceestimator.H0(), keep.data=TRUE, verbosity=0)
+> 	mw1$pim1<-pim(y~F(x)-1, data=mw1$dta, link="identity", poset=pairwiseposet, 
++ 								varianceestimator=varianceestimator.H0(), keep.data=TRUE, verbosity=0, 
++ 								interpretation="regular")
 > 	mw1$pim1
 \end{Sinput}
 \begin{Soutput}
 Call:
-pim(frm = y ~ F(x) - 1, data = mw1$dta, link = "identity", poset = pairwiseposet, 
-    varianceestimator = varianceestimator.H0(), keep.data = TRUE, 
-    verbosity = 0)
+pim(formula = y ~ F(x) - 1, data = mw1$dta, link = "identity", 
+    poset = pairwiseposet, interpretation = "regular", varianceestimator = varianceestimator.H0(), 
+    keep.data = TRUE, verbosity = 0)
 
 Coefficients:
  x_R_L_1_2  x_R_L_1_3  x_R_L_1_4  x_R_L_2_3  x_R_L_2_4  x_R_L_3_4 
@@ -533,7 +545,8 @@ x_R_L_3_4  0.005673363
 \end{Soutput}
 \begin{Sinput}
 > 	#Standardized MW based on Mack-Wolfe test
-> 	mw1$legacy<-legacy.MackWolfe(data=mw1$dta, out="y", group="x", levelP=as.character(which.max(mw1$groupmeans)), verbosity=1)
+> 	mw1$legacy<-legacy.MackWolfe(data=mw1$dta, out="y", group="x", 
++ 															 levelP=as.character(which.max(mw1$groupmeans)), verbosity=1)
 \end{Sinput}
 \begin{Soutput}
 mu: 1280 
@@ -555,7 +568,8 @@ rightterm: 871
 [1,] 8.272945
 \end{Soutput}
 \begin{Sinput}
-> 	classical.test(test="MackWolfe", data=mw1$dta, out="y", group="x",levelP=as.character(which.max(mw1$groupmeans)))$statistic
+> 	classical.test(test="MackWolfe", data=mw1$dta, out="y", group="x",
++ 								 levelP=as.character(which.max(mw1$groupmeans)))$statistic
 \end{Sinput}
 \begin{Soutput}
          [,1]

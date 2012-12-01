@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.1415926-1.40.11 (MiKTeX 2.9) (preloaded format=pdflatex 2012.7.9)  30 NOV 2012 13:37
+This is pdfTeX, Version 3.1415926-1.40.11 (MiKTeX 2.9) (preloaded format=pdflatex 2012.7.9)  1 DEC 2012 18:00
 entering extended mode
 **pim.legacy.tex
 (C:\Users\nisabbe\Documents\@Doctoraat\R\pim\vignettes\pim.legacy.tex
@@ -790,15 +790,15 @@ No file pim.legacy.bbl.
 
 Package natbib Warning: There were undefined citations.
 
-Package atveryend Info: Empty hook `BeforeClearDocument' on input line 569.
+Package atveryend Info: Empty hook `BeforeClearDocument' on input line 583.
 
 Overfull \vbox (21.68121pt too high) has occurred while \output is active []
 
 
 [10]
-Package atveryend Info: Empty hook `AfterLastShipout' on input line 569.
+Package atveryend Info: Empty hook `AfterLastShipout' on input line 583.
  (C:\Users\nisabbe\Documents\@Doctoraat\R\pim\vignettes\pim.legacy.aux)
-Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 569.
+Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 583.
 
 
 Package rerunfilecheck Warning: File `pim.legacy.out' has changed.
@@ -819,7 +819,7 @@ Here is how much of TeX's memory you used:
  10296 multiletter control sequences out of 15000+200000
  28449 words of font info for 75 fonts, out of 3000000 for 9000
  715 hyphenation exceptions out of 8191
- 35i,6n,32p,258b,465s stack positions out of 5000i,500n,10000p,200000b,50000s
+ 35i,6n,32p,258b,475s stack positions out of 5000i,500n,10000p,200000b,50000s
 <C:/Program Files (x86)/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmbx12.pfb>
 <C:/Program Files (x86)/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmmi12.pfb><C
 :/Program Files (x86)/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmr12.pfb><C:/P
@@ -827,7 +827,7 @@ rogram Files (x86)/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmr17.pfb><C:/Prog
 ram Files (x86)/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmsltt10.pfb><C:/Prog
 ram Files (x86)/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmsy10.pfb><C:/Progra
 m Files (x86)/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmtt12.pfb>
-Output written on pim.legacy.pdf (10 pages, 112963 bytes).
+Output written on pim.legacy.pdf (10 pages, 113547 bytes).
 PDF statistics:
  90 PDF objects out of 1000 (max. 8388607)
  19 named destinations out of 1000 (max. 500000)
