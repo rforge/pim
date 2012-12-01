@@ -1,0 +1,202 @@
+% -*- mode: noweb; noweb-default-code-mode: R-mode; -*-
+%\VignetteIndexEntry{PIMs as classical distribution free tests}
+%\VignetteKeyword{probabilistic index model, distribution, legacy}
+%\VignetteDepends{pim}
+%\VignettePackage{pim}
+%documentclass[12pt, a4paper]{article}
+\documentclass[12pt]{article}
+
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{hyperref}
+\usepackage[authoryear,round]{natbib}
+\usepackage[utf8]{inputenc}
+
+ 
+\textwidth=6.2in
+\textheight=8.5in
+%\parskip=.3cm
+\oddsidemargin=.1in
+\evensidemargin=.1in
+\headheight=-.3in
+
+\newcommand{\prob}[1]{\text{P}\left\{#1\right\}}
+\newcommand{\hatprob}[1]{\hat{\text{P}}\left\{#1\right\}}
+\newcommand{\I}[1]{\text{I}\left\{#1\right\}}
+\newcommand{\leqs}{\preccurlyeq}
+
+
+
+\author{Nick Sabbe}
+\begin{document}
+\SweaveOpts{concordance=TRUE}
+\title{PIMs as classical distribution free tests}
+
+\maketitle
+\tableofcontents
+\section{Introduction}
+
+While \cite{Thas2012} introduces PIMs, they were shown to be extensions of the known distribution free tests, like Wilcoxon in TODO:rankpaperref.
+
+A general estimator for the variance under the null hypothesis has been created ($varianceestimator.H0$), but for these special cases, some simplified
+formulas exist, which have been provided through the $simplified*$ set of functions.
+
+For each of the code sections below, it is easily checked that the simplified formulas give the same result as the generic code, and that the 
+links between the known distribution free tests and PIM are confirmed.
+
+The code also (on the final line of each block) the classical.test function that has been provided. This function uses the PIM to calculate the 
+matching test statistic. The advantage (although not shown in this vignette) is that another way of calculating the (co)variances can be specified.
+In particular, and as indicated in TODO ref rankpaper, the varianceestimator.sandwich can be passed along to get Wald-style tests for the same
+null hypotheses.
+
+\section{Wilcoxon-Mann-Whitney}\label{S_WMW}
+
+Code to check the equivalence (note this includes a legacy implementation):
+<<>>=
+	library(pim)
+	set.seed(1)
+	wmw1<-demo.WilcoxonMannWhitney()
+	wmw1$pim2<-pim(y~F(x)-1, data=wmw1$dta, link="identity", poset=pairwiseposet, 
+								 varianceestimator=varianceestimator.H0(), keep.data=TRUE, verbosity=0, 
+								 interpretation="regular")
+	wmw1$pim2
+	
+	#Simplified formulas
+	simplifiedpimestimation.pairwisecoefficients(wmw1$dta, out="y", group="x")$beta
+	simplifiedpimestimation.pairwisecovariance(wmw1$dta, out="y", group="x")
+	#From applying generic code:
+	wmw1$pim2$coefficients
+	wmw1$pim2$vcov[1,1]
+	
+	#Standardized WMW based on wilcoxon test
+	wmw1$legacy<-legacy.WilcoxonMannWhitney(data=wmw1$dta, out="y", group="x")
+	wmw1$legacy$statistic
+	wmw1$legacy$conversion(wmw1$pim2$coefficients, wmw1$pim2$vcov)
+	classical.test(test="WilcoxonMannWhitney", data=wmw1$dta, out="y", group="x")$statistic
+@
+
+\section{Kruskal-Wallis}\label{S_KW}
+
+Code to check the equivalence (note this includes a legacy implementation):
+<<>>=
+	kw1<-demo.KruskalWallis()
+	kw1$pim3<-pim(y~F(x)-1, data=kw1$dta, link="identity", poset=fullposet, interpretation="marginal", 
+								varianceestimator=varianceestimator.H0(), keep.data=TRUE, verbosity=0)
+	kw1$pim3
+
+	#Simplified formulas (lemma 1)
+	simplifiedpimestimation.marginalcoefficients(kw1$dta, out="y", group="x")
+	simplifiedpimestimation.marginalcovariance(kw1$dta, out="y", group="x")
+	#From applying generic code:
+	kw1$pim3$coefficients
+	kw1$pim3$vcov
+	
+	#Standardized KW based on Kruskal-Wallis test
+	kw1$legacy<-legacy.KruskalWallis(data=kw1$dta, out="y", group="x")
+	kw1$legacy$statistic
+	kw1$legacy$conversion(kw1$pim3$coefficients, kw1$pim3$vcov)
+	classical.test(test="KruskalWallis", data=kw1$dta, out="y", group="x")$statistic
+@
+
+\section{Mack-Skillings}\label{S_MS}
+
+Code to check the equivalence (note this includes a legacy implementation):
+<<>>=
+	mss1<-demo.MackSkillings()
+	mss1$pim1<-pim(y~F(x)-1, data=mss1$dta, link="identity", blocking.variables="b", 
+								 poset=fullposet, interpretation="marginal", 
+								 varianceestimator=varianceestimator.H0(), keep.data=TRUE, verbosity=0)
+	mss1$pim1
+	
+	#Simplified formulas (lemma 4)
+	simplifiedpimestimation.marginalcoefficients(mss1$dta, out="y", group="x", block="b")
+	simplifiedpimestimation.marginalcovariance(mss1$dta, out="y", group="x", block="b")
+	#From applying generic code:
+	mss1$pim1$coefficients
+	mss1$pim1$vcov
+	
+	#Standardized MS based on Mack-Skillings test
+	mss1$legacy<-legacy.MackSkillings(data=mss1$dta, out="y", group="x", block="b")
+	mss1$legacy$statistic
+	mss1$legacy$conversion(mss1$pim1$coefficients, mss1$pim1$vcov)
+	classical.test(test="MackSkillings", data=mss1$dta, out="y", group="x", block="b")$statistic
+@
+
+\section{Brown-Hettmansperger}\label{S_BH}
+
+Code to check the equivalence (note this includes a legacy implementation):
+<<>>=
+	bh1<-demo.BrownHettmansperger()
+	bh1$pim1<-pim(y~F(x)-1, data=bh1$dta, link="identity", poset=fullposet, 
+								varianceestimator=varianceestimator.H0(), keep.data=TRUE, verbosity=0, 
+								interpretation="regular")
+	bh1$pim1
+	
+	#Simplified formulas (lemma 4)
+	simplifiedpimestimation.pairwisecoefficients(bh1$dta, out="y", group="x")$beta
+	simplifiedpimestimation.pairwisecovariance(bh1$dta, out="y", group="x")
+	#From applying generic code:
+	bh1$pim1$coefficients
+	bh1$pim1$vcov
+	
+	#Standardized BH based on Brown-Hettmansperger test
+	bh1$legacy<-legacy.BrownHettmansperger(data=bh1$dta, out="y", group="x")
+	bh1$legacy$statistic
+	bh1$legacy$conversion(bh1$pim1$coefficients, bh1$pim1$vcov)
+	classical.test(test="BrownHettmansperger", data=bh1$dta, out="y", group="x")$statistic
+@
+
+\section{Jonckheere-Terpstra}\label{S_JT}
+
+Code to check the equivalence (note this includes a legacy implementation):
+<<>>=
+	jt1<-demo.JonckheereTerpstra(force.balanced=FALSE)
+	jt1$pim1<-pim(y~F(x)-1, data=jt1$dta, link="identity", poset=pairwiseposet, 
+								varianceestimator=varianceestimator.H0(), keep.data=TRUE, verbosity=0, 
+								interpretation="regular")
+	jt1$pim1
+	
+	#Simplified formulas (lemma 4)
+	simplifiedpimestimation.pairwisecoefficients(jt1$dta, out="y", group="x")$beta
+	simplifiedpimestimation.pairwisecovariance(jt1$dta, out="y", group="x")
+	#From applying generic code:
+	jt1$pim1$coefficients
+	jt1$pim1$vcov
+	
+	#Standardized JT based on Jonckheere-Terpstra test
+	jt1$legacy<-legacy.JonckheereTerpstra(data=jt1$dta, out="y", group="x", verbosity=1) 
+	jt1$legacy$statistic
+	jt1$legacy$conversion(jt1$pim1$coefficients, jt1$pim1$vcov)
+	classical.test(test="JonckheereTerpstra", data=jt1$dta, out="y", group="x")$statistic
+@
+
+\section{Mack-Wolfe}\label{S_MW}
+
+Code to check the equivalence (note this includes a legacy implementation):
+<<>>=
+	mw1<-demo.MackWolfe(force.balanced=FALSE)
+	mw1$pim1<-pim(y~F(x)-1, data=mw1$dta, link="identity", poset=pairwiseposet, 
+								varianceestimator=varianceestimator.H0(), keep.data=TRUE, verbosity=0, 
+								interpretation="regular")
+	mw1$pim1
+	
+	#Simplified formulas (lemma 4)
+	simplifiedpimestimation.pairwisecoefficients(mw1$dta, out="y", group="x")$beta
+	simplifiedpimestimation.pairwisecovariance(mw1$dta, out="y", group="x")
+	#From applying generic code:
+	mw1$pim1$coefficients
+	mw1$pim1$vcov
+	
+	#Standardized MW based on Mack-Wolfe test
+	mw1$legacy<-legacy.MackWolfe(data=mw1$dta, out="y", group="x", 
+															 levelP=as.character(which.max(mw1$groupmeans)), verbosity=1)
+	mw1$legacy$statistic
+	mw1$legacy$conversion(mw1$pim1$coefficients, mw1$pim1$vcov)
+	classical.test(test="MackWolfe", data=mw1$dta, out="y", group="x",
+								 levelP=as.character(which.max(mw1$groupmeans)))$statistic
+@
+
+\bibliographystyle{plainnat}
+\bibliography{jdeneve}
+
+\end{document}

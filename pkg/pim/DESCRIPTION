@@ -1,12 +1,42 @@
 Package: pim
 Type: Package
 Title: Probabilistic Index Models
-Version: 1.0.2
-Date: 2012-02-08
-Authors@R: c(person('Jan','De Neve', role = c('aut','cre'), email = 'JanR.DeNeve@UGent.be'))
-Author: Jan De Neve
-Maintainer: Jan De Neve <JanR.DeNeve@Ugent.be>
-Description: Fit a probabilistic index model. 
-Depends: R (>= 2.12), nleqslv
+Version: 1.1.0
+Date: 2012-11-19
+Author: Jan De Neve, Nick Sabbe
+Maintainer: Nick Sabbe <Nick.Sabbe@Ugent.be>
+Description: Fit a probabilistic index model.
+Depends:
+    R (>= 2.12),
+    Matrix,
+    glmnet,
+    BB,
+    nleqslv,
+    MASS
 License: GPL (>= 2)
 URL: http://pim.r-forge.r-project.org/
+Collate:
+    'Mainreplacetext.R'
+    'crossvalidate.pim.R'
+    'estimator.nleqslv.R'
+    'fullposet.R'
+    'pim-package.R'
+    'pim.R'
+    'pim.fit.R'
+    'pimformula.R'
+    'posandwich.estimator.R'
+    'print.pim.R'
+    'privatefunctions.R'
+    'varianceestimator.sandwich.R'
+    'IPI.R'
+    'demo.WilcoxonMannWhitney.R'
+    'legacy.WilcoxonMannWhitney.R'
+    'simplifiedpimestimation.marginalcoefficients.R'
+    'plot.pim.R'
+    'summary.pim.R'
+    'DysData.R'
+    'Engeldata.R'
+    'FEVData.R'
+    'MHData.R'
+    'add.varianceestimate.R'
+    'classical.test.R'

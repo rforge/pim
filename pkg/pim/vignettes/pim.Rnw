@@ -1,0 +1,255 @@
+% -*- mode: noweb; noweb-default-code-mode: R-mode; -*-
+%\VignetteIndexEntry{An R package for fitting probabilistic index models}
+%\VignetteKeyword{probabilistic index model, regression}
+%\VignetteDepends{pim}
+%\VignettePackage{pim}
+%documentclass[12pt, a4paper]{article}
+\documentclass[12pt]{article}
+
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{hyperref}
+\usepackage[authoryear,round]{natbib}
+\usepackage[utf8]{inputenc}
+
+ 
+\textwidth=6.2in
+\textheight=8.5in
+%\parskip=.3cm
+\oddsidemargin=.1in
+\evensidemargin=.1in
+\headheight=-.3in
+
+\newcommand{\prob}[1]{\text{P}\left\{#1\right\}}
+\newcommand{\hatprob}[1]{\hat{\text{P}}\left\{#1\right\}}
+\newcommand{\I}[1]{\text{I}\left\{#1\right\}}
+\newcommand{\leqs}{\preccurlyeq}
+
+
+
+\author{Jan De Neve}
+\begin{document}
+\SweaveOpts{concordance=TRUE}
+\title{pim: An R package for fitting probabilistic index models}
+
+\maketitle
+\tableofcontents
+\section{Introduction}
+
+This document explains and illustrates how the \texttt{pim}-package can be employed to fit a Probabilistic Index Model (PIM). We refer to \cite{Thas2012} for a detailed overview on PIMs. If $(Y,X)$ and $(Y',X')$ are i.i.d. then a PIM is defined as
+\begin{equation}\label{pim}
+\prob{Y \leqs Y' | X, X'} = m(X,X';\beta) = g^{-1}(Z^T \beta) \quad \text{for} \quad (X,X') \in \mathcal{X},
+\end{equation}
+with $\prob{Y \leqs Y'} \equiv  \prob{Y < Y'} + \frac{1}{2} \prob{Y = Y'}$. Here $g(\cdot)$ denotes a link function, $Z$ is a covariate vector that depends on the predictors $X$ and $X'$ and $\mathcal{X}$ is the set of predictors for which the model is defined. 
+
+The \texttt{pim}-package allows fitting a nearly unlimited range of PIMs through extensive customisations.
+\begin{enumerate}
+\item One can manually provide the set of pairs of observation indices for the pseudo-observations (the "poset"), one can use any of the provided functions (onewayposet which includes all unique oneway combinations ($(1,2)$, $(1,3)$ and $(2,3)$), pairwiseposet which does the same after ordering the data based on the predictors in the model (the lexicographical order restriction) or the default fullposet which simply contains all combinations), and one can even write a custom function for it.
+
+For example, in the presence of 2 predictors, say $X^T = (X_1, X_2)$, the lexicographical order restricted model is defined for $\mathcal{X} = \left\{ (X,X') | X_1 < X'_1 \text{ or if } X_1 = X'_1 \text{ then } X_2 \leq X'_2 \right\}$, which can be selected straightforwardly by employing the pairwiseposet function. 
+\item The link function in the current implementation is restricted to \emph{identity}, \emph{logit} and \emph{probit}. However, through customisation of the estimators (in particular by providing custom implementations of \emph{scorefunctioncreator.default} and \emph{Uforposandwich.default}), this can be easily overcome.
+\item By default, the left hand side of the formula (e.g. $y$ in $y\sim x$) is always used for a true probabilistic index $\prob{y \leqs y' }$, but $\prob{y \leq y' }$ and $\prob{y < y' }$ can also be attained through parameter \emph{lhs}.
+\item In the presence of categorical predictors transitivity is assumed.
+\end{enumerate} 
+
+The function \texttt{pim()} allows fitting PIMs for different choices of $Z$. However a natural choice is the difference in predictors, i.e. $Z = X' - X$. Unless its parameter \emph{force.marginal} is set to \emph{TRUE}, all predictors (e.g. X1) that occur in the model formula without altering functions (see below) are indeed interpreted as $X1' - X1$. For interactions to also behave as the difference, an extra parameter \emph{interactions.difference} is provided. The defaults are chosen in such a way that the design matrix is created as the difference between the left and right design matrix, but with an intercept added. If you want to avoid the intercept, you have to exclude it from the model as you would in normal formulas, by adding $-1$ to it.
+
+As an example, model formula $y\sim a*b$ will (by default) represent $\prob{y \leqs y' }=\beta_0+\beta_1  (a'-a) + \beta_2  (b'-b) + \beta_3  (a'b' - ab)$.
+
+Note that when the model satisfies $m(X,X';\beta) + m(X',X;\beta) = 1$ the lexicographical order restriction corresponds to the NO order restriction and hence the model is defined for all couples of predictors $(X,X')$, see \cite{Thas2012} for more details. 
+
+For expressing more complex models, 4 altering functions are provided: $L(X)$, $R(X)$, $O(X)$ and $F(X)$. These expand to:
+\begin{enumerate}
+\item $L(X)$: the $X$ value of only the left part of the pseudo-observation (with the default suffixes provided, this will be denoted further as $X \_ L$)
+\item $R(X)$: the $X$ value of only the right part of the pseudo-observation (with the default suffixes provided, this will be denoted further as $X \_ R$)
+\item $O(X)$: (can only be used on orderable predictors) $I\left( L(X) \leqs R(X) \right)$
+\item $F(X)$: (can only be used on factors) holds all interaction terms where the left value is smaller than the right one.
+\end{enumerate} 
+
+Finally, when \emph{force.marginal} is \emph{TRUE}, terms $X$ without altering functions are interpreted as $R(X)$. This is typically only useful for marginal models, as specified in TODO rankpaper. Note that some of the altering functions are not relevant in marginal models, and the fit will fail if you try to do so.
+
+In the following sections we illustrate the \texttt{pim()} function according to different choices of $Z$. In Sections \ref{S_crds}-\ref{S_fe} case studies from Section 6 in \cite{Thas2012} are analyzed, while Section \ref{S_categorical} considers categorical predictors. Section \ref{S_conclusion} gives some conclusions and remarks.  
+
+
+
+
+\section{Childhood respiratory disease study}\label{S_crds}
+
+For the childhood respiratory disease study we consider the PIM with interaction
+\begin{eqnarray*}
+\text{logit} \left( \prob{FEV \leqs FEV' } \right) &=& \beta_1 (AGE' - AGE) + \beta_2(SMOKE' - SMOKE) \\ 
+												   & &  + \beta_3 (AGE'*SMOKE' - AGE*SMOKE). 
+\end{eqnarray*}
+Because this PIM corresponds to a covariate vector $Z$ of the form $Z = X' -X$, with $X^T = (AGE, SMOKE, AGE*SMOKE)$, the formula statement of \texttt{pim()} is similar to the formula statement of \texttt{lm()} and \texttt{glm()}. We first read in the data
+<<>>=
+library(pim)
+data("FEVData")
+head(FEVData)
+@
+Here \verb|FEV| stands for the forced expiratory volume ($FEV$), \verb|Age| for the age of the child ($AGE$) and \verb|Smoke| whether a child smokes or not ($SMOKE$). We fit the PIM:
+<<>>=
+library('pim')
+pim.fit1 <- pim(FEV ~ Age*Smoke-1, data = FEVData, link="logit", 
+								poset=oldpimposet, estimator=estimator.nleqslv(ignore.error=TRUE), 
+								keep.data=TRUE, interpretation="regular")
+pim.fit1
+@
+The estimated model is given by
+\begin{eqnarray*}
+\text{logit} \left( \hatprob{FEV \leqs FEV' } \right) &=& \Sexpr{round(coef(pim.fit1)[1],2)} (AGE' - AGE) + \Sexpr{round(coef(pim.fit1)[2],2)}(SMOKE' - SMOKE) \\ 
+												   & &   \Sexpr{round(coef(pim.fit1)[3],2)} (AGE'*SMOKE' - AGE*SMOKE). 
+\end{eqnarray*}
+
+Thus the \texttt{lm()}-like formula 
+\begin{verbatim}
+ ~ Age*Smoke = Age + Smoke + Age:Smoke,
+\end{verbatim}
+is automatically converted to a \texttt{pim()}-like formula
+\begin{verbatim}
+~ (Age' - Age) + (Smoke' - Smoke) + (Age':Smoke' - Age:Smoke).
+\end{verbatim}
+The \texttt{summary()} function gives the estimates and corresponding standard errors together with the $Z-$ and p-value corresponding to the null-hypothesis $H_0: \beta = 0$. 
+<<>>=
+summary(pim.fit1)
+@
+The \texttt{plot()} function provides a rudimentary goodness-of-fit plot.
+\begin{center}
+<<fig =TRUE>>=
+plot(pim.fit1)
+@
+\end{center}
+The functions \texttt{coef()}, \texttt{vcov()} and \texttt{fitted.values()} provide the estimated coefficients, variance-covariance matrix of $\hat{\beta}$ and the fitted values respectively. 
+<<>>=
+coef(pim.fit1)
+vcov(pim.fit1)
+head(fitted.values(pim.fit1))
+@
+
+We end this section with an illustration of the interpretation of the age effect. For 2 randomly selected children with the same smoking status and a year difference in age, the probability that the eldest has a higher FEV is estimated by $\text{expit}(0.61 - 0.46SMOKE)$. For non-smokers this probability is $\Sexpr{round(plogis(coef(pim.fit1)[1]),2)}$, while for smokers this becomes $\Sexpr{round(plogis(coef(pim.fit1)[1] + coef(pim.fit1)[3]),2)}$.
+
+\section{Mental health study}
+
+For the mental health study the following PIM was proposed
+\begin{equation}\label{pim.mhs}
+\text{logit}\left(\prob{MI \leqs MI'} \right) = \beta_1 (SES' - SES) + \beta_2 (LI' - LI). 
+\end{equation}
+<<>>=
+data("MHData")
+head(MHData)
+@
+Here \verb|mental| stands for the mental impairment ($MI$), \verb|ses| for the socioeconomic status ($SES$) and \verb|life| for the life index ($LI$). Similar as in the previous example we can specify a \texttt{lm()}-like formula. 
+<<>>=
+pim.fit2a <- pim(mental ~ ses + life -1, data = MHData, link="logit", 
+								 poset=oldpimposet, estimator=estimator.nleqslv(ignore.error=TRUE), 
+								 keep.data=TRUE, interpretation="regular")
+summary(pim.fit2a)
+@
+The model is estimated by
+\[
+\text{logit}\left(\hatprob{MI \leqs MI'} \right) = \Sexpr{round(coef(pim.fit2a)[1],2)} (SES' - SES) + \Sexpr{round(coef(pim.fit2a)[2],2)} (LI' - LI). 
+\]
+
+Model (\ref{pim.mhs}) can be extended as follows
+\begin{eqnarray*}
+\text{logit}\left(\prob{MI \leqs MI'} \right) = \beta_1 (SES' - SES) + \beta_2 (LI' - LI) + \beta_3 SES + \beta_4 LI. 
+\end{eqnarray*}
+If we want to fit this model, we need to specify the \texttt{formula} statement explicitly because $Z$ is no longer of the form $Z = X' - X$. Some notation is needed to specify the predictors corresponding to the left response in $\prob{MI \leqs MI'}$, thus $(SES,LI)$ and the predictors corresponding to the right response, thus $(SES', LI')$. The altering functions can be used for this: \texttt{L()} for the predictors corresponding to the left response and \texttt{R()} for the predictors corresponding to the right response. Thus $(SES, LI)$ in R becomes \texttt{(L(ses), L(life)} and $(SES',LI')$ becomes \texttt{(R(ses), R(life)}. The \texttt{I()} statement is needed to specify specific functions. The function
+\[
+\beta_1 (SES' - SES) + \beta_2 (LI' - LI) + \beta_3 SES + \beta_4 LI,
+\]
+in R becomes
+\begin{center}
+\begin{verbatim}
+ ~ ses + life + L(ses) + L(life) - 1
+\end{verbatim}
+\end{center}
+<<>>=
+pim.fit2b <- pim(mental ~ ses + life + L(ses) + L(life) - 1, data = MHData, link="logit", 
+								 poset=oldpimposetbft, estimator=estimator.nleqslv(ignore.error=TRUE), 
+								 keep.data=TRUE, interpretation="regular")
+summary(pim.fit2b)
+@  
+The estimated model is given by
+\begin{eqnarray*}
+\text{logit}\left(\hatprob{MI \leqs MI'} \right) = \Sexpr{round(coef(pim.fit2b)[1],2)} (SES' - SES) + \Sexpr{round(coef(pim.fit2b)[2],2)} (LI' - LI)  \Sexpr{round(coef(pim.fit2b)[3],2)} SES  \Sexpr{round(coef(pim.fit2b)[4],2)} LI. 
+\end{eqnarray*}
+
+
+
+
+\section{Food expenditure study}\label{S_fe}
+
+Because of heteroscedasticity the following PIM is proposed to analyze the food expenditure data.
+\[
+\text{logit}\left( \prob{FE \leqs FE' } \right) = \beta \frac{HI' - HI}{\sqrt{HI' + HI}}.  
+\]
+<<>>=
+data("Engeldata")
+@
+Here \verb|income| denotes the household income ($HI$) while \verb|foodexp| denotes the food expenditure ($FE$). The covariate vector $Z$ is not of the form $Z = X' - X$, hence we need to specify the formula explicitly. 
+<<>>=
+pim.fit3 <- pim(foodexp ~ I((R(income)-L(income))/sqrt(R(income)+L(income)))-1, 
+								data = Engeldata, link="logit", poset=oldpimposetbft, 
+								estimator=estimator.nleqslv(ignore.error=TRUE), 
+								keep.data=TRUE, interpretation="regular", 
+								extra.nicenames=data.frame(
+									org="I((R(income)-L(income))/sqrt(R(income)+L(income)))", 
+									nice="weightedincomediff", stringsAsFactors=FALSE))
+summary(pim.fit3)				
+@
+The estimated model is given by 
+\[
+\text{logit}\left( \hatprob{FE \leqs FE' } \right) =  \Sexpr{round(coef(pim.fit3),2)} \frac{HI' - HI}{\sqrt{HI' + HI}}.  
+\]
+
+
+
+\section{Categorical predictors}\label{S_categorical}
+
+
+In the presence of categorical predictors, a dummy coding is used together with the covariate vector $Z = X'_{dummy} - X_{dummy}$ , where $X_{dummy}$ denotes the dummy coding of the predictor $X$. This model is inspired by the relation between a linear models and a PIM. As an example consider a predictor $X$ with 3 levels $A$, $B$ and $C$ with dummy coding $X_{B} = 1$ if $X=B$ and $X_{B} = 0$ otherwise and $X_C = 1$ if $X = C$ and $X_C = 0$ otherwise. The linear model
+\[
+Y = \alpha_0 + \alpha_1 X_B + \alpha_2 X_C + \varepsilon,
+\] 
+with $\varepsilon \sim \text{N}(0,\sigma^2)$ embeds the PIM
+\[
+\prob{Y \leqs Y'| X, X'} = \Phi\left\{\beta_1 (X'_B - X_B) + \beta_2 (X'_C - X_C) \right\},
+\]
+where $\beta_i = \alpha_i/\sqrt{2 \sigma^2}$. Note that the PIM has only 2 parameters ($\beta_1$ and $\beta_2$) to model 3 probabilities $\prob{Y \leqs Y'| X = A, X' = B}$, $\prob{Y \leqs Y'| X = A, X' = C}$ and $\prob{Y \leqs Y'| X = B, X' = C}$. This is a consequence of the transitivity assumption which is implied by the linear model:
+\begin{eqnarray*}
+\prob{Y \leqs Y'| X = B, X' = C} &=& \Phi\left\{ \Phi^{-1} \left(\prob{Y \leqs Y'| X = A, X' = C} \right)  \right. \\
+																 & & \left. 	- \Phi^{-1}\left(\prob{Y \leqs Y'| X = A, X' = B} \right) \right\}.
+\end{eqnarray*}
+In R this becomes
+<<>>=
+n <- 100
+X <- factor(sample(LETTERS[1:3], n, replace = TRUE))
+Y <- model.matrix(~ X)%*%c(1,2,3) + rnorm(n)
+data.tmp <- data.frame(Y, X)
+pim.fit4 <- pim(Y ~ X-1, data = data.tmp, link = "probit", poset=oldpimposet, 
+								estimator=estimator.nleqslv(ignore.error=TRUE), keep.data=TRUE, 
+								interpretation="regular")
+summary(pim.fit4)
+@
+The estimated model is given by
+\[
+\Phi^{-1}\left( \hatprob{Y \leqs Y'| X, X'} \right)= \Sexpr{round(coef(pim.fit4)[1],2)} (X'_B - X_B) + \Sexpr{round(coef(pim.fit4)[2],2)} (X'_C - X_C).
+\]
+
+Note that PIMs are semiparametric, thus the normality assumption is not required to obtain consistent and asymptotically normally distributed estimators. The linear model merely serves as a guide on how $Z$ can be constructed based on the predictors $X$ and $X'$.
+
+\section{Conclusions and remarks}\label{S_conclusion}
+
+
+The \texttt{pim}-package is illustrated on several examples and allows fitting a broad class of PIMs. PIMs which are embedded by a linear model as well as less restrictive PIMs are allowed. For categorical predictors however, only PIMs which are based on a linear model can be constructed.
+
+
+Note that for a sample size of $n$ 	a total $n(n-1)/2$ pseudo-observations are created. Consequently for large sample sizes the function goes quite slow.  
+
+In one of the next versions the above mentioned shortcomings will be tackled. All bugs/comments/suggestions are welcome at \href{mailto:JanR.DeNeve@Ugent.be}{JanR.DeNeve@Ugent.be}.
+
+
+\bibliographystyle{plainnat}
+\bibliography{jdeneve}
+
+\end{document}
