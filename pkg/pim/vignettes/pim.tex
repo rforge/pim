@@ -140,7 +140,7 @@ The (co)variance estimating options are:
 Especially with calculated variables, but even when using just the default settings, the names of variables can become quite cluttered, since they now typically involve the differences between the right and left values. Some attempts are taken to make the variable names more readable:
 
 \cd{nicenames}: if this is \cd{TRUE} (the default), the mechanism to make the names more readable is activated. This includes automatic renaming of the differences (with the default suffixes, \cd{X\_R-X\_L} is then renamed to \cd{X\_R-\_L}) as well as proper names for the results of the altering functions.
-\cd{extra.nicenames}: through this dataset, extra variable names (or parts of them) and matching "nicer" names can be passed in to perform the renaming. It is useful to know that the whitespace will be removed from names before attempting a replace. An example on how to use this can be found in \cd{?pim}: see \cd{pimb} there, or also Section \label{S_fe} below.
+\cd{extra.nicenames}: through this dataset, extra variable names (or parts of them) and matching "nicer" names can be passed in to perform the renaming. It is useful to know that the whitespace will be removed from names before attempting a replace. An example on how to use this can be found in \cd{?pim}: see \cd{pimb} there, or also Section \ref{S_fe} below.
 \subsection{Utility parameters}\label{SS_utility}
 One final parameter is \cd{keep.data}, which chooses whether or not the design matrix is kept in the final object. We expect that especially for big models, this might be rather big, so the default is not to keep it.
 \section{Childhood respiratory disease study}\label{S_crds}
@@ -434,15 +434,15 @@ pim(formula = Y ~ X - 1, data = data.tmp, link = "probit", poset = oldpimposet,
     keep.data = TRUE)
 
          Estimate Std. Error Z value  Pr(>|z|)    
-X_R-_L_B  1.53525    0.21324  7.1996 6.038e-13 ***
-X_R-_L_C  2.37825    0.26848  8.8580 < 2.2e-16 ***
+X_R-_L_B  1.22222    0.23016  5.3102 1.095e-07 ***
+X_R-_L_C  1.97852    0.27016  7.3235 2.416e-13 ***
 ---
 Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1 
 \end{Soutput}
 \end{Schunk}
 The estimated model is given by
 \[
-\Phi^{-1}\left( \hatprob{Y \leqs Y'| X, X'} \right)= 1.54 (X'_B - X_B) + 2.38 (X'_C - X_C).
+\Phi^{-1}\left( \hatprob{Y \leqs Y'| X, X'} \right)= 1.22 (X'_B - X_B) + 1.98 (X'_C - X_C).
 \]
 
 Note that PIMs are semiparametric, thus the normality assumption is not required to obtain consistent and asymptotically normally distributed estimators. The linear model merely serves as a guide on how $Z$ can be constructed based on the predictors $X$ and $X'$.
@@ -455,7 +455,8 @@ The \texttt{pim}-package is illustrated on several examples and allows fitting a
 
 Note that for a sample size of $n$ 	a total $n(n-1)/2$ pseudo-observations are created. Consequently for large sample sizes the function goes quite slow.  
 
-In one of the next versions the above mentioned shortcomings will be tackled. All bugs/comments/suggestions are welcome at \href{mailto:JanR.DeNeve@Ugent.be}{JanR.DeNeve@Ugent.be}.
+In one of the next versions the above mentioned shortcomings will be tackled. All bugs/comments/suggestions are welcome at %JanR.DeNeve@Ugent.be.
+\href{mailto:JanR.DeNeve@Ugent.be}{JanR.DeNeve@Ugent.be}.
 
 
 \bibliographystyle{plainnat}
