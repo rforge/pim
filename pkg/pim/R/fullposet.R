@@ -94,6 +94,7 @@ forcedcolorderonewayposet<-function(columnnames=NULL)
 #' @export
 oldpimposet<-function(data, formula, verbosity=0)
 {
+	warning("oldpimposet is only provided for compatibility.")
 	formula<-stats::formula(formula)
 	formula<-as.character(formula)
 	resp<-formula[2]
@@ -150,6 +151,7 @@ oldpimposet<-function(data, formula, verbosity=0)
 #' @export
 oldpimposetbft<-function(data, formula, verbosity=0)
 {
+	warning("oldpimposetbft is only provided for compatibility.")
 	data <- data[, c(grep(formula[[2]], names(data)), grep(formula[[2]], names(data), invert = TRUE))]
 	n <- nrow(data)
 	d <- ncol(data) - 1

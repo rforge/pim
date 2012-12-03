@@ -62,8 +62,9 @@
 #' 	
 #' 	If \code{estimator} was \code{estimator.glmnet}, The return value gets as an additional class
 #' 		\code{"glmnetpim"}.
-#' @note Typically, you will not use this method directly (similarly as \code{\link{glm.fit}} 
-#' 	for \code{\link{glm}})
+#' 		
+#' 	For more details on how to use this function and its parameters, we refer the reader to 
+#' 	\code{vignette("pim")}.
 #' @seealso \code{\link{estimator.nleqslv}} \code{\link{varianceestimator.sandwich}}
 #' @keywords pim fit
 #' @examples set.seed(1)

@@ -1,6 +1,15 @@
 \contentsline {section}{\numberline {1}Introduction}{1}{section.1}
-\contentsline {section}{\numberline {2}Childhood respiratory disease study}{3}{section.2}
-\contentsline {section}{\numberline {3}Mental health study}{6}{section.3}
-\contentsline {section}{\numberline {4}Food expenditure study}{8}{section.4}
-\contentsline {section}{\numberline {5}Categorical predictors}{9}{section.5}
-\contentsline {section}{\numberline {6}Conclusions and remarks}{10}{section.6}
+\contentsline {section}{\numberline {2}pim parameters and their influence}{3}{section.2}
+\contentsline {subsection}{\numberline {2.1}Standard parameters}{3}{subsection.2.1}
+\contentsline {subsection}{\numberline {2.2}Design parameters}{3}{subsection.2.2}
+\contentsline {subsubsection}{\numberline {2.2.1}\texttt {poset}}{4}{subsubsection.2.2.1}
+\contentsline {subsubsection}{\numberline {2.2.2}\texttt {leftsuffix},\texttt {rightsuffix}}{4}{subsubsection.2.2.2}
+\contentsline {subsubsection}{\numberline {2.2.3}\texttt {lhs}}{5}{subsubsection.2.2.3}
+\contentsline {subsection}{\numberline {2.3}Fitting parameters}{6}{subsection.2.3}
+\contentsline {subsection}{\numberline {2.4}Make-up parameters}{7}{subsection.2.4}
+\contentsline {subsection}{\numberline {2.5}Utility parameters}{8}{subsection.2.5}
+\contentsline {section}{\numberline {3}Childhood respiratory disease study}{8}{section.3}
+\contentsline {section}{\numberline {4}Mental health study}{11}{section.4}
+\contentsline {section}{\numberline {5}Food expenditure study}{13}{section.5}
+\contentsline {section}{\numberline {6}Categorical predictors}{14}{section.6}
+\contentsline {section}{\numberline {7}Conclusions and remarks}{15}{section.7}

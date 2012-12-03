@@ -114,8 +114,9 @@ varianceestimator.bootstrap<-function(D=500, keep.posetbs=FALSE)
 			allcoefs<-t(allcoefs)
 		}
 		colnames(allcoefs)<-names(estimationresult$coefficients)
+		vc<-cov(allcoefs$allcoefs, use="complete.obs")
 		if(keep.posetbs) allcoefs<-list(allcoefs=allcoefs, posetbs=posetbs)
-		return(list(vcov=cov(allcoefs$allcoefs, use="complete.obs"), morevarfitinfo=allcoefs))
+		return(list(vcov=vc, morevarfitinfo=allcoefs))
 	}
 	return(actualfunction)
 }
