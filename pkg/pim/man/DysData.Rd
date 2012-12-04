@@ -15,7 +15,7 @@
   the SPC muscle \item{\code{SNP_XRCC1__77TC}} 1 if
   \code{SNP_XRCC1__77} is "TC", 0 otherwise }
 }
-\keyword{Dysphagia}
 \keyword{data}
 \keyword{datasets}
+\keyword{Dysphagia}
 

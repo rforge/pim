@@ -1,10 +1,10 @@
 \name{posandwich.estimator}
+\alias{posandwich.estimator}
+\alias{posandwich.estimator.Uforposandwich}
 \alias{Uforposandwich}
 \alias{Uforposandwich-class}
 \alias{Uforposandwich.default}
 \alias{Uforposandwich.fakeH0}
-\alias{posandwich.estimator}
-\alias{posandwich.estimator.Uforposandwich}
 \title{Pseudo-observation variance sandwich estimator}
 \usage{
   posandwich.estimator(U, U.diff, g1, g2,

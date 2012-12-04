@@ -11,7 +11,7 @@
   \item{\code{ses}} Socioeconomic status \item{\code{life}}
   Life index (LI) }
 }
-\keyword{FEV}
 \keyword{data}
 \keyword{datasets}
+\keyword{FEV}
 

@@ -13,7 +13,7 @@
   (1 for boys, 0 for girls) \item{\code{Smoke}} 1 if the
   child smokes, 0 otherwise }
 }
-\keyword{FEV}
 \keyword{data}
 \keyword{datasets}
+\keyword{FEV}
 

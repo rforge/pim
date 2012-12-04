@@ -1,7 +1,7 @@
 \name{varianceestimator.sandwich}
-\alias{varianceestimator.H0}
 \alias{varianceestimator.bootstrap}
 \alias{varianceestimator.glm}
+\alias{varianceestimator.H0}
 \alias{varianceestimator.sandwich}
 \title{Estimators for the PIM parameter variances}
 \usage{
