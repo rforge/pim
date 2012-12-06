@@ -113,7 +113,23 @@ estimator.glmnet<-function(alpha=1, nlambda = 100, lambda=NULL, standardize=TRUE
 		if(is.na(itcind)) stop("Something went wrong finding the intercept column in glmnet fitting.")
 		X<-pfd$X[,-itcind, drop=FALSE]
 		
-		thefit<-glmnet(x=X, y=pfd$Y, family=family, alpha=alpha, nlambda=nlambda, lambda=lambda, standardize=standardize)
+		Y<-pfd$Y
+		#If we find Y-values equal to 0.5 (indicating ties), we handle this by weighted fitting
+		istie<-Y==0.5
+		if(any(istie))
+		{
+			warning("Ties found in glmnet estiamtion. Applying weighted design matrix reconstruction.")
+			X<-X[1+istie,] #repeat the rows with ties twice
+			wts<-1/(1+istie) #weight those doubled observations by a half
+			multiplyby<-do.call(c,lapply(istie, function(curtie){if(curtie) 1 else c(0,2)}))
+			Y<-Y[1+istie] * multiplyby
+		}
+		else
+		{
+			wts<-rep(1, length(Y))
+		}
+		
+		thefit<-glmnet(x=X, y=pfd$Y, family=family, weights=wts, alpha=alpha, nlambda=nlambda, lambda=lambda, standardize=standardize)
 		thefit$usedalpha=alpha
 		thefit$usedfamily=family
 		thefit$usedoffset=NULL

@@ -3,7 +3,7 @@
 #' Fit a probabilistic index model.
 #' 
 #' \tabular{ll}{ Package: \tab pim\cr Type: \tab Package\cr Version: \tab
-#' 1.1.0.1\cr Date: \tab 2012-12-03\cr License: \tab GPL (>= 2)\cr
+#' 1.1.0.4\cr Date: \tab 2012-12-06\cr License: \tab GPL (>= 2)\cr
 #' LazyLoad: \tab yes\cr Depends: R (>= 2.12), Matrix, glmnet, BB, nleqslv, MASS\cr} 
 #' @name pim-package
 #' @aliases pim-package
