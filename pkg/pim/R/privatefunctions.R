@@ -500,3 +500,8 @@
 	class(retval)<-"pimformula"
 	return(retval)
 }
+
+.toIntCol<-function(col, data)
+{
+	as.integer(as.factor(data[[col]]))
+}

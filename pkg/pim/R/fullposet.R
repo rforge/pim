@@ -21,6 +21,16 @@
 #' \item \code{forcedcolorderonewayposet} First reorders the data based on a set of given 
 #' 	column names. Note: the other functions here are to be passed along as 
 #' 	\code{poset=fullposet}, this one needs \code{poset=forcedcolorderonewayposet(c("col1", "col2"))}
+#' \item \code{forcedposet} Starts from all observations, but excludes the ones where
+#' 	\itemize{
+#' 		\item the combinations of the columns in \code{diffcols} are the same in left and right observation
+#' 		\item the combinations of the columns in \code{LLessRcols} in the left observation 
+#' 			are greater than the one in the right observation (equals are dropped too if \code{no.equals=TRUE})
+#' 		\item the combinations of the columns in \code{RLessLcols} in the right observation 
+#' 			are greater than the one in the left observation (equals are dropped too if \code{no.equals=TRUE})
+#' 	}
+#' 	As a side effect, the data is also sorted wrt the \code{LLessRcols} (ascending) and then according to
+#' 	 the \code{RLessLcols} (descending).
 #' \item \code{oldpimposet} and \code{oldpimposetbft} Sorts the data according to all 
 #' 	predictors, then does oneway-style. These are mainly provided for comparison to a
 #' 	previous implementations of pim.
@@ -167,4 +177,87 @@ oldpimposetbft<-function(data, formula, verbosity=0)
 	
 	poset <- cbind(left.tmp, right.tmp)
 	return(list(data = data, poset = poset))
+}
+
+#' @rdname fullposet
+#' 
+#' @param diffcols column names that will be used to imply order.
+#' @param LLessRcols column names where you want the left observation to be smaller.
+#' @param RLessLcols column names where you want the right observation to be smaller
+#' @param no.equals if \code{TRUE} (the default), rows that have equal values in the
+#' 	\code{LLessRcols} or \code{RLessLcols} columns are excluded from being combined.
+#' @export
+forcedposet<-function(diffcols=NULL, LLessRcols=NULL, RLessLcols=NULL, no.equals=TRUE)
+{
+	force(diffcols)
+	force(LLessRcols)
+	force(RLessLcols)
+	fn<-function(data, formula, verbosity=0)
+	{
+		ps<-fullposet(data, formula, verbosity-1)
+		ocols<-list()
+		if(!is.null(LLessRcols))
+		{
+			ocols<-lapply(LLessRcols, .toIntCol, data)
+		}
+		if(!is.null(RLessLcols))
+		{
+			ocols<-c(ocols, lapply(lapply(RLessLcols, .toIntCol, data), function(x){-x}))
+		}
+		l<-nrow(data)
+		if(length(ocols)>0)
+		{
+			#First, we order the data according to the given columns
+			data <- data[do.call(order, ocols),]
+			if(no.equals)
+			{
+				#Now, we simply have to avoid the rows where both values are equal
+				#Because of the order, we only have to check consecutive rows!
+				uniqueid<-do.call(paste, c(ocols, sep="_"))
+				equalsNext<-uniqueid[-length(uniqueid)]==uniqueid[-1]
+				allowed<-lapply(seq_along(equalsNext), function(rownr){
+					if(equalsNext[rownr])
+					{
+						firstNonEqual<-rownr+1+match(FALSE, equalsNext[-seq(1,rownr)])
+					}
+					else
+					{
+						firstNonEqual<-rownr+1
+					}
+					#For each rownr, return the rownrs that have a value higher
+					return (if(is.na(firstNonEqual)) integer() else as.integer(seq(firstNonEqual, l)))
+				})
+			}
+			else
+			{
+				#For each rownr, return all higher rownrs
+				allowed<-lapply(seq(2,l), seq, l)
+			}
+		}
+		else
+		{
+			#For each rownr, return all other rownrs
+			sl<-seq(l)
+			allowed<-lapply(sl, function(nr){sl[-nr]})
+		}
+		
+		if(!is.null(diffcols))
+		{
+			uniqueid<-do.call(paste, c(lapply(diffcols, .toIntCol, data), sep="_"))
+			allowed<-lapply(seq(length(allowed)), function(rownr){
+				if(!is.null(allowed[[rownr]]))
+				{
+					disallowed<-which(uniqueid==uniqueid[rownr])
+					allowed[[rownr]]<-setdiff(allowed[[rownr]], disallowed)
+				}
+				return(allowed[[rownr]])
+			})
+		}
+		
+		lobs<-rep(seq_along(allowed), sapply(allowed, length))
+		robs<-do.call(c, allowed)
+		
+		return(list(data = data, poset = cbind(lobs, robs)))
+	}
+	return(fn)
 }

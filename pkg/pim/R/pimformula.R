@@ -203,6 +203,9 @@ pimformula<-function(formula, data, interpretation=c("difference", "regular", "m
 		cat("\"", paste(newresponse, newrhs, sep="~"), "\"\n")
 	}
 	newformula<-as.formula(paste(newresponse, newrhs, sep="~"))
+
+	#need to check this, but the use of this variable may be obsolete.
+	#Look below in pim.fit.prep, where it's overwritten...
 	nms<-attr(terms(newformula), "term.labels")
 	if(attr(terms(newformula), "intercept") > 0) nms<-c("(Intercept)", nms)
 	retval<-list(newformula=newformula, left.variables=left.variables, right.variables=right.variables, 
@@ -302,6 +305,7 @@ pim.fit.prep<-function(formula, data, blocking.variables=character(), poset=t(co
 			cn<-gsub(formulaconv$full.colnames[i], formulaconv$nice.colnames[i], cn, fixed=TRUE)
 		}
 		colnames(X)<-cn
+		formulaconv$names<-cn
 	}
 	
 	retval<-list(Y=Y, X=X, poset=poset, intercept=intercept, pimformula=formulaconv, original.colnames=orgcn)

@@ -189,7 +189,14 @@ Lreplacetext<-function(varn, data, verbosity=0, leftsuffix="_L", rightsuffix="_R
 	}
 	reppart<-paste(varn, leftsuffix, sep="")
 	
-	return(c(paste("L(", varn, ")", sep=""), reppart, reppart, reppart))
+	repname<-reppart
+	if(is.factor(data[[varn]]))
+	{
+		lvls<-levels(data[[varn]])
+		repname<-paste(repname, lvls, sep="")
+	}
+	
+	return(c(paste("L(", varn, ")", sep=""), reppart, repname, repname))
 }
 
 #' @rdname Mainreplacetext
@@ -200,6 +207,14 @@ Rreplacetext<-function(varn, data, verbosity=0, leftsuffix="_L", rightsuffix="_R
 	interpretation<-match.arg(interpretation)
 	reppart<-paste(varn, rightsuffix, sep="")
 	
-	return(c(paste("R(", varn, ")", sep=""), reppart, reppart, reppart))
+	repname<-reppart
+	if(is.factor(data[[varn]]))
+	{
+		lvls<-levels(data[[varn]])
+		repname<-paste(repname, lvls, sep="")
+	}
+	
+	
+	return(c(paste("R(", varn, ")", sep=""), reppart, repname, repname))
 }
 
