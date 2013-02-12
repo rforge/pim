@@ -2,24 +2,20 @@
 \alias{forcedcolorderonewayposet}
 \alias{forcedposet}
 \alias{fullposet}
+\alias{lexiposet}
 \alias{oldpimposet}
 \alias{oldpimposetbft}
 \alias{onewayposet}
-\alias{pairwiseposet}
 \alias{poset}
 \title{Get a set of pseudo-observation observation indices}
 \usage{
   fullposet(data, formula, verbosity = 0)
 
-  pairwiseposet(data, formula, verbosity = 0)
+  lexiposet(data, formula, verbosity = 0)
 
   onewayposet(data, formula, verbosity = 0)
 
   forcedcolorderonewayposet(columnnames = NULL)
-
-  oldpimposet(data, formula, verbosity = 0)
-
-  oldpimposetbft(data, formula, verbosity = 0)
 
   forcedposet(diffcols = NULL, LLessRcols = NULL,
     RLessLcols = NULL, no.equals = TRUE)
@@ -64,11 +60,11 @@
 \details{
   The provided implementations differ as follows:
   \enumerate{ \item \code{fullposet} Contains all
-  combinations of rowindices. \item \code{pairwiseposet}
-  Check that predicting variables can be ordered, and
-  select only combinations where the predictors are bigger
-  on the right side. \item \code{onewayposet} Similar to
-  \code{pairwiseposet}, but simply uses row index. \item
+  combinations of rowindices. \item \code{lexiposet} Check
+  that predicting variables can be ordered, and select only
+  combinations where the predictors are bigger on the right
+  side. \item \code{onewayposet} Similar to
+  \code{lexiposet}, but simply uses row index. \item
   \code{forcedcolorderonewayposet} First reorders the data
   based on a set of given column names. Note: the other
   functions here are to be passed along as
@@ -97,7 +93,7 @@
 set.seed(1)
 	dta<-data.frame(y=runif(6), x=ordered(sample(3, 6, replace=TRUE)))
 	fullposet(dta, y~x)$poset
-	pairwiseposet(dta, y~x)$poset
+	lexiposet(dta, y~x)$poset
 	onewayposet(dta, y~x)$poset
 }
 \seealso{

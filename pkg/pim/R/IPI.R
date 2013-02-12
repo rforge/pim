@@ -6,7 +6,7 @@
 #' 
 #' @param yi,yj Variables for which the I/PI will be calculated. \code{yi} will always be
 #' 	at the left hand side of the unequality.
-#' @param method If \code{"pairwise"} (the default), then all combinations of items in \code{yi}
+#' @param method If \code{"allpairs"} (the default), then all combinations of items in \code{yi}
 #' 	and \code{yj} are used. Otherwise both are taken in the order specified (implying equal lengths)
 #' @param res Calculate the \code{"sum"} (default), \code{"mean"} (i.e. probabilistic index)
 #' 	of the combinations, or simply return \code{"all"} partial results. Finally, \code{"sumcount"}
@@ -18,7 +18,7 @@
 #' \item{pi}{The probabilistic indicator for this combination.} 
 #' @keywords pim probabilistic index indicator
 #' @export
-IPI<-function(yi,yj, method=c("pairwise", "paired"), res=c("sum", "mean", "all", "sumcount"))
+IPI<-function(yi,yj, method=c("allpairs", "paired"), res=c("sum", "mean", "all", "sumcount"))
 {
 	method<-match.arg(method)
 	res<-match.arg(res)

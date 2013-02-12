@@ -10,9 +10,10 @@
   estimator.nleqslv(jac = NULL,
     method = c("Broyden", "Newton"),
     global = c("dbldog", "pwldog", "qline", "gline", "none"),
-    xscalm = c("fixed", "auto"), control = list(),
+    xscalm = c("fixed", "auto"),
+    control = list(ftol = 1e-06),
     scoreFunctionCreator = scorefunctioncreator.default,
-    ignore.error = FALSE)
+    treat.convergence.error = c("warn", "error", "log", "ignore"))
 
   estimator.glm(control = list())
 
@@ -22,7 +23,7 @@
   estimator.BB(method = c(2, 3, 1), control = list(),
     quiet = FALSE,
     scoreFunctionCreator = scorefunctioncreator.default,
-    ignore.error = FALSE)
+    treat.convergence.error = c("warn", "error", "log", "ignore"))
 
   estimator.trymultiple(scoreFunctionCreator = scorefunctioncreator.default)
 
@@ -43,10 +44,16 @@
   same form (and return a function of the same form as
   \code{scorefunctioncreator.default}).}
 
-  \item{ignore.error}{Defaults to \code{FALSE}, but if
-  \code{TRUE}, the errorcode of the \code{\link{nleqslv}}
-  or \code{\link{BBsolve}} call will not be checked. Use at
-  your own risk.}
+  \item{treat.convergence.error}{Defaults to \code{"warn"},
+  so a warning will be issued with the errorcode of the
+  \code{\link{nleqslv}} or \code{\link{BBsolve}} call.
+  \code{"error"} will generate an error on convergence
+  issues. \code{"log"} will simply note the occurence in
+  the output window and \code{"ignore"} will do just that.
+  In most situations you can avoid the convergence issues
+  by properly specifying the nleqslv parameters. This can
+  be investigated e.g. through
+  \code{estimator.trymultiple}.}
 
   \item{alpha,nlambda,lambda,standardize}{See
   \code{\link{glmnet}}.}

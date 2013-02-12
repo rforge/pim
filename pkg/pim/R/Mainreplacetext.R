@@ -149,7 +149,7 @@ Freplacetext<-function(varn, data, verbosity=0, leftsuffix="_L", rightsuffix="_R
 		uselvls<-combn(lvls, 2)
 		parts<-paste("I(as.numeric(", varn, leftsuffix, "==\"", uselvls[1,], "\"&",varn, rightsuffix, "==\"", uselvls[2,], "\"))", sep="")
 		reppart<-paste("(", paste(parts, collapse="+"), ")", sep="")
-		nicename<-paste(varn, rightsuffix,leftsuffix, sep="")
+		nicename<-paste(varn,leftsuffix, rightsuffix, sep="")
 		nicename<-paste(nicename,"_", uselvls[1,], "_", uselvls[2,], sep="")
 	}
 	

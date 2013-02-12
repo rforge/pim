@@ -7,8 +7,8 @@
   crossvalidate.pim(pimob,
     method = c("fullsplit", "semisplit", "naive"),
     type.measure = c("mse", "deviance", "class", "auc", "mae"),
-    nfolds = 10, foldid, ..., include.extrainfo = FALSE,
-    verbosity = 0)
+    nfolds = 10, foldid, weights, ...,
+    include.extrainfo = FALSE, verbosity = 0)
 }
 \arguments{
   \item{pimob}{Object of class \code{\link{pim}}. Note: it
@@ -22,7 +22,7 @@
   over the pseudo-observations (note: typically, this is
   not correct!)}
 
-  \item{type.measure,nfolds,foldid}{See
+  \item{type.measure,nfolds,foldid,weights}{See
   \code{\link{cv.glmnet}}}
 
   \item{\dots}{Passed on to \code{\link{cv.glmnet}} (or

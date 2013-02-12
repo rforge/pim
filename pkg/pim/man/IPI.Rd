@@ -2,7 +2,7 @@
 \alias{IPI}
 \title{Probabilistic Index / Indicator for sets of variables}
 \usage{
-  IPI(yi, yj, method = c("pairwise", "paired"),
+  IPI(yi, yj, method = c("allpairs", "paired"),
     res = c("sum", "mean", "all", "sumcount"))
 }
 \arguments{
@@ -10,7 +10,7 @@
   calculated. \code{yi} will always be at the left hand
   side of the unequality.}
 
-  \item{method}{If \code{"pairwise"} (the default), then
+  \item{method}{If \code{"allpairs"} (the default), then
   all combinations of items in \code{yi} and \code{yj} are
   used. Otherwise both are taken in the order specified
   (implying equal lengths)}

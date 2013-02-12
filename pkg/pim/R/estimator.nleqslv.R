@@ -10,8 +10,12 @@
 #' @param scoreFunctionCreator Function that will create the score vector function. This
 #' 	defaults to \code{scorefunctioncreator.default} and should be of the same form (and 
 #' 	return a function of the same form as \code{scorefunctioncreator.default}).
-#' @param ignore.error Defaults to \code{FALSE}, but if \code{TRUE}, the errorcode of the 
-#' 	\code{\link{nleqslv}} or \code{\link{BBsolve}} call will not be checked. Use at your own risk.
+#' @param treat.convergence.error Defaults to \code{"warn"}, so a warning will be issued with 
+#' 	the errorcode of the \code{\link{nleqslv}} or \code{\link{BBsolve}} call. \code{"error"} 
+#' 	will generate an error on convergence issues. \code{"log"} will simply note the occurence
+#' 	in the output window and \code{"ignore"} will do just that. In most situations you can 
+#' 	avoid the convergence issues by properly specifying the nleqslv parameters. This can be 
+#' 	investigated e.g. through \code{estimator.trymultiple}.
 #' @return These functions (\code{estimator.*}) each return a function themselves. The returned
 #' 	function should have three parameters (\code{startvalues}, a set of initial estimates of the 
 #' 	parameters; \code{pfd}, an object of class \code{\link{pimfitdata}} ; \code{link}, the name 
@@ -42,25 +46,26 @@
 #' @export
 estimator.nleqslv<-function(jac = NULL, method = c("Broyden", "Newton"), 
 														global = c("dbldog", "pwldog", "qline", "gline", "none"), 
-														xscalm = c("fixed", "auto"), control = list(),
+														xscalm = c("fixed", "auto"), control = list(ftol=1e-6),
 														scoreFunctionCreator=scorefunctioncreator.default,
-														ignore.error=FALSE)
+														treat.convergence.error=c("warn", "error", "log", "ignore"))
 {
+	treat.convergence.error<-match.arg(treat.convergence.error)
 	force(jac)
 	force(method)
 	force(global)
 	force(xscalm)
 	force(control)
 	force(scoreFunctionCreator)
-	force(ignore.error)
+	force(treat.convergence.error)
 	rv<-function(startvalues=NULL, pfd, link)	{
 		fn<-scoreFunctionCreator(pfd$X,pfd$Y,link)
 		if(is.null(startvalues)) startvalues<-rep(0, ncol(pfd$X))
 		thefit<-nleqslv(startvalues, fn, jac = jac, method = method, global = global, xscalm = xscalm, control = control)
 		fit.x <- thefit$x
-		if((!ignore.error) & (thefit$termcd != 1))
+		if(thefit$termcd != 1)
 		{
-			stop(paste("Fit could not be obtained: nonconvergence of the algorithm:", thefit$message))
+			.handleError(paste("Fit could not be obtained: nonconvergence of the algorithm:", thefit$message), treat.convergence.error)
 		}
 		return(list(coefficients=fit.x, morefitinfo=thefit) )
 	}
@@ -118,18 +123,20 @@ estimator.glmnet<-function(alpha=1, nlambda = 100, lambda=NULL, standardize=TRUE
 		istie<-Y==0.5
 		if(any(istie))
 		{
-			warning("Ties found in glmnet estiamtion. Applying weighted design matrix reconstruction.")
-			X<-X[1+istie,] #repeat the rows with ties twice
-			wts<-1/(1+istie) #weight those doubled observations by a half
-			multiplyby<-do.call(c,lapply(istie, function(curtie){if(curtie) 1 else c(0,2)}))
-			Y<-Y[1+istie] * multiplyby
+			warning("Ties found in glmnet estimation. Applying weighted design matrix reconstruction.")
+			ties<-1+istie
+			tiereps<-rep(seq_along(ties), ties)
+			X<-X[tiereps,] #repeat the rows with ties twice
+			wts<-1/ties[tiereps] #weight those doubled observations by a half
+			multiplyby<-do.call(c,lapply(istie, function(curtie){if(!curtie) 1 else c(0,2)}))
+			Y<-Y[tiereps] * multiplyby
 		}
 		else
 		{
 			wts<-rep(1, length(Y))
 		}
 		
-		thefit<-glmnet(x=X, y=pfd$Y, family=family, weights=wts, alpha=alpha, nlambda=nlambda, lambda=lambda, standardize=standardize)
+		thefit<-glmnet(x=X, y=Y, family=family, weights=wts, alpha=alpha, nlambda=nlambda, lambda=lambda, standardize=standardize)
 		thefit$usedalpha=alpha
 		thefit$usedfamily=family
 		thefit$usedoffset=NULL
@@ -138,6 +145,7 @@ estimator.glmnet<-function(alpha=1, nlambda = 100, lambda=NULL, standardize=TRUE
 		rownames(beta)<-c("(Intercept)", rownames(thefit$beta))
 		return(list(coefficients=beta, morefitinfo=thefit) )
 	}
+	return(actualfunction)
 }
 
 #' @rdname estimator.nleqslv
@@ -146,21 +154,22 @@ estimator.glmnet<-function(alpha=1, nlambda = 100, lambda=NULL, standardize=TRUE
 #' @export
 estimator.BB<-function(method=c(2,3,1), control=list(), quiet=FALSE,
 											 scoreFunctionCreator=scorefunctioncreator.default,
-											 ignore.error=FALSE)
+											 treat.convergence.error=c("warn", "error", "log", "ignore"))
 {
+	treat.convergence.error<-match.arg(treat.convergence.error)
 	force(method)
 	force(control)
 	force(quiet)
 	force(scoreFunctionCreator)
-	force(ignore.error)
+	force(treat.convergence.error)
 	rv<-function(startvalues=NULL, pfd, link)	{
 		fn<-scoreFunctionCreator(pfd$X,pfd$Y,link)
 		if(is.null(startvalues)) startvalues<-rep(0, ncol(pfd$X))
 		thefit<-BBsolve(startvalues, fn, method = method, control = control, quiet = quiet )
 		fit.x <- thefit$par
-		if((!ignore.error) & (thefit$convergence != 0))
+		if(thefit$convergence != 0)
 		{
-			stop(paste("Fit could not be obtained: nonconvergence of the algorithm:", thefit$message))
+			.handleError(paste("Fit could not be obtained: nonconvergence of the algorithm:", thefit$message), treat.convergence.error)
 		}
 		return(list(coefficients=fit.x, morefitinfo=thefit) )
 	}
@@ -198,6 +207,8 @@ estimator.trymultiple<-function(scoreFunctionCreator=scorefunctioncreator.defaul
 			rv<-try(estfn(startvalues=startvalues, pfd=pfd, link=link), silent=TRUE)
 			if(!inherits(rv, "try-error"))
 			{#successful fit!
+				cat("The first set of parameters that did not result in convergence issues, was:\n")
+				print(fn)
 				return(rv)
 			}
 			errs<-c(errs, rv)

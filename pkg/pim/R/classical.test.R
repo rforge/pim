@@ -41,7 +41,7 @@ classical.test<-function(test=c("WilcoxonMannWhitney", "KruskalWallis", "MackSki
 		if(length(levels(as.factor(data[,group]))) != 2) stop("Predictor should have two values for Wilcoxon-Mann-Whitney.")
 		
 		formula<-stats::formula(paste(out, "~F(", group, ")-1", sep=""))
-		pimfit<-pim(formula, data=data, link="identity", poset=pairwiseposet, 
+		pimfit<-pim(formula, data=data, link="identity", poset=lexiposet, 
 								varianceestimator=varianceestimator, verbosity=verbosity-1, interpretation="regular")
 		stat<-(coefficients(pimfit)-0.5)/sqrt(vcov(pimfit)[1,1])
 		p.value <- switch(alternative, 
@@ -99,7 +99,7 @@ classical.test<-function(test=c("WilcoxonMannWhitney", "KruskalWallis", "MackSki
 		if(!missing(block)) warning("Blocks are ignored in Jockheere-Terpstra")
 		
 		formula<-stats::formula(paste(out, "~F(", group, ")-1", sep=""))
-		pimfit<-pim(formula, data=data, link="identity", poset=pairwiseposet, 
+		pimfit<-pim(formula, data=data, link="identity", poset=lexiposet, 
 								varianceestimator=varianceestimator, verbosity=verbosity-1, 
 								interpretation="regular")
 
@@ -120,7 +120,7 @@ classical.test<-function(test=c("WilcoxonMannWhitney", "KruskalWallis", "MackSki
 		if(!(levelP %in% lvls)) stop("Specify a valid levelP for the top of the umbrella.")
 		
 		formula<-stats::formula(paste(out, "~F(", group, ")-1", sep=""))
-		pimfit<-pim(formula, data=data, link="identity", poset=pairwiseposet, 
+		pimfit<-pim(formula, data=data, link="identity", poset=lexiposet, 
 								varianceestimator=varianceestimator, verbosity=verbosity-1, 
 								interpretation="regular")
 		

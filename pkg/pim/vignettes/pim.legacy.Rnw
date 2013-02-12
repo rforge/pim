@@ -38,8 +38,7 @@
 
 While \cite{Thas2012} introduces PIMs, they were shown to be extensions of the known distribution free tests, like Wilcoxon in TODO:rankpaperref.
 
-A general estimator for the variance under the null hypothesis has been created ($varianceestimator.H0$), but for these special cases, some simplified
-formulas exist, which have been provided through the $simplified*$ set of functions.
+A general estimator for the variance under the null hypothesis has been created ($varianceestimator.H0$), but for these special cases, some simplified formulas exist, which have been provided through the $simplified*$ set of functions.
 
 For each of the code sections below, it is easily checked that the simplified formulas give the same result as the generic code, and that the 
 links between the known distribution free tests and PIM are confirmed.
@@ -56,7 +55,7 @@ Code to check the equivalence (note this includes a legacy implementation):
 	library(pim)
 	set.seed(1)
 	wmw1<-demo.WilcoxonMannWhitney()
-	wmw1$pim2<-pim(y~F(x)-1, data=wmw1$dta, link="identity", poset=pairwiseposet, 
+	wmw1$pim2<-pim(y~F(x)-1, data=wmw1$dta, link="identity", poset=lexiposet, 
 								 varianceestimator=varianceestimator.H0(), keep.data=TRUE, verbosity=0, 
 								 interpretation="regular")
 	wmw1$pim2
@@ -151,7 +150,7 @@ Code to check the equivalence (note this includes a legacy implementation):
 Code to check the equivalence (note this includes a legacy implementation):
 <<>>=
 	jt1<-demo.JonckheereTerpstra(force.balanced=FALSE)
-	jt1$pim1<-pim(y~F(x)-1, data=jt1$dta, link="identity", poset=pairwiseposet, 
+	jt1$pim1<-pim(y~F(x)-1, data=jt1$dta, link="identity", poset=lexiposet, 
 								varianceestimator=varianceestimator.H0(), keep.data=TRUE, verbosity=0, 
 								interpretation="regular")
 	jt1$pim1
@@ -175,7 +174,7 @@ Code to check the equivalence (note this includes a legacy implementation):
 Code to check the equivalence (note this includes a legacy implementation):
 <<>>=
 	mw1<-demo.MackWolfe(force.balanced=FALSE)
-	mw1$pim1<-pim(y~F(x)-1, data=mw1$dta, link="identity", poset=pairwiseposet, 
+	mw1$pim1<-pim(y~F(x)-1, data=mw1$dta, link="identity", poset=lexiposet, 
 								varianceestimator=varianceestimator.H0(), keep.data=TRUE, verbosity=0, 
 								interpretation="regular")
 	mw1$pim1

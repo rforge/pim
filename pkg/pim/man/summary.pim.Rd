@@ -1,6 +1,10 @@
 \name{summary.pim}
 \alias{design.matrix}
 \alias{design.matrix.pim}
+\alias{designcols}
+\alias{designcols.pim}
+\alias{outcomeformula}
+\alias{outcomeformula.pim}
 \alias{print.summary.pim}
 \alias{print.summary.pimo}
 \alias{responses}
@@ -23,6 +27,14 @@
   responses(object, ...)
 
   \method{responses}{pim}(object,...)
+
+  designcols(object, ...)
+
+  \method{designcols}{pim}(object,...)
+
+  outcomeformula(object, ...)
+
+  \method{outcomeformula}{pim}(object,...)
 }
 \arguments{
   \item{object}{\code{\link{pim}} object.}
@@ -49,6 +61,14 @@
 
   For \code{responses}: The true responses
   (pseudo-observations)
+
+  For \code{designcols}: The orginal column names of the
+  design matrix.  These typically also contain the part of
+  the formula used to build them, so indicate their source.
+
+  For \code{outcomeformula}: The left hand side of the
+  formula used to.  create the design matrix (i.e. to
+  generate the pseudo-outcomes).
 }
 \description{
   Plot very basic Goodness Of Fit for a pim

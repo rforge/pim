@@ -111,7 +111,7 @@
 }
 
 .cvpo.glmnet<-function (x, y, poset, weights, offset = NULL, lambda = NULL, type.measure = c("mse", "deviance", "class", "auc", "mae"), 
-												..., nfolds = 10, grouped = TRUE, include.extrainfo=FALSE, fullsplit=TRUE) 
+												..., nfolds = 10, grouped = TRUE, include.extrainfo=FALSE, fullsplit=TRUE, verbosity=0) 
 {
 	if (missing(type.measure)) 
 		type.measure = "default"
@@ -123,7 +123,27 @@
 		weights = rep(1, N)
 	else weights = as.double(weights)
 	y = drop(y)
-	glmnet.object = glmnet(x, y, weights = weights, offset = offset, 
+	
+	tmpx<-x
+	tmpy<-y
+	tmpweights<-weights
+	tmpoffset<-offset
+	
+	tmpistie<-tmpy==0.5
+	if(any(tmpistie))
+	{
+		warning("Ties found in crossvalidation. Applying weighted design matrix reconstruction.")
+		tmpties<-1+tmpistie
+		tmptiereps<-rep(seq_along(tmpties), tmpties)
+		tmpx<-tmpx[tmptiereps,,drop=FALSE] #repeat the rows with ties twice
+		tmpweights<-tmpweights[tmptiereps]/tmpties[tmptiereps] #weight those doubled observations by a half
+		tmpmultiplyby<-do.call(c,lapply(tmpistie, function(curtie){if(!curtie) 1 else c(0,2)}))
+		tmpy<-tmpy[tmptiereps] * tmpmultiplyby
+		
+		if(! is.null(tmpoffset)) tmpoffset<-tmpoffset[tmptiereps]
+	}
+	if(verbosity > 0) cat("Initial glmnet fit\n")
+	glmnet.object = glmnet(tmpx, tmpy, weights = tmpweights, offset = tmpoffset, 
 												 lambda = lambda, ...)
 	is.offset = glmnet.object$offset
 	lambda = glmnet.object$lambda
@@ -136,7 +156,8 @@
 									 length)
 	if (nfolds < 3) 
 		stop("nfolds must be bigger than 3; nfolds=10 recommended")
-	
+
+	if(verbosity > 0) cat("Fold creation\n")
 	uniqueorgindices<-unique(as.vector(poset))
 	foldid<-sample(rep(seq(nfolds), length = length(uniqueorgindices)))
 	indinfoldidposet<-match(poset, uniqueorgindices)
@@ -149,6 +170,21 @@
 	valweights<-weights[!ignoredpo]
 	valoffset<-offset
 	if(! is.null(valoffset)) valoffset<-valoffset[!ignoredpo]
+	if(verbosity > 0) cat("Tie correction in folds.\n")
+	valistie<-valy==0.5
+	if(any(valistie))
+	{
+		warning("Ties found in crossvalidation. Applying weighted design matrix reconstruction.")
+		valties<-1+valistie
+		valtiereps<-rep(seq_along(valties), valties)
+		valx<-valx[valtiereps,,drop=FALSE] #repeat the rows with ties twice
+		valweights<-valweights[valtiereps]/valties[valtiereps] #weight those doubled observations by a half
+		valmultiplyby<-do.call(c,lapply(valistie, function(curtie){if(!curtie) 1 else c(0,2)}))
+		valy<-valy[valtiereps] * valmultiplyby
+		
+		valfoldid<-valfoldid[valtiereps]
+		if(! is.null(valoffset)) valoffset<-valoffset[valtiereps]
+	}
 	if(fullsplit)	
 	{
 		x<-valx
@@ -157,21 +193,41 @@
 		weights<-valweights
 		offset<-valoffset
 	}
-	
-# 	x<-x[!ignoredpo,,drop=FALSE]
-# 	y<-y[!ignoredpo]
-# 	foldid<-orgfoldid[!ignoredpo]
-# 	weights<-weights[!ignoredpo]
+	else
+	{
+		istie<-y==0.5
+		if(any(istie))
+		{
+			warning("Ties found in crossvalidation. Applying weighted design matrix reconstruction.")
+			ties<-1+istie
+			tiereps<-rep(seq_along(ties), ties)
+			x<-x[tiereps,,drop=FALSE] #repeat the rows with ties twice
+			weights<-weights[tiereps]/ties[tiereps] #weight those doubled observations by a half
+			multiplyby<-do.call(c,lapply(istie, function(curtie){if(!curtie) 1 else c(0,2)}))
+			y<-y[tiereps] * multiplyby
+			
+			if(is.null(dim(foldid)))
+			{
+				foldid<-foldid[tiereps]
+			}
+			else
+			{
+				foldid<-foldid[tiereps,,drop=FALSE]
+			}
+			if(! is.null(offset)) offset<-offset[tiereps]
+		}
+	}
 	
 	outlist = as.list(seq(nfolds))
 	for (i in seq(nfolds)) {
-		if(fullsplit)
+		if(verbosity > 1) cat("Fitting glmnet for fold", i, "/", nfolds, "\n")
+		if(is.null(dim(foldid)))
 		{
 			which = foldid == i
 		}
 		else
 		{
-			which = (foldid[,1]==i & foldid[,2]==i)
+			which = (foldid[,1]==i | foldid[,2]==i)
 		}
 		if (is.matrix(y)) 
 			y_sub = y[!which, ]
@@ -184,8 +240,10 @@
 													...)
 	}
 	fun = paste("cv", class(glmnet.object)[[1]], sep = ".")
+	if(verbosity > 0) cat("Validation\n")
 	cvstuff = do.call(fun, list(outlist, lambda, valx, valy, valweights, 
 															valoffset, valfoldid, type.measure, grouped))
+	if(verbosity > 0) cat("Structuring results\n")
 	cvm = cvstuff$cvm
 	cvsd = cvstuff$cvsd
 	cvname = cvstuff$name
@@ -504,4 +562,26 @@
 .toIntCol<-function(col, data)
 {
 	as.integer(as.factor(data[[col]]))
+}
+
+.handleError<-function(errTxt, treat.error=c("warn", "error", "log", "ignore"))
+{
+	treat.error<-match.arg(treat.error)
+	if(treat.error == "log")
+	{
+		cat(errTxt, "\n")
+	}
+	else if(treat.error == "ignore")
+	{
+		#just do nothing
+	}
+	else if(treat.error == "error")
+	{
+		stop(errTxt)
+	}
+	else
+	{
+		warning(errTxt)
+	}
+	invisible()
 }

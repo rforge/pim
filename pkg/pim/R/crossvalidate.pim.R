@@ -9,7 +9,7 @@
 #' @param method \code{"fullsplit"} splits pseudo-observations over folds, \code{"semisplit"} takes
 #' 	the nonvalidating pseudo-observations together for the fit for each fold, \code{"naive"} simply
 #' 	crossvalidates over the pseudo-observations (note: typically, this is not correct!)
-#' @param type.measure,nfolds,foldid See \code{\link{cv.glmnet}}
+#' @param type.measure,nfolds,foldid,weights See \code{\link{cv.glmnet}}
 #' @param \dots Passed on to \code{\link{cv.glmnet}} (or \code{.cvpo.glmnet}).
 #' @param include.extrainfo If \code{TRUE} (not the default), the return value contains two extra 
 #' 	items, \code{foldid} and \code{foldFits}, that may be used to reassess the crossvalidation value 
@@ -39,23 +39,46 @@
 #' cv.penpim.ps<-crossvalidate.pim(penpim, method="semisplit")
 #' @export
 crossvalidate.pim<-function(pimob, method=c("fullsplit", "semisplit", "naive"), type.measure=c("mse", "deviance", "class", "auc", "mae"), 
-														nfolds = 10, foldid,..., include.extrainfo=FALSE, verbosity=0)
+														nfolds = 10, foldid, weights,..., include.extrainfo=FALSE, verbosity=0)
 {
 	if(!inherits(pimob$morefitinfo, "glmnet")) stop("crossvalidate.pim is currently only supported for glmnet-fitted pims.")
 	method<-match.arg(method)
+	
+	X<-pimob$pfd$X
+	Y<-pimob$pfd$Y
+	
 	if(method=="naive")
 	{
 		#crossvalidate over the pseudo-observations
-		cvfit<-cv.glmnet(x=pimob$pfd$X, y=pimob$pfd$Y, offset=pimob$morefitinfo$usedoffset, lambda=pimob$morefitinfo$lambda, 
+		if(missing(weights))
+		{
+			#If we find Y-values equal to 0.5 (indicating ties), we handle this by weighted fitting
+			istie<-Y==0.5
+			if(any(istie))
+			{
+				warning("Ties found in crossvalidate.pim. Applying weighted design matrix reconstruction.")
+				ties<-1+istie
+				tiereps<-rep(seq_along(ties), ties)
+				X<-X[tiereps,,drop=FALSE] #repeat the rows with ties twice
+				weights<-1/ties[tiereps] #weight those doubled observations by a half
+				multiplyby<-do.call(c,lapply(istie, function(curtie){if(!curtie) 1 else c(0,2)}))
+				Y<-Y[tiereps] * multiplyby
+			}
+			else
+			{
+				weights<-rep(1, length(Y))
+			}
+		}
+		cvfit<-cv.glmnet(x=X, y=Y, weights=weights, offset=pimob$morefitinfo$usedoffset, lambda=pimob$morefitinfo$lambda, 
 										 type.measure=type.measure, standardize=pimob$morefitinfo$standardize, alpha=pimob$morefitinfo$usedalpha,
 										 nfolds = nfolds, foldid=foldid, family=pimob$morefitinfo$usedfamily,...)
 	}
 	else
 	{
 		#crossvalidate over the original observations
-		cvfit<-.cvpo.glmnet(x=pimob$pfd$X, y=pimob$pfd$Y, poset=pimob$pfd$poset, offset=pimob$morefitinfo$usedoffset, lambda=pimob$morefitinfo$lambda, 
+		cvfit<-.cvpo.glmnet(x=X, y=Y, weights=weights, poset=pimob$pfd$poset, offset=pimob$morefitinfo$usedoffset, lambda=pimob$morefitinfo$lambda, 
 												type.measure=type.measure, standardize=pimob$morefitinfo$standardize, alpha=pimob$morefitinfo$usedalpha,
-												nfolds = nfolds, family=pimob$morefitinfo$usedfamily,..., fullsplit=(method=="fullsplit"))
+												nfolds = nfolds, family=pimob$morefitinfo$usedfamily,..., fullsplit=(method=="fullsplit"), verbosity=verbosity)
 	}
 	cvfit$glmnet.fit<-pimob$morefitinfo
 	rv<-c(pimob, cvfit)

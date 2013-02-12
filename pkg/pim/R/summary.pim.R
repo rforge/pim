@@ -110,3 +110,42 @@ responses.pim<-function(object,...)
 	return(NULL)
 }
 
+#' @rdname summary.pim
+#' 
+#' @aliases designcols
+#' @return For \code{designcols}: The orginal column names of the design matrix.
+#' 	These typically also contain the part of the formula used to build them, so 
+#' 	indicate their source.
+#' @export
+designcols<-function(object,...) UseMethod("designcols")
+
+#' @rdname summary.pim
+#' 
+#' @aliases designcols.pim
+#' @method designcols pim
+#' @usage \method{designcols}{pim}(object,...)
+#' @export
+designcols.pim<-function(object,...)
+{
+	return(object$pfd$original.colnames)
+}
+
+#' @rdname summary.pim
+#' 
+#' @aliases outcomeformula
+#' @return For \code{outcomeformula}: The left hand side of the formula used to.
+#' 	create the design matrix (i.e. to generate the pseudo-outcomes).
+#' @export
+outcomeformula<-function(object,...) UseMethod("outcomeformula")
+
+#' @rdname summary.pim
+#' 
+#' @aliases outcomeformula.pim
+#' @method outcomeformula pim
+#' @usage \method{outcomeformula}{pim}(object,...)
+#' @export
+outcomeformula.pim<-function(object,...)
+{
+	return(object$pfd$pimformula$newformula[2])
+}
+

@@ -295,7 +295,7 @@ pim.fit.prep<-function(formula, data, blocking.variables=character(), poset=t(co
 	if(nicenames)
 	{
 		cn<-gsub(" ", "", orgcn, fixed=TRUE)
-		if(verbosity > 0)
+		if(verbosity > 4)
 		{
 			cat("Will replace to nicer names in column names:", cn, "\n")
 			cat("\tReplace:", formulaconv$full.colnames, "\n")
