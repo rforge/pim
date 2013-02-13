@@ -111,7 +111,7 @@
 }
 
 .cvpo.glmnet<-function (x, y, poset, weights, offset = NULL, lambda = NULL, type.measure = c("mse", "deviance", "class", "auc", "mae"), 
-												..., nfolds = 10, grouped = TRUE, include.extrainfo=FALSE, fullsplit=TRUE, verbosity=0) 
+												..., nfolds = 10, grouped = TRUE, include.extrainfo=FALSE, fullsplit=TRUE, keep=FALSE, verbosity=0) 
 {
 	if (missing(type.measure)) 
 		type.measure = "default"
@@ -242,7 +242,7 @@
 	fun = paste("cv", class(glmnet.object)[[1]], sep = ".")
 	if(verbosity > 0) cat("Validation\n")
 	cvstuff = do.call(fun, list(outlist, lambda, valx, valy, valweights, 
-															valoffset, valfoldid, type.measure, grouped))
+															valoffset, valfoldid, type.measure, grouped, keep))
 	if(verbosity > 0) cat("Structuring results\n")
 	cvm = cvstuff$cvm
 	cvsd = cvstuff$cvsd
