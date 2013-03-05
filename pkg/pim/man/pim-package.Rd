@@ -7,7 +7,7 @@
 }
 \details{
   \tabular{ll}{ Package: \tab pim\cr Type: \tab Package\cr
-  Version: \tab 1.1.0.6\cr Date: \tab 2013-02-12\cr
+  Version: \tab 1.1.1.0\cr Date: \tab 2013-03-05\cr
   License: \tab GPL (>= 2)\cr LazyLoad: \tab yes\cr
   Depends: R (>= 2.12), Matrix, glmnet, BB, nleqslv,
   MASS\cr}

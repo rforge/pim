@@ -132,7 +132,7 @@
 	tmpistie<-tmpy==0.5
 	if(any(tmpistie))
 	{
-		warning("Ties found in crossvalidation. Applying weighted design matrix reconstruction.")
+		if(verbosity > 0) warning("Ties found in crossvalidation. Applying weighted design matrix reconstruction.")
 		tmpties<-1+tmpistie
 		tmptiereps<-rep(seq_along(tmpties), tmpties)
 		tmpx<-tmpx[tmptiereps,,drop=FALSE] #repeat the rows with ties twice
@@ -174,7 +174,7 @@
 	valistie<-valy==0.5
 	if(any(valistie))
 	{
-		warning("Ties found in crossvalidation. Applying weighted design matrix reconstruction.")
+		if(verbosity > 5) warning("Ties found in crossvalidation. Applying weighted design matrix reconstruction.")
 		valties<-1+valistie
 		valtiereps<-rep(seq_along(valties), valties)
 		valx<-valx[valtiereps,,drop=FALSE] #repeat the rows with ties twice
@@ -198,7 +198,7 @@
 		istie<-y==0.5
 		if(any(istie))
 		{
-			warning("Ties found in crossvalidation. Applying weighted design matrix reconstruction.")
+			if(verbosity > 5) warning("Ties found in crossvalidation. Applying weighted design matrix reconstruction.")
 			ties<-1+istie
 			tiereps<-rep(seq_along(ties), ties)
 			x<-x[tiereps,,drop=FALSE] #repeat the rows with ties twice
@@ -584,4 +584,16 @@
 		warning(errTxt)
 	}
 	invisible()
+}
+
+.rbind3<-function(x,y,z,...)
+{
+	p1<-rbind2(x,y,...)
+	rv<-rbind2(p1,z)
+	return(rv)
+}
+
+.onLoad<-function(libname, pkgname)
+{
+	packageStartupMessage("Loading pim version 1.1.1.0")
 }

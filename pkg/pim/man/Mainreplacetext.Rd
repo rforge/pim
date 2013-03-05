@@ -9,28 +9,28 @@
 \usage{
   Mainreplacetext(varn, data, verbosity = 0,
     leftsuffix = "_L", rightsuffix = "_R",
-    interpretation = c("regular", "difference", "marginal"))
+    interpretation = c("regular", "difference", "marginal", "symmetric"))
 
   LHSreplacetext(varn, data, verbosity = 0,
     leftsuffix = "_L", rightsuffix = "_R",
-    interpretation = c("regular", "difference", "marginal"),
+    interpretation = c("regular", "difference", "marginal", "symmetric"),
     lhs = c("PO", "<", "<="))
 
   Freplacetext(varn, data, verbosity = 0,
     leftsuffix = "_L", rightsuffix = "_R",
-    interpretation = c("regular", "difference", "marginal"))
+    interpretation = c("regular", "difference", "marginal", "symmetric"))
 
   Oreplacetext(varn, data, verbosity = 0,
     leftsuffix = "_L", rightsuffix = "_R",
-    interpretation = c("regular", "difference", "marginal"))
+    interpretation = c("regular", "difference", "marginal", "symmetric"))
 
   Lreplacetext(varn, data, verbosity = 0,
     leftsuffix = "_L", rightsuffix = "_R",
-    interpretation = c("regular", "difference", "marginal"))
+    interpretation = c("regular", "difference", "marginal", "symmetric"))
 
   Rreplacetext(varn, data, verbosity = 0,
     leftsuffix = "_L", rightsuffix = "_R",
-    interpretation = c("regular", "difference", "marginal"))
+    interpretation = c("regular", "difference", "marginal", "symmetric"))
 }
 \arguments{
   \item{varn}{\code{character} holding the variable
@@ -57,7 +57,11 @@
   the difference of the design matrices of each part of the
   pseudo-observations. The default option is
   \code{"regular"}, which will interpret unaltered columns
-  as differences.}
+  as differences. A new option is \code{"symmetric"}, which
+  works the same as \code{"regular"}, but will enforce the
+  symmetry condition by making the sign switch when
+  changing the order (typically, this is achieved by
+  subtracting the inverse for each dummy).}
 
   \item{lhs}{\code{"PO"}, \code{"<"} or \code{"<="}:
   Unequality used for the lefthandside of the formula. The

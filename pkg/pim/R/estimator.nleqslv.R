@@ -113,10 +113,24 @@ estimator.glmnet<-function(alpha=1, nlambda = 100, lambda=NULL, standardize=TRUE
 		family<-families[[link]]
 		if(family=="unsupported") stop("family is unsupported for estimator.glmnet")
 		
-		if(!pfd$intercept) stop("For now: not supported not to include intercept in glmnet fitting.")
-		itcind<-match("(Intercept)", colnames(pfd$X))
-		if(is.na(itcind)) stop("Something went wrong finding the intercept column in glmnet fitting.")
-		X<-pfd$X[,-itcind, drop=FALSE]
+		itcind<-NA
+		useItc<-FALSE
+		if(pfd$intercept) #stop("For now: not supported not to include intercept in glmnet fitting.")
+		{
+			itcind<-match("(Intercept)", colnames(pfd$X))
+			if(! is.na(itcind)) #stop("Something went wrong finding the intercept column in glmnet fitting.")
+			{
+				X<-pfd$X[,-itcind, drop=FALSE]
+			}
+			else
+			{
+				X<-pfd$X
+			}
+		}
+		else
+		{
+			X<-pfd$X
+		}
 		
 		Y<-pfd$Y
 		#If we find Y-values equal to 0.5 (indicating ties), we handle this by weighted fitting
@@ -136,14 +150,33 @@ estimator.glmnet<-function(alpha=1, nlambda = 100, lambda=NULL, standardize=TRUE
 			wts<-rep(1, length(Y))
 		}
 		
-		thefit<-glmnet(x=X, y=Y, family=family, weights=wts, alpha=alpha, nlambda=nlambda, lambda=lambda, standardize=standardize)
+		thefit<-glmnet(x=X, y=Y, family=family, weights=wts, alpha=alpha, nlambda=nlambda, 
+									 lambda=lambda, standardize=standardize, intercept=pfd$intercept)
 		thefit$usedalpha=alpha
 		thefit$usedfamily=family
 		thefit$usedoffset=NULL
 		thefit$standardize=standardize
-		beta<-rbind2(thefit$a0, thefit$beta)
-		rownames(beta)<-c("(Intercept)", rownames(thefit$beta))
-		return(list(coefficients=beta, morefitinfo=thefit) )
+		bta<-thefit$beta
+		if(pfd$intercept)
+		{
+			if(! is.na(itcind))
+			{
+				if(itcind==1) toppart<-NULL else toppart<-thefit$beta[seq(itcind-1),,drop=FALSE]
+				if(itcind==1) topnames<-NULL else topnames<-rownames(thefit$beta)[seq(itcind-1)]
+				nr<-nrow(thefit$beta)
+				if(itcind==nr) botpart<-NULL else botpart<-thefit$beta[seq(itcind,nr),,drop=FALSE]
+				if(itcind==nr) botnames<-NULL else botnames<-rownames(thefit$beta)[seq(itcind,nr)]
+				bta<-.rbind3(toppart, thefit$a0, botpart)
+				rownames(bta)<-c(topnames, "(Intercept)", botnames)
+			}
+			else
+			{
+				bta<-rbind2(thefit$a0, thefit$beta)
+				rownames(bta)<-c("(Intercept)", rownames(thefit$beta))
+			}
+		}
+		
+		return(list(coefficients=bta, morefitinfo=thefit) )
 	}
 	return(actualfunction)
 }

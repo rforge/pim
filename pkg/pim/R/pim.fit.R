@@ -49,6 +49,49 @@ pim.fit<-function(pfd, link=c("logit", "identity", "probit", "inverse", "1/mu^2"
 	if(inherits(estimationresult, "try-error")) return(estimationresult)
 	
 	cn<-gsub(" ", "", pfd$pimformula$names, fixed=TRUE)
+	#However: handle the special case where intercept has been added to
+	#the set of coefficients:
+	if(is.null(dim(estimationresult$coefficients)))
+	{
+		colnamesafterfit<-names(estimationresult$coefficients)
+	}
+	else
+	{
+		colnamesafterfit<-rownames(estimationresult$coefficients)
+	}
+	numfinalcoefs<-length(colnamesafterfit)
+	if(numfinalcoefs > length(cn))
+	{
+		if(("(Intercept)" %in% colnamesafterfit) && (! ("(Intercept)" %in% cn) ))
+		{
+			if(length(cn) + 1 == length(colnamesafterfit))
+			{
+				if(verbosity > 0)
+				{
+					cat("Intercept was added by the fitting procedure. Will attempt to handle it in the same spot.\n")
+					cat("Names were:\n")
+					print(cn)
+				}
+				ipos<-match("(Intercept)", colnamesafterfit)
+				if(ipos==1) lft<-NULL else lft<-cn[seq(ipos-1)]
+				if(ipos==length(colnamesafterfit)) rght<-NULL else rght<-cn[(ipos):(length(cn))]
+				cn<-c(lft, "(Intercept)", rght)
+				if(verbosity > 0)
+				{
+					cat("Names are now:\n")
+					print(cn)
+				}
+			}
+			else
+			{
+				warning("Intercept and more was added by the fitting procedure. Something probably went wrong there...")
+			}
+		}
+		else
+		{
+			warning("Unexpected columns added by the fitting procedure. Something probably went wrong there...")
+		}
+	}
 	if(nicenames)
 	{
 		if(verbosity > 0)

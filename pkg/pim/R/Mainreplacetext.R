@@ -15,7 +15,10 @@
 #' 	converted to imply marginal pim modeling (see e.g. \code{\link{Mainreplacetext}}). If
 #' 	it is \code{"difference"}, then the design matrix of the PIM is the difference of the
 #' 	design matrices of each part of the pseudo-observations. The default option is
-#' 	\code{"regular"}, which will interpret unaltered columns as differences.
+#' 	\code{"regular"}, which will interpret unaltered columns as differences. A new option
+#' 	is \code{"symmetric"}, which works the same as \code{"regular"}, but will enforce
+#' 	the symmetry condition by making the sign switch when changing the order (typically,
+#' 	this is achieved by subtracting the inverse for each dummy).
 #' @param lhs \code{"PO"}, \code{"<"} or \code{"<="}: Unequality used for the lefthandside of 
 #' 	the formula. The default (\code{"PO"}) is the normal probabilistic index.
 #' @return A vector of at least two \code{character} values. The first one is the "find" text, the 
@@ -59,7 +62,8 @@
 #' Lreplacetext("Sepal.Length", iris, verbosity=1, interpretation="marginal")
 #' Rreplacetext("Sepal.Length", iris, verbosity=1, interpretation="marginal")
 #' @export
-Mainreplacetext<-function(varn, data, verbosity=0, leftsuffix="_L", rightsuffix="_R", interpretation=c("regular", "difference", "marginal"))
+Mainreplacetext<-function(varn, data, verbosity=0, leftsuffix="_L", rightsuffix="_R", 
+													interpretation=c("regular", "difference", "marginal", "symmetric"))
 {
 	interpretation<-match.arg(interpretation)
 	regexvar<-varn
@@ -87,7 +91,7 @@ Mainreplacetext<-function(varn, data, verbosity=0, leftsuffix="_L", rightsuffix=
 		}
 		else
 		{
-			lvls<-levels(data[,varn])[-1] #Here, we skip the first level as being the reference
+			lvls<-levels(data[,varn])[-1] #Here, we skip the first level as being the reference #Is this right??
 			parts<-paste("I(as.numeric(", varn, rightsuffix, "==\"", as.character(lvls), "\") - as.numeric(", varn, leftsuffix, "==\"", as.character(lvls), "\"))", sep="")
 			reppart<-paste("(", paste(parts, collapse="+"), ")", sep="")
 			nicename<-paste(varn, rightsuffix, "-", leftsuffix, sep="")
@@ -102,7 +106,8 @@ Mainreplacetext<-function(varn, data, verbosity=0, leftsuffix="_L", rightsuffix=
 #' @rdname Mainreplacetext
 #' 
 #' @export
-LHSreplacetext<-function(varn, data, verbosity=0, leftsuffix="_L", rightsuffix="_R", interpretation=c("regular", "difference", "marginal"), lhs=c("PO", "<", "<="))
+LHSreplacetext<-function(varn, data, verbosity=0, leftsuffix="_L", rightsuffix="_R", 
+												 interpretation=c("regular", "difference", "marginal", "symmetric"), lhs=c("PO", "<", "<="))
 {
 	interpretation<-match.arg(interpretation)
 	lhs<-match.arg(lhs)
@@ -126,7 +131,8 @@ LHSreplacetext<-function(varn, data, verbosity=0, leftsuffix="_L", rightsuffix="
 #' @rdname Mainreplacetext
 #' 
 #' @export
-Freplacetext<-function(varn, data, verbosity=0, leftsuffix="_L", rightsuffix="_R", interpretation=c("regular", "difference", "marginal"))
+Freplacetext<-function(varn, data, verbosity=0, leftsuffix="_L", rightsuffix="_R", 
+											 interpretation=c("regular", "difference", "marginal", "symmetric"))
 {
 	interpretation<-match.arg(interpretation)
 	lvls<-levels(data[[varn]])
@@ -144,6 +150,15 @@ Freplacetext<-function(varn, data, verbosity=0, leftsuffix="_L", rightsuffix="_R
 		nicename<-paste(varn, rightsuffix, sep="")
 		nicename<-paste(nicename,"_", as.character(lvls), sep="")
 	}
+	else if(interpretation=="symmetric")
+	{
+		uselvls<-combn(lvls, 2)
+		parts<-paste("I((as.numeric(", varn, leftsuffix, "==\"", uselvls[1,], "\"&",varn, rightsuffix, "==\"", uselvls[2,], 
+								 "\"))+(as.numeric(", varn, rightsuffix, "==\"", uselvls[1,], "\"&",varn, leftsuffix, "==\"", uselvls[2,], "\")))", sep="")
+		reppart<-paste("(", paste(parts, collapse="+"), ")", sep="")
+		nicename<-paste(varn,leftsuffix, rightsuffix, sep="")
+		nicename<-paste(nicename,"_", uselvls[1,], ",", uselvls[2,], "-", uselvls[2,], ",", uselvls[1,], sep="")
+	}
 	else
 	{
 		uselvls<-combn(lvls, 2)
@@ -159,7 +174,8 @@ Freplacetext<-function(varn, data, verbosity=0, leftsuffix="_L", rightsuffix="_R
 #' @rdname Mainreplacetext
 #' 
 #' @export
-Oreplacetext<-function(varn, data, verbosity=0, leftsuffix="_L", rightsuffix="_R", interpretation=c("regular", "difference", "marginal"))
+Oreplacetext<-function(varn, data, verbosity=0, leftsuffix="_L", rightsuffix="_R", 
+											 interpretation=c("regular", "difference", "marginal", "symmetric"))
 {
 	interpretation<-match.arg(interpretation)
 	if(interpretation=="marginal")
@@ -171,8 +187,17 @@ Oreplacetext<-function(varn, data, verbosity=0, leftsuffix="_L", rightsuffix="_R
 		if(verbosity>0) cat("Should not apply O to non-ordered variable", varn, "\n")
 	}
 	
-	reppart<-paste("I(as.numeric(as.numeric(", varn, leftsuffix, ")<as.numeric(", varn, rightsuffix, ")))", sep="")
-	nicename<-paste(varn, leftsuffix,"<",rightsuffix, sep="")
+	if(interpretation=="marginal")
+	{
+		reppart<-paste("I((as.numeric(as.numeric(", varn, leftsuffix, ")<as.numeric(", varn, rightsuffix, 
+									 ")))-(as.numeric(as.numeric(", varn, rightsuffix, ")<as.numeric(", varn, leftsuffix, "))))", sep="")
+		nicename<-paste(varn, leftsuffix,"<",rightsuffix,"-", rightsuffix,"<",leftsuffix, sep="")
+	}
+	else
+	{
+		reppart<-paste("I(as.numeric(as.numeric(", varn, leftsuffix, ")<as.numeric(", varn, rightsuffix, ")))", sep="")
+		nicename<-paste(varn, leftsuffix,"<",rightsuffix, sep="")
+	}
 	
 	return(c(paste("O(", varn, ")", sep=""), reppart, reppart, nicename))
 }
@@ -180,7 +205,8 @@ Oreplacetext<-function(varn, data, verbosity=0, leftsuffix="_L", rightsuffix="_R
 #' @rdname Mainreplacetext
 #' 
 #' @export
-Lreplacetext<-function(varn, data, verbosity=0, leftsuffix="_L", rightsuffix="_R", interpretation=c("regular", "difference", "marginal"))
+Lreplacetext<-function(varn, data, verbosity=0, leftsuffix="_L", rightsuffix="_R", 
+											 interpretation=c("regular", "difference", "marginal", "symmetric"))
 {
 	interpretation<-match.arg(interpretation)
 	if(interpretation=="marginal")
@@ -202,7 +228,8 @@ Lreplacetext<-function(varn, data, verbosity=0, leftsuffix="_L", rightsuffix="_R
 #' @rdname Mainreplacetext
 #' 
 #' @export
-Rreplacetext<-function(varn, data, verbosity=0, leftsuffix="_L", rightsuffix="_R", interpretation=c("regular", "difference", "marginal"))
+Rreplacetext<-function(varn, data, verbosity=0, leftsuffix="_L", rightsuffix="_R", 
+											 interpretation=c("regular", "difference", "marginal", "symmetric"))
 {
 	interpretation<-match.arg(interpretation)
 	reppart<-paste(varn, rightsuffix, sep="")

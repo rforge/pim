@@ -9,7 +9,7 @@
     link = c("logit", "identity", "probit", "inverse", "1/mu^2", "log"),
     blocking.variables = character(), poset = fullposet,
     leftsuffix = "_L", rightsuffix = "_R",
-    interpretation = c("difference", "regular", "marginal"),
+    interpretation = c("difference", "regular", "marginal", "symmetric"),
     na.action = na.fail, estimator = estimator.nleqslv(),
     varianceestimator = varianceestimator.sandwich(),
     lhs = c("PO", "<", "<="), keep.data = FALSE,
@@ -46,9 +46,13 @@
   e.g. \code{\link{Mainreplacetext}}). If it is
   \code{"difference"} (the default), then the design matrix
   of the PIM is the difference of the design matrices of
-  each part of the pseudo-observations. The last option is
+  each part of the pseudo-observations. A popular option is
   \code{"regular"}, which will interpret unaltered columns
-  as differences.}
+  as differences. A new option is \code{"symmetric"}, which
+  works the same as \code{"regular"}, but will enforce the
+  symmetry condition by making the sign switch when
+  changing the order (typically, this is achieved by
+  subtracting the inverse for each dummy).}
 
   \item{na.action}{Defaults to \code{\link{na.fail}}:
   handles missing data in \code{data}.}

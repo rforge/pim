@@ -6,11 +6,14 @@
 #' 
 #' @param formula Original formula
 #' @param data Context where the formula \code{formula} is to be interpreted
-#' @param interpretation If \code{"marginal"} parts of the formula are converted to imply
-#' 	 marginal pim modeling (see e.g. \code{\link{Mainreplacetext}}). If it is \code{"difference"}
-#' 	 (the default), then the design matrix of the PIM is the difference of the
-#' 	design matrices of each part of the pseudo-observations. The last option is
-#' 	\code{"regular"}, which will interpret unaltered columns as differences.
+#' @param interpretation If \code{"marginal"} (not the default) parts of the formula are 
+#' 	converted to imply marginal pim modeling (see e.g. \code{\link{Mainreplacetext}}). If
+#' 	it is \code{"difference"}, then the design matrix of the PIM is the difference of the
+#' 	design matrices of each part of the pseudo-observations. The default option is
+#' 	\code{"regular"}, which will interpret unaltered columns as differences. A new option
+#' 	is \code{"symmetric"}, which works the same as \code{"regular"}, but will enforce
+#' 	the symmetry condition by making the sign switch when changing the order (typically,
+#' 	this is achieved by subtracting the inverse for each dummy).
 #' @param verbosity The higher this value, the more levels of progress and debug 
 #' information is displayed (note: in R for Windows, turn off buffered output)
 #' @param leftsuffix,rightsuffix Suffixes that will be added to the 'left' and 'right'
@@ -68,7 +71,8 @@
 #' pimformula(out~O(xord), data=iris, interpretation="regular")
 #' pimformula(out~F(Species), data=iris, interpretation="regular")
 #' @export
-pimformula<-function(formula, data, interpretation=c("difference", "regular", "marginal"), verbosity=0, leftsuffix="_L", rightsuffix="_R", extra.variables=character(), lhs=c("PO", "<", "<="),
+pimformula<-function(formula, data, interpretation=c("difference", "regular", "marginal", "symmetric"), verbosity=0, 
+										 leftsuffix="_L", rightsuffix="_R", extra.variables=character(), lhs=c("PO", "<", "<="),
 										 rhsreplacers=list(F=Freplacetext, O=Oreplacetext, L=Lreplacetext, R=Rreplacetext), lhsreplacer=LHSreplacetext, 
 										 interactions.difference=(interpretation!="marginal"), extra.nicenames=data.frame(org=character(), nice=character(), stringsAsFactors=FALSE))
 {
@@ -247,8 +251,8 @@ pimformula<-function(formula, data, interpretation=c("difference", "regular", "m
 #' pim.fit.prep(out~F(Species), data=iris, interpretation="regular")
 #' @export
 pim.fit.prep<-function(formula, data, blocking.variables=character(), poset=t(combn(nrow(data),2)), leftsuffix="_L", rightsuffix="_R", 
-											 interpretation=c("difference", "regular", "marginal"), na.action=na.fail, lhs=c("PO", "<", "<="), verbosity=0,  
-											 nicenames=TRUE, interactions.difference=(interpretation!="marginal"), 
+											 interpretation=c("difference", "regular", "marginal", "symmetric"), na.action=na.fail, lhs=c("PO", "<", "<="), 
+											 verbosity=0,  nicenames=TRUE, interactions.difference=(interpretation!="marginal"), 
 											 extra.nicenames=data.frame(org=character(), nice=character(), stringsAsFactors=FALSE))
 {
 	interpretation<-match.arg(interpretation)
