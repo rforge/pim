@@ -2,6 +2,7 @@
 \alias{estimator.BB}
 \alias{estimator.glm}
 \alias{estimator.glmnet}
+\alias{estimator.lqa}
 \alias{estimator.nleqslv}
 \alias{estimator.trymultiple}
 \alias{scorefunctioncreator.default}
@@ -18,7 +19,7 @@
   estimator.glm(control = list())
 
   estimator.glmnet(alpha = 1, nlambda = 100, lambda = NULL,
-    standardize = TRUE)
+    standardize = TRUE, penalize.intercepts = FALSE)
 
   estimator.BB(method = c(2, 3, 1), control = list(),
     quiet = FALSE,
@@ -28,15 +29,20 @@
   estimator.trymultiple(scoreFunctionCreator = scorefunctioncreator.default)
 
   scorefunctioncreator.default(Z, Y, link)
+
+  estimator.lqa(control = lqa.control(), penalty = NULL,
+    method = "lqa.update2", standardize = TRUE,
+    penalize.intercepts = FALSE)
 }
 \arguments{
   \item{jac,global,xscalm}{See \code{\link{nleqslv}}.}
 
   \item{method}{See \code{\link{nleqslv}} /
-  \code{\link{BBsolve}}.}
+  \code{\link{BBsolve}} / \code{\link{lqa}}.}
 
   \item{control}{See \code{\link{nleqslv}} /
-  \code{\link{BBsolve}} / \code{\link{glm.fit}}.}
+  \code{\link{BBsolve}} / \code{\link{glm.fit}} /
+  \code{\link{lqa}}.}
 
   \item{scoreFunctionCreator}{Function that will create the
   score vector function. This defaults to
@@ -58,6 +64,9 @@
   \item{alpha,nlambda,lambda,standardize}{See
   \code{\link{glmnet}}.}
 
+  \item{penalize.intercepts}{If an intercept is present in
+  the model, penalize it or not.}
+
   \item{quiet}{See \code{\link{BBsolve}}.}
 
   \item{Z}{Pseudo-observation design matrix}
@@ -65,6 +74,8 @@
   \item{Y}{Pseudo-observations.}
 
   \item{link}{Name of the link function.}
+
+  \item{penalty}{Any \code{\link{lqa}}-supported penalty.}
 }
 \value{
   These functions (\code{estimator.*}) each return a

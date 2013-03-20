@@ -595,5 +595,88 @@
 
 .onLoad<-function(libname, pkgname)
 {
-	packageStartupMessage("Loading pim version 1.1.1.0")
+	packageStartupMessage("Loading pim version 1.1.1.1")
+}
+
+.handleSpecialData<-function(intercept.handling=FALSE, yties.handling=TRUE,  pfd)
+{
+	X<-pfd$X
+	Y<-pfd$Y
+	
+	itcind<-NA
+	if(intercept.handling)
+	{
+		if(pfd$intercept)
+		{
+			itcind<-match("(Intercept)", colnames(pfd$X))
+			if(! is.na(itcind)) #stop("Something went wrong finding the intercept column in .handleSpecialData.")
+			{
+				X<-pfd$X[,-itcind, drop=FALSE]
+			}
+		}
+	}
+	
+	wts<-rep(1, length(Y))
+	if(yties.handling)
+	{
+		#If we find Y-values equal to 0.5 (indicating ties), we handle this by weighted fitting
+		istie<-Y==0.5
+		if(any(istie))
+		{
+			warning("Ties found in glmnet estimation. Applying weighted design matrix reconstruction.")
+			ties<-1+istie
+			tiereps<-rep(seq_along(ties), ties)
+			X<-X[tiereps,] #repeat the rows with ties twice
+			wts<-1/ties[tiereps] #weight those doubled observations by a half
+			multiplyby<-do.call(c,lapply(istie, function(curtie){if(!curtie) 1 else c(0,2)}))
+			Y<-Y[tiereps] * multiplyby
+		}
+	}
+	
+	list(X=X, Y=Y, itcind=itcind, wts=wts)
+}
+
+.restoreIntercept<-function(beta, itc, itcind)
+{
+	if(! is.na(itcind))
+	{
+		if(itcind==1) toppart<-NULL else toppart<-beta[seq(itcind-1),,drop=FALSE]
+		if(itcind==1) topnames<-NULL else topnames<-rownames(beta)[seq(itcind-1)]
+		nr<-nrow(beta)
+		if(itcind==nr) botpart<-NULL else botpart<-beta[seq(itcind,nr),,drop=FALSE]
+		if(itcind==nr) botnames<-NULL else botnames<-rownames(beta)[seq(itcind,nr)]
+		bta<-.rbind3(toppart, itc, botpart)
+		rownames(bta)<-c(topnames, "(Intercept)", botnames)
+	}
+	#we no longer allow this column to be inadvertently added.
+# 	else if(! is.null(itc))
+# 	{
+# 		bta<-rbind2(itc, beta)
+# 		rownames(bta)<-c("(Intercept)", rownames(beta))
+# 	}
+	else
+	{
+		bta<-beta
+	}
+	return(bta)
+}
+
+.glmfamily<-function(link, envir = parent.frame(n=2))
+{
+	#Tricks to map link functions back to acceptable families...
+	if(is.character(link))
+	{
+		families<-list(identity="gaussian", logit=binomial(link = "logit"), probit=binomial(link = "probit"), inverse="Gamma", `1/mu^2`="inverse.gaussian", log="poisson")
+		family<-families[[link]]
+		if(is.character(family))
+		{
+			family <- get(family, mode = "function", envir = envir)
+		}
+		if (is.function(family)) family <- family()
+	}
+	if (is.null(family$family)) {
+		print(family)
+		stop("'family' not recognized")
+	}
+	return(family)
 }

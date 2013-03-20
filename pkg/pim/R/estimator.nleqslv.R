@@ -2,11 +2,12 @@
 #' 
 #' Estimators for the PIM parameters
 #' 
-#' @aliases estimator.nleqslv estimator.glm estimator.glmnet estimator.BB scorefunctioncreator.default
+#' @aliases estimator.nleqslv estimator.glm estimator.glmnet estimator.BB scorefunctioncreator.default estimator.lqa
 #' 
 #' @param jac,global,xscalm See \code{\link{nleqslv}}.
-#' @param method See \code{\link{nleqslv}} / \code{\link{BBsolve}}.
-#' @param control See \code{\link{nleqslv}} / \code{\link{BBsolve}} / \code{\link{glm.fit}}.
+#' @param method See \code{\link{nleqslv}} / \code{\link{BBsolve}} / \code{\link{lqa}}.
+#' @param control See \code{\link{nleqslv}} / \code{\link{BBsolve}} / \code{\link{glm.fit}} 
+#' 	/ \code{\link{lqa}}.
 #' @param scoreFunctionCreator Function that will create the score vector function. This
 #' 	defaults to \code{scorefunctioncreator.default} and should be of the same form (and 
 #' 	return a function of the same form as \code{scorefunctioncreator.default}).
@@ -80,17 +81,12 @@ estimator.glm<-function(control=list())
 	force(control) #so that it will be available in the function we return
 	actualfunction<-function(startvalues=NULL, pfd, link)
 	{
-		#Trick to map link functions back to acceptable families...
-		families<-list(identity="gaussian", logit="binomial", probit="binomial", inverse="Gamma", `1/mu^2`="inverse.gaussian", log="poisson")
-		family<-families[[link]]
-		family <- get(family, mode = "function", envir = parent.frame())
-		if (is.function(family)) family <- family()
-		if (is.null(family$family)) {
-			print(family)
-			stop("'family' not recognized")
-		}
+		family<-.glmfamily(link)
 		
-		thefit<-glm.fit(x=pfd$X, y=pfd$Y, start=startvalues, family=family, control=control, intercept=pfd$intercept)
+		dta<-.handleSpecialData(intercept.handling=FALSE, yties.handling=TRUE,  pfd=pfd)
+		
+		thefit<-glm.fit(x=dta$X, y=dta$Y, start=startvalues, family=family, weights=dta$wts,
+										control=control, intercept=pfd$intercept)
 		fit.x<-thefit$coefficients
 		return(list(coefficients=fit.x, morefitinfo=thefit) )
 	}
@@ -99,13 +95,15 @@ estimator.glm<-function(control=list())
 #' @rdname estimator.nleqslv
 #' 
 #' @param alpha,nlambda,lambda,standardize See \code{\link{glmnet}}.
+#' @param penalize.intercepts If an intercept is present in the model, penalize it or not.
 #' @export
-estimator.glmnet<-function(alpha=1, nlambda = 100, lambda=NULL, standardize=TRUE)
+estimator.glmnet<-function(alpha=1, nlambda = 100, lambda=NULL, standardize=TRUE, penalize.intercepts=FALSE)
 {
 	force(alpha)
 	force(nlambda)
 	force(lambda)
 	force(standardize)
+	force(penalize.intercepts)
 	actualfunction<-function(startvalues=NULL, pfd, link)
 	{
 		#Trick to map link functions back to acceptable families...
@@ -113,68 +111,21 @@ estimator.glmnet<-function(alpha=1, nlambda = 100, lambda=NULL, standardize=TRUE
 		family<-families[[link]]
 		if(family=="unsupported") stop("family is unsupported for estimator.glmnet")
 		
-		itcind<-NA
-		useItc<-FALSE
-		if(pfd$intercept) #stop("For now: not supported not to include intercept in glmnet fitting.")
-		{
-			itcind<-match("(Intercept)", colnames(pfd$X))
-			if(! is.na(itcind)) #stop("Something went wrong finding the intercept column in glmnet fitting.")
-			{
-				X<-pfd$X[,-itcind, drop=FALSE]
-			}
-			else
-			{
-				X<-pfd$X
-			}
-		}
-		else
-		{
-			X<-pfd$X
-		}
+		#note: we will only ever include an unpenalized intercept in the model if
+		#such a column was present in the design matrix, this was confirmed by
+		#pfd$intercept _AND_ penalize.intercepts was FALSE.
+		#This is perfectly equivalent to having dta$itcind be NA or not.
+		dta<-.handleSpecialData(intercept.handling=!penalize.intercepts, yties.handling=TRUE,  pfd=pfd)
+		unpenalized.intercept=is.na(dta$itcind)
 		
-		Y<-pfd$Y
-		#If we find Y-values equal to 0.5 (indicating ties), we handle this by weighted fitting
-		istie<-Y==0.5
-		if(any(istie))
-		{
-			warning("Ties found in glmnet estimation. Applying weighted design matrix reconstruction.")
-			ties<-1+istie
-			tiereps<-rep(seq_along(ties), ties)
-			X<-X[tiereps,] #repeat the rows with ties twice
-			wts<-1/ties[tiereps] #weight those doubled observations by a half
-			multiplyby<-do.call(c,lapply(istie, function(curtie){if(!curtie) 1 else c(0,2)}))
-			Y<-Y[tiereps] * multiplyby
-		}
-		else
-		{
-			wts<-rep(1, length(Y))
-		}
-		
-		thefit<-glmnet(x=X, y=Y, family=family, weights=wts, alpha=alpha, nlambda=nlambda, 
-									 lambda=lambda, standardize=standardize, intercept=pfd$intercept)
+		thefit<-glmnet(x=dta$X, y=dta$Y, family=family, weights=dta$wts, alpha=alpha, nlambda=nlambda, 
+									 lambda=lambda, standardize=standardize, intercept=unpenalized.intercept)
 		thefit$usedalpha=alpha
 		thefit$usedfamily=family
 		thefit$usedoffset=NULL
 		thefit$standardize=standardize
-		bta<-thefit$beta
-		if(pfd$intercept)
-		{
-			if(! is.na(itcind))
-			{
-				if(itcind==1) toppart<-NULL else toppart<-thefit$beta[seq(itcind-1),,drop=FALSE]
-				if(itcind==1) topnames<-NULL else topnames<-rownames(thefit$beta)[seq(itcind-1)]
-				nr<-nrow(thefit$beta)
-				if(itcind==nr) botpart<-NULL else botpart<-thefit$beta[seq(itcind,nr),,drop=FALSE]
-				if(itcind==nr) botnames<-NULL else botnames<-rownames(thefit$beta)[seq(itcind,nr)]
-				bta<-.rbind3(toppart, thefit$a0, botpart)
-				rownames(bta)<-c(topnames, "(Intercept)", botnames)
-			}
-			else
-			{
-				bta<-rbind2(thefit$a0, thefit$beta)
-				rownames(bta)<-c("(Intercept)", rownames(thefit$beta))
-			}
-		}
+		
+		bta<-.restoreIntercept(beta=thefit$beta, itc=thefit$a0, itcind=dta$itcind)
 		
 		return(list(coefficients=bta, morefitinfo=thefit) )
 	}
@@ -263,26 +214,12 @@ scorefunctioncreator.default<-function(Z,Y,link)
 {
 	if (link == "probit") {
 		U.func <- function(beta) {
-# 			if(all(beta==0))
-# 			{
-# 				cat("First try:\nZ=\n")
-# 				print(Z)
-# 				cat("Y=\n")
-# 				print(Y)
-# 			}
 			Zbeta <- c(Z %*% beta)
 			colSums(Z * dnorm(Zbeta) * c(Y - pnorm(Zbeta))/c(pnorm(Zbeta) * (1 - pnorm(Zbeta))))
 		}
 	}
 	else if (link == "logit"){
 		U.func <- function(beta) {
-# 			if(all(beta==0))
-# 			{
-# 				cat("First try:\nZ=\n")
-# 				print(Z)
-# 				cat("Y=\n")
-# 				print(Y)
-# 			}
 			Zbeta <- c(Z %*% beta)
 			colSums(Z * c(Y - plogis(Zbeta)))
 		}
@@ -290,13 +227,6 @@ scorefunctioncreator.default<-function(Z,Y,link)
 	else if (link == "identity") #have to check this, but it should be right
 	{
 		U.func <- function(beta) {
-# 			if(all(beta==0))
-# 			{
-# 				cat("First try:\nZ=\n")
-# 				print(Z)
-# 				cat("Y=\n")
-# 				print(Y)
-# 			}
 			Zbeta <- as.vector(c(Z %*% beta))
 			colSums(Z * c(Y - Zbeta))
 		}
@@ -306,4 +236,34 @@ scorefunctioncreator.default<-function(Z,Y,link)
 		stop(paste("Unsupported link function for scorefunctioncreator.default:"), link)
 	}
 	return(U.func)
+}
+
+#' @rdname estimator.nleqslv
+#' 
+#' @param penalty Any \code{\link{lqa}}-supported penalty.
+#' @export
+estimator.lqa<-function(control=lqa.control(), penalty = NULL, method = "lqa.update2", standardize = TRUE, penalize.intercepts=FALSE)
+{
+	force(control) #so that it will be available in the function we return
+	force(penalty) #so that it will be available in the function we return
+	force(method) #so that it will be available in the function we return
+	force(standardize) #so that it will be available in the function we return
+	force(penalize.intercepts) #so that it will be available in the function we return
+	actualfunction<-function(startvalues=NULL, pfd, link)
+	{
+		family<-.glmfamily(link=link)
+		
+		dta<-.handleSpecialData(intercept.handling=!penalize.intercepts, yties.handling=TRUE,  pfd=pfd)
+		unpenalized.intercept=is.na(dta$itcind)
+
+		thefit<-lqa(x=dta$X, y=dta$Y, start=startvalues, family=family, control=control, intercept=unpenalized.intercept,
+								penalty = penalty, method = method, standardize = standardize, weights=dta$wts)
+		
+		thefit$standardize=standardize
+		
+		#bta<-.restoreIntercept(beta=thefit$beta, itc=thefit$a0, itcind=dta$itcind)
+		bta<-thefit$coef #note: if intercept was needed, it will already be in here
+		
+		return(list(coefficients=bta, morefitinfo=thefit) )
+	}
 }
