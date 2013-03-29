@@ -45,7 +45,23 @@
 	return(poset)
 }
 
-.LRData<-function(data, poset, left.variables, right.variables)
+.stdrownames<-function(rn, poset)
+{
+	paste(rn[poset[,1]], rn[poset[,2]], sep="_")
+}
+
+.symrownames<-function(rn, poset)
+{
+	#should only be used for poset from .symposet
+	retval<-paste(rn[poset[,1]], rn[poset[,2]], sep="_")
+	N<-length(retval)
+	n<-(sqrt(1+4*N)-1)/2
+	changerows<-N+1 - seq(n)
+	retval[changerows]<-paste(retval[changerows], "_rev", sep="")
+	return(retval)
+}
+
+.LRData<-function(data, poset, left.variables, right.variables, makenames=.stdrownames)
 {
 	rn<-rownames(data)
 	
@@ -55,7 +71,9 @@
 	colnames(rpart)<-right.variables$fixed
 	
 	mainPart<-(cbind(lpart, rpart))
-	rownames(mainPart)<-paste(rn[poset[,1]], rn[poset[,2]], sep="_")
+	nms<-makenames(rn, poset) #paste(rn[poset[,1]], rn[poset[,2]], sep="_")
+	
+	rownames(mainPart)<-nms
 	return(mainPart)
 }
 
@@ -595,7 +613,7 @@
 
 .onLoad<-function(libname, pkgname)
 {
-	packageStartupMessage("Loading pim version 1.1.1.1")
+	packageStartupMessage("Loading pim version 1.1.2.1")
 }
 
 .handleSpecialData<-function(intercept.handling=FALSE, yties.handling=TRUE,  pfd)
@@ -679,4 +697,93 @@
 		stop("'family' not recognized")
 	}
 	return(family)
+}
+
+.fulfillreqs<-function(object)
+{
+	reqs<-attr(object, "reqs", exact=TRUE)
+	for(req in reqs) require(req, character.only=TRUE)
+	invisible()
+}
+
+#see pimsym
+.symposet<-function(data, formula, verbosity=0)
+{
+	n<-nrow(data)
+	org<-seq(n)
+	
+	poset<-t(combn(nrow(data),2))
+	selfs<-cbind(org, org)
+	poset<-rbind(poset, selfs, poset[,c(2,1)], selfs)
+	
+	return(list(data=data, poset=poset))
+}
+
+.quickpimdata<-function(pimform, data, poset, na.action=na.fail, nicenames=TRUE, verbosity=0, makenames=.stdrownames)
+{
+	newstartdfr<-.LRData(data, poset, pimform$left.variables, pimform$right.variables, makenames=makenames)
+	
+	if(verbosity > 5)
+	{
+		cat("Before applying full model.matrix.\nStarting dataframe looks like:\n")
+		str(newstartdfr)
+		cat("and the converted formula looks like:\n")
+		print(pimform$newformula)
+	}
+
+	#nicked this from glm
+	mf<-model.frame(pimform$newformula, data=newstartdfr, na.action=na.action)
+	mt <- attr(mf, "terms")
+	intercept<-attr(mt, "intercept") > 0L
+	Y <- model.response(mf, "any")
+	if (length(dim(Y)) == 1L) {
+		nm <- rownames(Y)
+		dim(Y) <- NULL
+		if (!is.null(nm)) names(Y) <- nm
+	}
+	X <- if (!is.empty.model(mt)) model.matrix(mt, mf) else matrix(, NROW(Y), 0L) #note in the original code contrasts are passed in here!!
+	
+	#Finally, let's try and use the nicer names:
+	orgcn<-colnames(X)
+	if(nicenames)
+	{
+		cn<-gsub(" ", "", orgcn, fixed=TRUE)
+		if(verbosity > 4)
+		{
+			cat("Will replace to nicer names in column names:", cn, "\n")
+			cat("\tReplace:", pimform$full.colnames, "\n")
+			cat("\tWith:", pimform$nice.colnames, "\n")
+		}
+		for(i in seq_along(pimform$full.colnames)){
+			cn<-gsub(pimform$full.colnames[i], pimform$nice.colnames[i], cn, fixed=TRUE)
+		}
+		colnames(X)<-cn
+		pimform$names<-cn
+	}
+	
+	retval<-list(Y=Y, X=X, poset=poset, intercept=intercept, pimformula=pimform, original.colnames=orgcn)
+	class(retval)<-"pimfitdata"
+	
+	return(retval)
+}
+
+.quicksimcheck<-function(X, link, threshold=1e-6)
+{
+	#Makes the assumptions mentioned in pimsym! Repeated here for your enjoyment
+	#Note: I rely on the specific order implied by .symposet in what follows!
+	#That is: if there are 2N rows in it, then row i and N + i are each other's "inverse"
+	#Note: this will still be the case after applying blocks!
+	#Note: the "self"-pseudo-observations occur twice in this poset, because they
+	#represent their own "inverse"
+	randcoefs<-runif(ncol(X))-0.5
+	
+	lins<-X %*% randcoefs
+	ilf<-.invlinkfunction(link)
+	mns<-ilf(lins)
+	
+	n<-length(mns)/2 #first half of pseudo-observations
+	
+	ress<-abs(mns[seq(n)] + mns[n+seq(n)]-1)
+	
+	return(all(ress <= threshold))
 }

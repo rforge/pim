@@ -5,14 +5,14 @@
 #' @aliases estimator.nleqslv estimator.glm estimator.glmnet estimator.BB scorefunctioncreator.default estimator.lqa
 #' 
 #' @param jac,global,xscalm See \code{\link{nleqslv}}.
-#' @param method See \code{\link{nleqslv}} / \code{\link{BBsolve}} / \code{\link{lqa}}.
-#' @param control See \code{\link{nleqslv}} / \code{\link{BBsolve}} / \code{\link{glm.fit}} 
-#' 	/ \code{\link{lqa}}.
+#' @param method See \code{\link{nleqslv}} / \code{BBsolve} / \code{lqa}.
+#' @param control See \code{\link{nleqslv}} / \code{BBsolve} / \code{\link{glm.fit}} 
+#' 	/ \code{lqa}.
 #' @param scoreFunctionCreator Function that will create the score vector function. This
 #' 	defaults to \code{scorefunctioncreator.default} and should be of the same form (and 
 #' 	return a function of the same form as \code{scorefunctioncreator.default}).
 #' @param treat.convergence.error Defaults to \code{"warn"}, so a warning will be issued with 
-#' 	the errorcode of the \code{\link{nleqslv}} or \code{\link{BBsolve}} call. \code{"error"} 
+#' 	the errorcode of the \code{\link{nleqslv}} or \code{BBsolve} call. \code{"error"} 
 #' 	will generate an error on convergence issues. \code{"log"} will simply note the occurence
 #' 	in the output window and \code{"ignore"} will do just that. In most situations you can 
 #' 	avoid the convergence issues by properly specifying the nleqslv parameters. This can be 
@@ -30,16 +30,16 @@
 #' 	\code{estimator.glm} returns the regular \code{\link{glm}} estimate (assuming the pseudo-
 #' 	observations are independent)
 #' 	
-#' 	\code{estimator.glmnet} returns the elsatic net penalized \code{\link{glmnet}} estimate 
+#' 	\code{estimator.glmnet} returns the elsatic net penalized \code{glmnet} estimate 
 #' 	(assuming, again, the pseudo-observations are independent)
 #' 	
 #' 	For the different implementations, \code{morefitinfo} contains:
 #' 	\enumerate{
 #' \item \code{estimator.nleqslv} The return value of the \code{\link{nleqslv}} call
 #' \item \code{estimator.glm} The return value of the \code{\link{glm}} call
-#' \item{estimator.glmnet} The return value of the \code{\link{glmnet}} call, with some added 
+#' \item{estimator.glmnet} The return value of the \code{glmnet} call, with some added 
 #' 	items: \code{usedalpha}, \code{usedfamily},\code{usedoffset} and \code{standardize} 
-#' \item \code{estimator.BB} The return value of the \code{\link{BBsolve}} call 
+#' \item \code{estimator.BB} The return value of the \code{BBsolve} call 
 #' }
 #' @note For \code{estimator.glmnet}, \code{coefficients} contains a sparse \code{\link{matrix}} 
 #' 	holding the coefficient estimates and intercept (!) for all lambda values.
@@ -70,9 +70,10 @@ estimator.nleqslv<-function(jac = NULL, method = c("Broyden", "Newton"),
 		}
 		return(list(coefficients=fit.x, morefitinfo=thefit) )
 	}
+	attr(rv, "reqs")<-"nleqslv"
 	return(rv)
 }
-
+attr(estimator.nleqslv, "reqs")<-"nleqslv"
 #' @rdname estimator.nleqslv
 #' 
 #' @export
@@ -94,7 +95,7 @@ estimator.glm<-function(control=list())
 
 #' @rdname estimator.nleqslv
 #' 
-#' @param alpha,nlambda,lambda,standardize See \code{\link{glmnet}}.
+#' @param alpha,nlambda,lambda,standardize See \code{glmnet}.
 #' @param penalize.intercepts If an intercept is present in the model, penalize it or not.
 #' @export
 estimator.glmnet<-function(alpha=1, nlambda = 100, lambda=NULL, standardize=TRUE, penalize.intercepts=FALSE)
@@ -129,12 +130,14 @@ estimator.glmnet<-function(alpha=1, nlambda = 100, lambda=NULL, standardize=TRUE
 		
 		return(list(coefficients=bta, morefitinfo=thefit) )
 	}
+	attr(actualfunction, "reqs")<-"glmnet"
 	return(actualfunction)
 }
+attr(estimator.glmnet, "reqs")<-"glmnet"
 
 #' @rdname estimator.nleqslv
 #' 
-#' @param quiet See \code{\link{BBsolve}}.
+#' @param quiet See \code{BBsolve}.
 #' @export
 estimator.BB<-function(method=c(2,3,1), control=list(), quiet=FALSE,
 											 scoreFunctionCreator=scorefunctioncreator.default,
@@ -157,8 +160,10 @@ estimator.BB<-function(method=c(2,3,1), control=list(), quiet=FALSE,
 		}
 		return(list(coefficients=fit.x, morefitinfo=thefit) )
 	}
+	attr(rv, "reqs")<-"BB"
 	return(rv)
 }
+attr(estimator.BB, "reqs")<-"BB"
 
 #' @rdname estimator.nleqslv
 #' 
@@ -199,8 +204,10 @@ estimator.trymultiple<-function(scoreFunctionCreator=scorefunctioncreator.defaul
 		}
 		stop("None of the attempts resulted in proper estimation. Error messages were:\n\n", paste(errs, sep="\n*\n"))
 	}
+	attr(rv, "reqs")<-c("nleqslv", "BB")
 	return(rv)
 }
+attr(estimator.trymultiple, "reqs")<-c("nleqslv", "BB")
 
 #' @rdname estimator.nleqslv
 #' 
@@ -240,7 +247,7 @@ scorefunctioncreator.default<-function(Z,Y,link)
 
 #' @rdname estimator.nleqslv
 #' 
-#' @param penalty Any \code{\link{lqa}}-supported penalty.
+#' @param penalty Any \code{lqa}-supported penalty.
 #' @export
 estimator.lqa<-function(control=lqa.control(), penalty = NULL, method = "lqa.update2", standardize = TRUE, penalize.intercepts=FALSE)
 {
@@ -266,4 +273,7 @@ estimator.lqa<-function(control=lqa.control(), penalty = NULL, method = "lqa.upd
 		
 		return(list(coefficients=bta, morefitinfo=thefit) )
 	}
+	attr(actualfunction, "reqs")<-"lqa"
+	return(actualfunction)
 }
+attr(estimator.lqa, "reqs")<-"lqa"

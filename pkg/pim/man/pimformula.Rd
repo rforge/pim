@@ -24,7 +24,8 @@
     na.action = na.fail, lhs = c("PO", "<", "<="),
     verbosity = 0, nicenames = TRUE,
     interactions.difference = (interpretation != "marginal"),
-    extra.nicenames = data.frame(org = character(), nice = character(), stringsAsFactors = FALSE))
+    extra.nicenames = data.frame(org = character(), nice = character(), stringsAsFactors = FALSE),
+    check.symmetric = TRUE, link, threshold = 1e-06)
 }
 \arguments{
   \item{formula}{Original formula}
@@ -101,6 +102,13 @@
 
   \item{nicenames}{Defaults to \code{TRUE}: try to make the
   column names more readable.}
+
+  \item{check.symmetric}{Defaults to \code{TRUE}: if the
+  model does not support the symmetry condition, a warning
+  is displayed.}
+
+  \item{link,threshold}{See \code{\link{pim}}: only needed
+  to check the symmetry condition.}
 }
 \value{
   For \code{pimformula}: an object of class "pimformula".

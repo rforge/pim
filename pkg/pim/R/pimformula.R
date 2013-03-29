@@ -228,6 +228,9 @@ pimformula<-function(formula, data, interpretation=c("difference", "regular", "m
 #' 	for the left and right real observation in the pseudo-observation.
 #' @param na.action Defaults to \code{\link{na.fail}}: handles missing data in \code{data}.
 #' @param nicenames Defaults to \code{TRUE}: try to make the column names more readable.
+#' @param check.symmetric Defaults to \code{TRUE}: if the model does not support the
+#'  symmetry condition, a warning is displayed.
+#' @param link,threshold See \code{\link{pim}}: only needed to check the symmetry condition.
 #' @return For \code{pim.fit.prep}: an object of class "pimfitdata". The items in this object are:
 #' \item{X}{The design matrix in pseudo-observation space} 
 #' \item{Y }{The pseudo-observations} 
@@ -253,7 +256,8 @@ pimformula<-function(formula, data, interpretation=c("difference", "regular", "m
 pim.fit.prep<-function(formula, data, blocking.variables=character(), poset=t(combn(nrow(data),2)), leftsuffix="_L", rightsuffix="_R", 
 											 interpretation=c("difference", "regular", "marginal", "symmetric"), na.action=na.fail, lhs=c("PO", "<", "<="), 
 											 verbosity=0,  nicenames=TRUE, interactions.difference=(interpretation!="marginal"), 
-											 extra.nicenames=data.frame(org=character(), nice=character(), stringsAsFactors=FALSE))
+											 extra.nicenames=data.frame(org=character(), nice=character(), stringsAsFactors=FALSE),
+											 check.symmetric=TRUE, link, threshold=1e-6)
 {
 	interpretation<-match.arg(interpretation)
 	interactions.difference<-interactions.difference[1]
@@ -272,47 +276,33 @@ pim.fit.prep<-function(formula, data, blocking.variables=character(), poset=t(co
 		return(retval)
 		
 	}
-	newstartdfr<-.LRData(data, poset, formulaconv$left.variables, formulaconv$right.variables)
 	
-	if(verbosity > 5)
+	if(check.symmetric)
 	{
-		cat("Before applying full model.matrix.\nStarting dataframe looks like:\n")
-		str(newstartdfr)
-		cat("and the converted formula looks like:\n")
-		print(formulaconv$newformula)
-	}
-	
-	#nicked this from glm
-	mf<-model.frame(formulaconv$newformula, data=newstartdfr, na.action=na.action)
-	mt <- attr(mf, "terms")
-	intercept<-attr(mt, "intercept") > 0L
-	Y <- model.response(mf, "any")
-	if (length(dim(Y)) == 1L) {
-		nm <- rownames(Y)
-		dim(Y) <- NULL
-		if (!is.null(nm)) names(Y) <- nm
-	}
-	X <- if (!is.empty.model(mt)) model.matrix(mt, mf) else matrix(, NROW(Y), 0L) #note in the original code contrasts are passed in here!!
-	
-	#Finally, let's try and use the nicer names:
-	orgcn<-colnames(X)
-	if(nicenames)
-	{
-		cn<-gsub(" ", "", orgcn, fixed=TRUE)
-		if(verbosity > 4)
+		if(missing(link))
 		{
-			cat("Will replace to nicer names in column names:", cn, "\n")
-			cat("\tReplace:", formulaconv$full.colnames, "\n")
-			cat("\tWith:", formulaconv$nice.colnames, "\n")
+			warning("Could not check symmetry condition because the link was not passed into pim.fit.prep.")
 		}
-		for(i in seq_along(formulaconv$full.colnames)){
-			cn<-gsub(formulaconv$full.colnames[i], formulaconv$nice.colnames[i], cn, fixed=TRUE)
+		else
+		{
+			if(!(interpretation %in% c("difference", "symmetric")))
+			{
+				cposet<-.symposet(data, formula, verbosity=verbosity-1)$poset
+				#Note: I rely on the specific order implied by .symposet in what follows!
+				#That is: if there are 2N rows in it, then row i and N + i are each other's "inverse"
+				#Note: this will still be the case after applying blocks!
+				#Note: the "self"-pseudo-observations occur twice in this poset, because they
+				#represent their own "inverse"
+				
+				qpd<-.quickpimdata(pimform=formulaconv, data=data, poset=cposet, na.action=na.action, nicenames=FALSE, verbosity=verbosity-1, makenames=.symrownames)
+				
+				issym<-.quicksimcheck(qpd$X, link, threshold=threshold)
+				if(! issym) warning("The PIM model does not fulfill the symmetry condition, so will be valid at most for a subset of the pseudo-observations.")
+				rm(qpd, cposet)
+			}
 		}
-		colnames(X)<-cn
-		formulaconv$names<-cn
 	}
 	
-	retval<-list(Y=Y, X=X, poset=poset, intercept=intercept, pimformula=formulaconv, original.colnames=orgcn)
-	class(retval)<-"pimfitdata"
+	retval<-.quickpimdata(pimform=formulaconv, data=data, poset=poset, na.action=na.action, nicenames=nicenames, verbosity=verbosity-1)
 	return(retval)
 }

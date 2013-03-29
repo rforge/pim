@@ -23,9 +23,9 @@
   not correct!)}
 
   \item{type.measure,nfolds,foldid,weights}{See
-  \code{\link{cv.glmnet}}}
+  \code{cv.glmnet}}
 
-  \item{\dots}{Passed on to \code{\link{cv.glmnet}} (or
+  \item{\dots}{Passed on to \code{cv.glmnet} (or
   \code{.cvpo.glmnet}).}
 
   \item{include.extrainfo}{If \code{TRUE} (not the
@@ -40,12 +40,11 @@
 \value{
   An object of class \code{cv.pim}, of class
   \code{cv.glmnet}, and depending on the type of
-  linkfunction (see \code{\link{cv.glmnet}}) some more
-  classes. It holds all the items of the original
-  \code{pimob} and all necessary items for a
-  \code{\link{cv.glmnet}} object (so the relevant S3
-  methods like \code{print} and \code{plot} will work for
-  them.)
+  linkfunction (see \code{cv.glmnet}) some more classes. It
+  holds all the items of the original \code{pimob} and all
+  necessary items for a \code{cv.glmnet} object (so the
+  relevant S3 methods like \code{print} and \code{plot}
+  will work for them.)
 }
 \description{
   Crossvalidate a glmnet PIM
@@ -68,7 +67,7 @@ cv.penpim<-crossvalidate.pim(penpim, method="fullsplit")
 cv.penpim.ps<-crossvalidate.pim(penpim, method="semisplit")
 }
 \seealso{
-  \code{\link{pim}} \code{\link{cv.glmnet}}
+  \code{\link{pim}} \code{cv.glmnet}
 }
 \keyword{crossvalidate}
 \keyword{pim}

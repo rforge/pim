@@ -15,7 +15,8 @@
     lhs = c("PO", "<", "<="), keep.data = FALSE,
     verbosity = 0, nicenames = TRUE,
     interactions.difference = (interpretation != "marginal"),
-    extra.nicenames = data.frame(org = character(), nice = character(), stringsAsFactors = FALSE))
+    extra.nicenames = data.frame(org = character(), nice = character(), stringsAsFactors = FALSE),
+    check.symmetric = TRUE, threshold = 1e-06)
 }
 \arguments{
   \item{formula}{Original formula}
@@ -97,6 +98,15 @@
   You may also use parts of constructed column names. Note:
   make sure to use \code{stringsAsFactor=FALSE} when
   creating the \code{data.frame}.}
+
+  \item{check.symmetric}{Defaults to \code{TRUE}: if the
+  model does not support the symmetry condition, a warning
+  is displayed. Note: this option is on by default for
+  novice users, but it may be time- and resourceconsuming,
+  so turn it off if you know what you are doing!}
+
+  \item{threshold}{When checking the symmetry condition,
+  how much digression is allowed.}
 }
 \value{
   An object of class \code{pim},which is a list with items:

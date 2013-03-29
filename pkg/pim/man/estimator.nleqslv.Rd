@@ -37,12 +37,11 @@
 \arguments{
   \item{jac,global,xscalm}{See \code{\link{nleqslv}}.}
 
-  \item{method}{See \code{\link{nleqslv}} /
-  \code{\link{BBsolve}} / \code{\link{lqa}}.}
+  \item{method}{See \code{\link{nleqslv}} / \code{BBsolve}
+  / \code{lqa}.}
 
-  \item{control}{See \code{\link{nleqslv}} /
-  \code{\link{BBsolve}} / \code{\link{glm.fit}} /
-  \code{\link{lqa}}.}
+  \item{control}{See \code{\link{nleqslv}} / \code{BBsolve}
+  / \code{\link{glm.fit}} / \code{lqa}.}
 
   \item{scoreFunctionCreator}{Function that will create the
   score vector function. This defaults to
@@ -52,7 +51,7 @@
 
   \item{treat.convergence.error}{Defaults to \code{"warn"},
   so a warning will be issued with the errorcode of the
-  \code{\link{nleqslv}} or \code{\link{BBsolve}} call.
+  \code{\link{nleqslv}} or \code{BBsolve} call.
   \code{"error"} will generate an error on convergence
   issues. \code{"log"} will simply note the occurence in
   the output window and \code{"ignore"} will do just that.
@@ -62,12 +61,12 @@
   \code{estimator.trymultiple}.}
 
   \item{alpha,nlambda,lambda,standardize}{See
-  \code{\link{glmnet}}.}
+  \code{glmnet}.}
 
   \item{penalize.intercepts}{If an intercept is present in
   the model, penalize it or not.}
 
-  \item{quiet}{See \code{\link{BBsolve}}.}
+  \item{quiet}{See \code{BBsolve}.}
 
   \item{Z}{Pseudo-observation design matrix}
 
@@ -75,7 +74,7 @@
 
   \item{link}{Name of the link function.}
 
-  \item{penalty}{Any \code{\link{lqa}}-supported penalty.}
+  \item{penalty}{Any \code{lqa}-supported penalty.}
 }
 \value{
   These functions (\code{estimator.*}) each return a
@@ -108,7 +107,7 @@
   observations are independent)
 
   \code{estimator.glmnet} returns the elsatic net penalized
-  \code{\link{glmnet}} estimate (assuming, again, the
+  \code{glmnet} estimate (assuming, again, the
   pseudo-observations are independent)
 
   For the different implementations, \code{morefitinfo}
@@ -116,11 +115,10 @@
   return value of the \code{\link{nleqslv}} call \item
   \code{estimator.glm} The return value of the
   \code{\link{glm}} call \item{estimator.glmnet} The return
-  value of the \code{\link{glmnet}} call, with some added
-  items: \code{usedalpha},
-  \code{usedfamily},\code{usedoffset} and
+  value of the \code{glmnet} call, with some added items:
+  \code{usedalpha}, \code{usedfamily},\code{usedoffset} and
   \code{standardize} \item \code{estimator.BB} The return
-  value of the \code{\link{BBsolve}} call }
+  value of the \code{BBsolve} call }
 
   \code{estimator.trymultiple} is a special case that will
   simply try to use \code{nleqslv}, \code{} and \code{}

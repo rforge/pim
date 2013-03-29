@@ -1,18 +1,19 @@
 Package: pim
 Type: Package
 Title: Probabilistic Index Models
-Version: 1.1.1.1
-Date: 2013-03-20
-Author: Jan De Neve, Nick Sabbe
+Version: 1.1.2.1
+Date: 2013-03-28
+Author: Nick Sabbe, Jan De Neve
 Maintainer: Nick Sabbe <Nick.Sabbe@Ugent.be>
 Description: Fit a probabilistic index model.
 Depends:
     R (>= 2.12),
     Matrix,
+    nleqslv,
+    MASS
+Suggests:
     glmnet (>= 1.9-3),
     BB,
-    nleqslv,
-    MASS,
     lqa
 License: GPL (>= 2)
 URL: http://pim.r-forge.r-project.org/
@@ -42,3 +43,4 @@ Collate:
     'add.varianceestimate.R'
     'classical.test.R'
     'SUData.R'
+    'pimsym.R'
