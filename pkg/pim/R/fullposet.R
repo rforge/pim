@@ -2,7 +2,7 @@
 #' 
 #' Get a set of pseudo-observation observation indices
 #' 
-#' @aliases poset fullposet lexiposet onewayposet forcedcolorderonewayposet oldpimposet oldpimposetbft
+#' @aliases poset fullposet noselfposet lexiposet onewayposet forcedcolorderonewayposet
 #' 
 #' @param data Context where the formula \code{formula} is to be interpreted
 #' @param formula Original formula
@@ -15,6 +15,8 @@
 #' @details The provided implementations differ as follows:
 #' \enumerate{
 #' \item \code{fullposet} Contains all combinations of rowindices.
+#' \item \code{noselfposet} The same as fullposet, but excluding the rowcombinations 
+#' 	with identical indexes.
 #' \item \code{lexiposet} Check that predicting variables can be ordered, and select 
 #' 	only combinations where the predictors are bigger on the right side. 
 #' \item \code{onewayposet} Similar to \code{lexiposet}, but simply uses row index.
@@ -50,6 +52,18 @@ fullposet<-function(data, formula, verbosity=0)
 	org<-seq(n)
 	poset<-cbind(rep(org, n), rep(org, each=n))
 	return(list(data=data, poset=poset))
+}
+
+#' @rdname fullposet
+#' 
+#' @export
+noselfposet<-function(data, formula, verbosity=0)
+{
+	n<-nrow(data)
+	rv<-fullposet(data, formula, verbosity)
+	selfrefs<-(seq(n)*(n+1))-n
+	rv$poset<-rv$poset[-selfrefs,]
+	return(rv)
 }
 
 #' @rdname fullposet

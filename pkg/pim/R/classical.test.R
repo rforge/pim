@@ -54,7 +54,7 @@ classical.test<-function(test=c("WilcoxonMannWhitney", "KruskalWallis", "MackSki
 		if(!missing(block)) warning("Blocks are ignored in Kruskal-Wallis")
 		
 		formula<-stats::formula(paste(out, "~F(", group, ")-1", sep=""))
-		pimfit<-pim(formula, data=data, link="identity", poset=fullposet, interpretation="marginal", 
+		pimfit<-pim(formula, data=data, link="identity", poset=noselfposet, interpretation="marginal", 
 								varianceestimator=varianceestimator, verbosity=verbosity-1)
 		stat<-t(coefficients(pimfit)-0.5) %*% ginv(vcov(pimfit)) %*% (coefficients(pimfit)-0.5)
 		df<-length(levels(as.factor(data[,group])))-1
@@ -67,7 +67,7 @@ classical.test<-function(test=c("WilcoxonMannWhitney", "KruskalWallis", "MackSki
 		if(! all(tbl==nij)) stop("Mack-Skillings requires Randomized Complete Block design.")
 		
 		formula<-stats::formula(paste(out, "~F(", group, ")-1", sep=""))
-		pimfit<-pim(formula, data=data, link="identity", blocking.variables=block, poset=fullposet, 
+		pimfit<-pim(formula, data=data, link="identity", blocking.variables=block, poset=noselfposet, 
 								interpretation="marginal", varianceestimator=varianceestimator, verbosity=verbosity-1)
 		stat<-t(coefficients(pimfit)-0.5) %*% ginv(vcov(pimfit)) %*% (coefficients(pimfit)-0.5)
 		df<-length(levels(as.factor(data[,group])))-1
@@ -80,7 +80,7 @@ classical.test<-function(test=c("WilcoxonMannWhitney", "KruskalWallis", "MackSki
 		if(df!=2) stop("There should be 3 treatments for Brown-Hettmansperger.")
 		
 		formula<-stats::formula(paste(out, "~F(", group, ")-1", sep=""))
-		pimfit<-pim(formula, data=data, link="identity", poset=fullposet, 
+		pimfit<-pim(formula, data=data, link="identity", poset=noselfposet, 
 								varianceestimator=varianceestimator, verbosity=verbosity-1, 
 								interpretation="regular")
 		stat<-t(coefficients(pimfit)-0.5) %*% ginv(vcov(pimfit)) %*% (coefficients(pimfit)-0.5)

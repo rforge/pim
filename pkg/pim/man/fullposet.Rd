@@ -3,13 +3,14 @@
 \alias{forcedposet}
 \alias{fullposet}
 \alias{lexiposet}
-\alias{oldpimposet}
-\alias{oldpimposetbft}
+\alias{noselfposet}
 \alias{onewayposet}
 \alias{poset}
 \title{Get a set of pseudo-observation observation indices}
 \usage{
   fullposet(data, formula, verbosity = 0)
+
+  noselfposet(data, formula, verbosity = 0)
 
   lexiposet(data, formula, verbosity = 0)
 
@@ -60,8 +61,10 @@
 \details{
   The provided implementations differ as follows:
   \enumerate{ \item \code{fullposet} Contains all
-  combinations of rowindices. \item \code{lexiposet} Check
-  that predicting variables can be ordered, and select only
+  combinations of rowindices. \item \code{noselfposet} The
+  same as fullposet, but excluding the rowcombinations with
+  identical indexes. \item \code{lexiposet} Check that
+  predicting variables can be ordered, and select only
   combinations where the predictors are bigger on the right
   side. \item \code{onewayposet} Similar to
   \code{lexiposet}, but simply uses row index. \item

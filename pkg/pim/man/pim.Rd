@@ -7,7 +7,7 @@
 \usage{
   pim(formula, data,
     link = c("logit", "identity", "probit", "inverse", "1/mu^2", "log"),
-    blocking.variables = character(), poset = fullposet,
+    blocking.variables = character(), poset = noselfposet,
     leftsuffix = "_L", rightsuffix = "_R",
     interpretation = c("difference", "regular", "marginal", "symmetric"),
     na.action = na.fail, estimator = estimator.nleqslv(),

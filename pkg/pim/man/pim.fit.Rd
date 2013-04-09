@@ -68,7 +68,7 @@
 \examples{
 set.seed(1)
 	iris$out<-factor(sample(2, nrow(iris), replace=TRUE))
-	poset<-fullposet(iris, out~Sepal.Length)$poset
+	poset<-noselfposet(iris, out~Sepal.Length)$poset
 	pfd<-pim.fit.prep(out~Sepal.Length, data=iris, poset=poset)
 	pf<-pim.fit(pfd)
 }

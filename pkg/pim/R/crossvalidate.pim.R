@@ -31,7 +31,7 @@
 #' colnames(pendta)[(1:pen.noisep)+2]<-paste("X", 1:pen.noisep, "X", sep="")
 #' pen.formula<-paste("y~", paste(c("F(x)", setdiff(colnames(pendta), c("x", "y"))), collapse="+"), sep="")
 #' 
-#' penpim<-pim(as.formula(pen.formula), data=pendta, link="identity", poset=fullposet, 
+#' penpim<-pim(as.formula(pen.formula), data=pendta, link="identity", poset=noselfposet, 
 #' 	estimator=estimator.glmnet(), varianceestimator=NULL, keep.data=TRUE, verbosity=0,
 #' 	interpretation="regular")
 #' cv.penpim.naive<-crossvalidate.pim(penpim, method="naive")
