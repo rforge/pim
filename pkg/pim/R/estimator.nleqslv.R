@@ -2,7 +2,7 @@
 #' 
 #' Estimators for the PIM parameters
 #' 
-#' @aliases estimator.nleqslv estimator.glm estimator.glmnet estimator.BB scorefunctioncreator.default estimator.lqa
+#' @aliases estimator.nleqslv estimator estimator.glm estimator.glmnet estimator.BB scorefunctioncreator.default estimator.lqa scorefunctioncreator
 #' 
 #' @param jac,global,xscalm See \code{\link{nleqslv}}.
 #' @param method See \code{\link{nleqslv}} / \code{BBsolve} / \code{lqa}.
@@ -89,6 +89,7 @@ estimator.glm<-function(control=list())
 		thefit<-glm.fit(x=dta$X, y=dta$Y, start=startvalues, family=family, weights=dta$wts,
 										control=control, intercept=pfd$intercept)
 		fit.x<-thefit$coefficients
+		class(thefit)<-unique(c(class(thefit), "glm"))
 		return(list(coefficients=fit.x, morefitinfo=thefit) )
 	}
 }

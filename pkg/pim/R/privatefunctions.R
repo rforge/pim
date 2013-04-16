@@ -613,7 +613,7 @@
 
 .onLoad<-function(libname, pkgname)
 {
-	packageStartupMessage("Loading pim version 1.1.3.1")
+	packageStartupMessage("Loading pim version 1.1.3.3")
 }
 
 .handleSpecialData<-function(intercept.handling=FALSE, yties.handling=TRUE,  pfd)

@@ -39,8 +39,7 @@
 
 While \cite{Thas2012} introduces PIMs, they were shown to be extensions of the known distribution free tests, like Wilcoxon in TODO:rankpaperref.
 
-A general estimator for the variance under the null hypothesis has been created ($varianceestimator.H0$), but for these special cases, some simplified
-formulas exist, which have been provided through the $simplified*$ set of functions.
+A general estimator for the variance under the null hypothesis has been created ($varianceestimator.H0$), but for these special cases, some simplified formulas exist, which have been provided through the $simplified*$ set of functions.
 
 For each of the code sections below, it is easily checked that the simplified formulas give the same result as the generic code, and that the 
 links between the known distribution free tests and PIM are confirmed.
@@ -58,7 +57,7 @@ Code to check the equivalence (note this includes a legacy implementation):
 > 	library(pim)
 > 	set.seed(1)
 > 	wmw1<-demo.WilcoxonMannWhitney()
-> 	wmw1$pim2<-pim(y~F(x)-1, data=wmw1$dta, link="identity", poset=pairwiseposet, 
+> 	wmw1$pim2<-pim(y~F(x)-1, data=wmw1$dta, link="identity", poset=lexiposet, 
 + 								 varianceestimator=varianceestimator.H0(), keep.data=TRUE, verbosity=0, 
 + 								 interpretation="regular")
 > 	wmw1$pim2
@@ -66,11 +65,11 @@ Code to check the equivalence (note this includes a legacy implementation):
 \begin{Soutput}
 Call:
 pim(formula = y ~ F(x) - 1, data = wmw1$dta, link = "identity", 
-    poset = pairwiseposet, interpretation = "regular", varianceestimator = varianceestimator.H0(), 
+    poset = lexiposet, interpretation = "regular", varianceestimator = varianceestimator.H0(), 
     keep.data = TRUE, verbosity = 0)
 
 Coefficients:
-x_R_L_1_2 
+x_L_R_1_2 
 0.7937182 
 \end{Soutput}
 \begin{Sinput}
@@ -92,7 +91,7 @@ x_R_L_1_2
 > 	wmw1$pim2$coefficients
 \end{Sinput}
 \begin{Soutput}
-x_R_L_1_2 
+x_L_R_1_2 
 0.7937182 
 \end{Soutput}
 \begin{Sinput}
@@ -114,14 +113,14 @@ x_R_L_1_2
 > 	wmw1$legacy$conversion(wmw1$pim2$coefficients, wmw1$pim2$vcov)
 \end{Sinput}
 \begin{Soutput}
-x_R_L_1_2 
+x_L_R_1_2 
   4.91415 
 \end{Soutput}
 \begin{Sinput}
 > 	classical.test(test="WilcoxonMannWhitney", data=wmw1$dta, out="y", group="x")$statistic
 \end{Sinput}
 \begin{Soutput}
-x_R_L_1_2 
+x_L_R_1_2 
   4.91415 
 \end{Soutput}
 \end{Schunk}
@@ -144,7 +143,7 @@ pim(formula = y ~ F(x) - 1, data = kw1$dta, link = "identity",
 
 Coefficients:
     x_R_1     x_R_2     x_R_3 
-0.2863043 0.4330952 0.7207143 
+0.2480435 0.4335366 0.7366667 
 \end{Soutput}
 \begin{Sinput}
 > 	#Simplified formulas (lemma 1)
@@ -152,7 +151,7 @@ Coefficients:
 \end{Sinput}
 \begin{Soutput}
         1         2         3 
-0.2863043 0.4330952 0.7207143 
+0.2480435 0.4335366 0.7366667 
 \end{Soutput}
 \begin{Sinput}
 > 	simplifiedpimestimation.marginalcovariance(kw1$dta, out="y", group="x")
@@ -160,8 +159,8 @@ Coefficients:
 \begin{Soutput}
               1             2             3
 1  0.0028177536 -0.0008416667 -0.0008416667
-2 -0.0008416667  0.0011623016 -0.0008416667
-3 -0.0008416667 -0.0008416667  0.0015630952
+2 -0.0008416667  0.0012111789 -0.0008416667
+3 -0.0008416667 -0.0008416667  0.0014962963
 \end{Soutput}
 \begin{Sinput}
 > 	#From applying generic code:
@@ -169,7 +168,7 @@ Coefficients:
 \end{Sinput}
 \begin{Soutput}
     x_R_1     x_R_2     x_R_3 
-0.2863043 0.4330952 0.7207143 
+0.2480435 0.4335366 0.7366667 
 \end{Soutput}
 \begin{Sinput}
 > 	kw1$pim3$vcov
@@ -177,8 +176,8 @@ Coefficients:
 \begin{Soutput}
               x_R_1         x_R_2         x_R_3
 x_R_1  0.0028177536 -0.0008416667 -0.0008416667
-x_R_2 -0.0008416667  0.0011623016 -0.0008416667
-x_R_3 -0.0008416667 -0.0008416667  0.0015630952
+x_R_2 -0.0008416667  0.0012111789 -0.0008416667
+x_R_3 -0.0008416667 -0.0008416667  0.0014962963
 \end{Soutput}
 \begin{Sinput}
 > 	#Standardized KW based on Kruskal-Wallis test
@@ -187,21 +186,21 @@ x_R_3 -0.0008416667 -0.0008416667  0.0015630952
 \end{Sinput}
 \begin{Soutput}
 Kruskal-Wallis chi-squared 
-                  34.97031 
+                  43.45664 
 \end{Soutput}
 \begin{Sinput}
 > 	kw1$legacy$conversion(kw1$pim3$coefficients, kw1$pim3$vcov)
 \end{Sinput}
 \begin{Soutput}
          [,1]
-[1,] 34.97031
+[1,] 43.45664
 \end{Soutput}
 \begin{Sinput}
 > 	classical.test(test="KruskalWallis", data=kw1$dta, out="y", group="x")$statistic
 \end{Sinput}
 \begin{Soutput}
          [,1]
-[1,] 34.97031
+[1,] 43.45664
 \end{Soutput}
 \end{Schunk}
 
@@ -225,7 +224,7 @@ pim(formula = y ~ F(x) - 1, data = mss1$dta, link = "identity",
 
 Coefficients:
     x_R_1     x_R_2     x_R_3 
-0.2858333 0.5225000 0.6916667 
+0.2800000 0.5308333 0.6891667 
 \end{Soutput}
 \begin{Sinput}
 > 	#Simplified formulas (lemma 4)
@@ -233,7 +232,7 @@ Coefficients:
 \end{Sinput}
 \begin{Soutput}
         1         2         3 
-0.2858333 0.5225000 0.6916667 
+0.2800000 0.5308333 0.6891667 
 \end{Soutput}
 \begin{Sinput}
 > 	simplifiedpimestimation.marginalcovariance(mss1$dta, out="y", group="x", block="b")
@@ -250,7 +249,7 @@ Coefficients:
 \end{Sinput}
 \begin{Soutput}
     x_R_1     x_R_2     x_R_3 
-0.2858333 0.5225000 0.6916667 
+0.2800000 0.5308333 0.6891667 
 \end{Soutput}
 \begin{Sinput}
 > 	mss1$pim1$vcov
@@ -267,21 +266,21 @@ x_R_3 -0.0007175926 -0.0007175926  0.0014351852
 > 	mss1$legacy$statistic
 \end{Sinput}
 \begin{Soutput}
-[1] 38.60581
+[1] 39.54645
 \end{Soutput}
 \begin{Sinput}
 > 	mss1$legacy$conversion(mss1$pim1$coefficients, mss1$pim1$vcov)
 \end{Sinput}
 \begin{Soutput}
          [,1]
-[1,] 38.60581
+[1,] 39.54645
 \end{Soutput}
 \begin{Sinput}
 > 	classical.test(test="MackSkillings", data=mss1$dta, out="y", group="x", block="b")$statistic
 \end{Sinput}
 \begin{Soutput}
          [,1]
-[1,] 38.60581
+[1,] 39.54645
 \end{Soutput}
 \end{Schunk}
 
@@ -303,41 +302,41 @@ pim(formula = y ~ F(x) - 1, data = bh1$dta, link = "identity",
     keep.data = TRUE, verbosity = 0)
 
 Coefficients:
-x_R_L_1_2 x_R_L_1_3 x_R_L_2_3 
-0.6454545 0.8746929 0.8081081 
+x_L_R_1_2 x_L_R_1_3 x_L_R_2_3 
+0.8278867 0.8936652 0.7264957 
 \end{Soutput}
 \begin{Sinput}
 > 	#Simplified formulas (lemma 4)
 > 	simplifiedpimestimation.pairwisecoefficients(bh1$dta, out="y", group="x")$beta
 \end{Sinput}
 \begin{Soutput}
-[1] 0.6454545 0.8746929 0.8081081
+[1] 0.8278867 0.8936652 0.7264957
 \end{Soutput}
 \begin{Sinput}
 > 	simplifiedpimestimation.pairwisecovariance(bh1$dta, out="y", group="x")
 \end{Sinput}
 \begin{Soutput}
              1 - 2       1 - 3        2 - 3
-1 - 2  0.005387205 0.002525253 -0.002777778
-1 - 3  0.002525253 0.004845755  0.002252252
-2 - 3 -0.002777778 0.002252252  0.005105105
+1 - 2  0.005628177 0.002450980 -0.003086420
+1 - 3  0.002450980 0.004650578  0.002136752
+2 - 3 -0.003086420 0.002136752  0.005302311
 \end{Soutput}
 \begin{Sinput}
 > 	#From applying generic code:
 > 	bh1$pim1$coefficients
 \end{Sinput}
 \begin{Soutput}
-x_R_L_1_2 x_R_L_1_3 x_R_L_2_3 
-0.6454545 0.8746929 0.8081081 
+x_L_R_1_2 x_L_R_1_3 x_L_R_2_3 
+0.8278867 0.8936652 0.7264957 
 \end{Soutput}
 \begin{Sinput}
 > 	bh1$pim1$vcov
 \end{Sinput}
 \begin{Soutput}
-             x_R_L_1_2   x_R_L_1_3    x_R_L_2_3
-x_R_L_1_2  0.005387205 0.002525253 -0.002777778
-x_R_L_1_3  0.002525253 0.004845755  0.002252252
-x_R_L_2_3 -0.002777778 0.002252252  0.005105105
+             x_L_R_1_2   x_L_R_1_3    x_L_R_2_3
+x_L_R_1_2  0.005628177 0.002450980 -0.003086420
+x_L_R_1_3  0.002450980 0.004650578  0.002136752
+x_L_R_2_3 -0.003086420 0.002136752  0.005302311
 \end{Soutput}
 \begin{Sinput}
 > 	#Standardized BH based on Brown-Hettmansperger test
@@ -346,21 +345,21 @@ x_R_L_2_3 -0.002777778 0.002252252  0.005105105
 \end{Sinput}
 \begin{Soutput}
 Kruskal-Wallis chi-squared 
-                  62.44696 
+                  152.4325 
 \end{Soutput}
 \begin{Sinput}
 > 	bh1$legacy$conversion(bh1$pim1$coefficients, bh1$pim1$vcov)
 \end{Sinput}
 \begin{Soutput}
          [,1]
-[1,] 62.44696
+[1,] 152.4325
 \end{Soutput}
 \begin{Sinput}
 > 	classical.test(test="BrownHettmansperger", data=bh1$dta, out="y", group="x")$statistic
 \end{Sinput}
 \begin{Soutput}
          [,1]
-[1,] 62.44696
+[1,] 152.4325
 \end{Soutput}
 \end{Schunk}
 
@@ -370,7 +369,7 @@ Code to check the equivalence (note this includes a legacy implementation):
 \begin{Schunk}
 \begin{Sinput}
 > 	jt1<-demo.JonckheereTerpstra(force.balanced=FALSE)
-> 	jt1$pim1<-pim(y~F(x)-1, data=jt1$dta, link="identity", poset=pairwiseposet, 
+> 	jt1$pim1<-pim(y~F(x)-1, data=jt1$dta, link="identity", poset=lexiposet, 
 + 								varianceestimator=varianceestimator.H0(), keep.data=TRUE, verbosity=0, 
 + 								interpretation="regular")
 > 	jt1$pim1
@@ -378,11 +377,11 @@ Code to check the equivalence (note this includes a legacy implementation):
 \begin{Soutput}
 Call:
 pim(formula = y ~ F(x) - 1, data = jt1$dta, link = "identity", 
-    poset = pairwiseposet, interpretation = "regular", varianceestimator = varianceestimator.H0(), 
+    poset = lexiposet, interpretation = "regular", varianceestimator = varianceestimator.H0(), 
     keep.data = TRUE, verbosity = 0)
 
 Coefficients:
-x_R_L_1_2 x_R_L_1_3 x_R_L_1_4 x_R_L_2_3 x_R_L_2_4 x_R_L_3_4 
+x_L_R_1_2 x_L_R_1_3 x_L_R_1_4 x_L_R_2_3 x_L_R_2_4 x_L_R_3_4 
 0.7925926 0.9025641 0.9916667 0.7065527 0.9733796 0.9314904 
 \end{Soutput}
 \begin{Sinput}
@@ -416,27 +415,27 @@ x_R_L_1_2 x_R_L_1_3 x_R_L_1_4 x_R_L_2_3 x_R_L_2_4 x_R_L_3_4
 > 	jt1$pim1$coefficients
 \end{Sinput}
 \begin{Soutput}
-x_R_L_1_2 x_R_L_1_3 x_R_L_1_4 x_R_L_2_3 x_R_L_2_4 x_R_L_3_4 
+x_L_R_1_2 x_L_R_1_3 x_L_R_1_4 x_L_R_2_3 x_L_R_2_4 x_L_R_3_4 
 0.7925926 0.9025641 0.9916667 0.7065527 0.9733796 0.9314904 
 \end{Soutput}
 \begin{Sinput}
 > 	jt1$pim1$vcov
 \end{Sinput}
 \begin{Soutput}
-             x_R_L_1_2    x_R_L_1_3   x_R_L_1_4    x_R_L_2_3    x_R_L_2_4
-x_R_L_1_2  0.008847737  0.005555556 0.005555556 -0.003086420 -0.003086420
-x_R_L_1_3  0.005555556  0.008974359 0.005555556  0.003205128  0.000000000
-x_R_L_1_4  0.005555556  0.005555556 0.008333333  0.000000000  0.002604167
-x_R_L_2_3 -0.003086420  0.003205128 0.000000000  0.006410256  0.003086420
-x_R_L_2_4 -0.003086420  0.000000000 0.002604167  0.003086420  0.005787037
-x_R_L_3_4  0.000000000 -0.003205128 0.002604167 -0.003205128  0.002604167
-             x_R_L_3_4
-x_R_L_1_2  0.000000000
-x_R_L_1_3 -0.003205128
-x_R_L_1_4  0.002604167
-x_R_L_2_3 -0.003205128
-x_R_L_2_4  0.002604167
-x_R_L_3_4  0.005909455
+             x_L_R_1_2    x_L_R_1_3   x_L_R_1_4    x_L_R_2_3    x_L_R_2_4
+x_L_R_1_2  0.008847737  0.005555556 0.005555556 -0.003086420 -0.003086420
+x_L_R_1_3  0.005555556  0.008974359 0.005555556  0.003205128  0.000000000
+x_L_R_1_4  0.005555556  0.005555556 0.008333333  0.000000000  0.002604167
+x_L_R_2_3 -0.003086420  0.003205128 0.000000000  0.006410256  0.003086420
+x_L_R_2_4 -0.003086420  0.000000000 0.002604167  0.003086420  0.005787037
+x_L_R_3_4  0.000000000 -0.003205128 0.002604167 -0.003205128  0.002604167
+             x_L_R_3_4
+x_L_R_1_2  0.000000000
+x_L_R_1_3 -0.003205128
+x_L_R_1_4  0.002604167
+x_L_R_2_3 -0.003205128
+x_L_R_2_4  0.002604167
+x_L_R_3_4  0.005909455
 \end{Soutput}
 \begin{Sinput}
 > 	#Standardized JT based on Jonckheere-Terpstra test
@@ -475,7 +474,7 @@ Code to check the equivalence (note this includes a legacy implementation):
 \begin{Schunk}
 \begin{Sinput}
 > 	mw1<-demo.MackWolfe(force.balanced=FALSE)
-> 	mw1$pim1<-pim(y~F(x)-1, data=mw1$dta, link="identity", poset=pairwiseposet, 
+> 	mw1$pim1<-pim(y~F(x)-1, data=mw1$dta, link="identity", poset=lexiposet, 
 + 								varianceestimator=varianceestimator.H0(), keep.data=TRUE, verbosity=0, 
 + 								interpretation="regular")
 > 	mw1$pim1
@@ -483,65 +482,65 @@ Code to check the equivalence (note this includes a legacy implementation):
 \begin{Soutput}
 Call:
 pim(formula = y ~ F(x) - 1, data = mw1$dta, link = "identity", 
-    poset = pairwiseposet, interpretation = "regular", varianceestimator = varianceestimator.H0(), 
+    poset = lexiposet, interpretation = "regular", varianceestimator = varianceestimator.H0(), 
     keep.data = TRUE, verbosity = 0)
 
 Coefficients:
- x_R_L_1_2  x_R_L_1_3  x_R_L_1_4  x_R_L_2_3  x_R_L_2_4  x_R_L_3_4 
-0.76562500 1.00000000 0.93005952 0.98828125 0.68526786 0.02790179 
+ x_L_R_1_2  x_L_R_1_3  x_L_R_1_4  x_L_R_2_3  x_L_R_2_4  x_L_R_3_4 
+0.71726190 1.00000000 0.91904762 0.99621212 0.73333333 0.01414141 
 \end{Soutput}
 \begin{Sinput}
 > 	#Simplified formulas (lemma 4)
 > 	simplifiedpimestimation.pairwisecoefficients(mw1$dta, out="y", group="x")$beta
 \end{Sinput}
 \begin{Soutput}
-[1] 0.76562500 1.00000000 0.93005952 0.98828125 0.68526786 0.02790179
+[1] 0.71726190 1.00000000 0.91904762 0.99621212 0.73333333 0.01414141
 \end{Soutput}
 \begin{Sinput}
 > 	simplifiedpimestimation.pairwisecovariance(mw1$dta, out="y", group="x")
 \end{Sinput}
 \begin{Soutput}
              1 - 2        1 - 3       1 - 4        2 - 3        2 - 4
-1 - 2  0.008897569  0.003472222 0.003472222 -0.005208333 -0.005208333
-1 - 3  0.003472222  0.006184896 0.003472222  0.002604167  0.000000000
-1 - 4  0.003472222  0.003472222 0.006572421  0.000000000  0.002976190
-2 - 3 -0.005208333  0.002604167 0.000000000  0.007975260  0.005208333
-2 - 4 -0.005208333  0.000000000 0.002976190  0.005208333  0.008370536
-3 - 4  0.000000000 -0.002604167 0.002976190 -0.002604167  0.002976190
+1 - 2  0.009424603  0.003968254 0.003968254 -0.005208333 -0.005208333
+1 - 3  0.003968254  0.006613757 0.003968254  0.002525253  0.000000000
+1 - 4  0.003968254  0.003968254 0.006878307  0.000000000  0.002777778
+2 - 3 -0.005208333  0.002525253 0.000000000  0.007891414  0.005208333
+2 - 4 -0.005208333  0.000000000 0.002777778  0.005208333  0.008159722
+3 - 4  0.000000000 -0.002525253 0.002777778 -0.002525253  0.002777778
              3 - 4
 1 - 2  0.000000000
-1 - 3 -0.002604167
-1 - 4  0.002976190
-2 - 3 -0.002604167
-2 - 4  0.002976190
-3 - 4  0.005673363
+1 - 3 -0.002525253
+1 - 4  0.002777778
+2 - 3 -0.002525253
+2 - 4  0.002777778
+3 - 4  0.005387205
 \end{Soutput}
 \begin{Sinput}
 > 	#From applying generic code:
 > 	mw1$pim1$coefficients
 \end{Sinput}
 \begin{Soutput}
- x_R_L_1_2  x_R_L_1_3  x_R_L_1_4  x_R_L_2_3  x_R_L_2_4  x_R_L_3_4 
-0.76562500 1.00000000 0.93005952 0.98828125 0.68526786 0.02790179 
+ x_L_R_1_2  x_L_R_1_3  x_L_R_1_4  x_L_R_2_3  x_L_R_2_4  x_L_R_3_4 
+0.71726190 1.00000000 0.91904762 0.99621212 0.73333333 0.01414141 
 \end{Soutput}
 \begin{Sinput}
 > 	mw1$pim1$vcov
 \end{Sinput}
 \begin{Soutput}
-             x_R_L_1_2    x_R_L_1_3   x_R_L_1_4    x_R_L_2_3    x_R_L_2_4
-x_R_L_1_2  0.008897569  0.003472222 0.003472222 -0.005208333 -0.005208333
-x_R_L_1_3  0.003472222  0.006184896 0.003472222  0.002604167  0.000000000
-x_R_L_1_4  0.003472222  0.003472222 0.006572421  0.000000000  0.002976190
-x_R_L_2_3 -0.005208333  0.002604167 0.000000000  0.007975260  0.005208333
-x_R_L_2_4 -0.005208333  0.000000000 0.002976190  0.005208333  0.008370536
-x_R_L_3_4  0.000000000 -0.002604167 0.002976190 -0.002604167  0.002976190
-             x_R_L_3_4
-x_R_L_1_2  0.000000000
-x_R_L_1_3 -0.002604167
-x_R_L_1_4  0.002976190
-x_R_L_2_3 -0.002604167
-x_R_L_2_4  0.002976190
-x_R_L_3_4  0.005673363
+             x_L_R_1_2    x_L_R_1_3   x_L_R_1_4    x_L_R_2_3    x_L_R_2_4
+x_L_R_1_2  0.009424603  0.003968254 0.003968254 -0.005208333 -0.005208333
+x_L_R_1_3  0.003968254  0.006613757 0.003968254  0.002525253  0.000000000
+x_L_R_1_4  0.003968254  0.003968254 0.006878307  0.000000000  0.002777778
+x_L_R_2_3 -0.005208333  0.002525253 0.000000000  0.007891414  0.005208333
+x_L_R_2_4 -0.005208333  0.000000000 0.002777778  0.005208333  0.008159722
+x_L_R_3_4  0.000000000 -0.002525253 0.002777778 -0.002525253  0.002777778
+             x_L_R_3_4
+x_L_R_1_2  0.000000000
+x_L_R_1_3 -0.002525253
+x_L_R_1_4  0.002777778
+x_L_R_2_3 -0.002525253
+x_L_R_2_4  0.002777778
+x_L_R_3_4  0.005387205
 \end{Soutput}
 \begin{Sinput}
 > 	#Standardized MW based on Mack-Wolfe test
@@ -549,23 +548,23 @@ x_R_L_3_4  0.005673363
 + 															 levelP=as.character(which.max(mw1$groupmeans)), verbosity=1)
 \end{Sinput}
 \begin{Soutput}
-mu: 1280 
-sigsq: 19626.67 
-leftterm: 1568 
-rightterm: 871 
+mu: 1273.5 
+sigsq: 19673.25 
+leftterm: 1460 
+rightterm: 976 
 \end{Soutput}
 \begin{Sinput}
 > 	mw1$legacy$statistic
 \end{Sinput}
 \begin{Soutput}
-[1] 8.272945
+[1] 8.288099
 \end{Soutput}
 \begin{Sinput}
 > 	mw1$legacy$conversion(mw1$pim1$coefficients, mw1$pim1$vcov)
 \end{Sinput}
 \begin{Soutput}
          [,1]
-[1,] 8.272945
+[1,] 8.288099
 \end{Soutput}
 \begin{Sinput}
 > 	classical.test(test="MackWolfe", data=mw1$dta, out="y", group="x",
@@ -573,7 +572,7 @@ rightterm: 871
 \end{Sinput}
 \begin{Soutput}
          [,1]
-[1,] 8.272945
+[1,] 8.288099
 \end{Soutput}
 \end{Schunk}
 

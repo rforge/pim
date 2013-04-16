@@ -2,7 +2,7 @@
 #' 
 #' Estimators for the PIM parameter variances
 #' 
-#' @aliases varianceestimator.sandwich varianceestimator.H0 varianceestimator.glm varianceestimator.bootstrap
+#' @aliases varianceestimator.sandwich varianceestimator.H0 varianceestimator.glm varianceestimator.bootstrap varianceestimator
 #' 
 #' @param Uforposandwich function like \code{\link{Uforposandwich.default}} (the default) to
 #' 	calculate the necessary parts for \code{\link{posandwich.estimator}}.

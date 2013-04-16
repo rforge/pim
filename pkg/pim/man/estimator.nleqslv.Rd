@@ -1,10 +1,12 @@
 \name{estimator.nleqslv}
+\alias{estimator}
 \alias{estimator.BB}
 \alias{estimator.glm}
 \alias{estimator.glmnet}
 \alias{estimator.lqa}
 \alias{estimator.nleqslv}
 \alias{estimator.trymultiple}
+\alias{scorefunctioncreator}
 \alias{scorefunctioncreator.default}
 \title{Estimators for the PIM parameters}
 \usage{

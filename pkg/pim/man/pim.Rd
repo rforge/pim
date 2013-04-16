@@ -16,7 +16,8 @@
     verbosity = 0, nicenames = TRUE,
     interactions.difference = (interpretation != "marginal"),
     extra.nicenames = data.frame(org = character(), nice = character(), stringsAsFactors = FALSE),
-    check.symmetric = TRUE, threshold = 1e-06)
+    check.symmetric = (interpretation == "regular"),
+    threshold = 1e-06)
 }
 \arguments{
   \item{formula}{Original formula}
@@ -99,11 +100,13 @@
   make sure to use \code{stringsAsFactor=FALSE} when
   creating the \code{data.frame}.}
 
-  \item{check.symmetric}{Defaults to \code{TRUE}: if the
-  model does not support the symmetry condition, a warning
-  is displayed. Note: this option is on by default for
-  novice users, but it may be time- and resourceconsuming,
-  so turn it off if you know what you are doing!}
+  \item{check.symmetric}{Defaults to \code{TRUE} for
+  \code{interpretation=="regular"}, \code{FALSE} otherwise:
+  if the model does not support the symmetry condition, a
+  warning is displayed. Note: this option is on by default
+  for novice users, but it may be time- and
+  resourceconsuming, so turn it off if you know what you
+  are doing!}
 
   \item{threshold}{When checking the symmetry condition,
   how much digression is allowed.}

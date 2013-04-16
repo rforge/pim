@@ -46,7 +46,8 @@
 #' 	\code{org} and \code{nice}. For each "constructed" column name, provide a nicer one,  
 #' 	that will make the results more readable. You may also use parts of constructed column 
 #' 	names. Note: make sure to use \code{stringsAsFactor=FALSE} when creating the \code{data.frame}.
-#' @param check.symmetric Defaults to \code{TRUE}: if the model does not support the
+#' @param check.symmetric Defaults to \code{TRUE} for \code{interpretation=="regular"},
+#' 	\code{FALSE} otherwise: if the model does not support the
 #'  symmetry condition, a warning is displayed. Note: this option is on by default for
 #'  novice users, but it may be time- and resourceconsuming, so turn it off if you know
 #'  what you are doing!
@@ -93,7 +94,7 @@ pim<-function(formula, data, link=c("logit", "identity", "probit", "inverse", "1
 							lhs=c("PO", "<", "<="), keep.data=FALSE, verbosity=0, 
 							nicenames=TRUE, interactions.difference=(interpretation!="marginal"),
 							extra.nicenames=data.frame(org=character(), nice=character(), stringsAsFactors=FALSE),
-							check.symmetric=TRUE, threshold=1e-6)
+							check.symmetric=(interpretation == "regular"), threshold=1e-6)
 {
 	this.call<-match.call()
 	link<-match.arg(link)

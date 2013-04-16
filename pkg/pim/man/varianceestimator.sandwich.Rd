@@ -1,4 +1,5 @@
 \name{varianceestimator.sandwich}
+\alias{varianceestimator}
 \alias{varianceestimator.bootstrap}
 \alias{varianceestimator.glm}
 \alias{varianceestimator.H0}
