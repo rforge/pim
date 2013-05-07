@@ -52,6 +52,11 @@
 #'  novice users, but it may be time- and resourceconsuming, so turn it off if you know
 #'  what you are doing!
 #' @param threshold When checking the symmetry condition, how much digression is allowed.
+#' @param weights Defaults to \code{NULL}: vector of weights for every row of \code{data}, or
+#' 		\code{NULL} if no weighting is required.
+#' @param pseudoweights Defaults to \code{\link{pseudoweights.default}}: function that can convert
+#' 	weights by observation to weights per pseudo-observation. Should have the same signature
+#' 	and outcome as \code{\link{pseudoweights.default}}.
 #' @return An object of class \code{pim},which is a list with items:
 #' \item{coefficients}{Parameter estimates. See \code{\link{estimator.nleqslv}}} 
 #' \item{morefitinfo }{Parameter estimation info. See \code{\link{estimator.nleqslv}}} 
@@ -94,7 +99,8 @@ pim<-function(formula, data, link=c("logit", "identity", "probit", "inverse", "1
 							lhs=c("PO", "<", "<="), keep.data=FALSE, verbosity=0, 
 							nicenames=TRUE, interactions.difference=(interpretation!="marginal"),
 							extra.nicenames=data.frame(org=character(), nice=character(), stringsAsFactors=FALSE),
-							check.symmetric=(interpretation == "regular"), threshold=1e-6)
+							check.symmetric=(interpretation == "regular"), threshold=1e-6, weights=NULL, 
+							pseudoweights=pseudoweights.default)
 {
 	this.call<-match.call()
 	link<-match.arg(link)
@@ -102,14 +108,16 @@ pim<-function(formula, data, link=c("logit", "identity", "probit", "inverse", "1
 	.fulfillreqs(varianceestimator)
 	if(is.function(poset))
 	{
-		poset<-poset(data, formula, verbosity=verbosity-1)
+		poset<-poset(data, formula, weights=weights, verbosity=verbosity-1)
 		data<-poset$data
+		weights<-poset$weights
 		poset<-poset$poset
 	}
 	if(verbosity>0) cat("Get design matrix and converted formula\n")
 	pfd<-pim.fit.prep(formula=formula, data=data, blocking.variables=blocking.variables, poset=poset, leftsuffix=leftsuffix, rightsuffix=rightsuffix, 
 										interpretation=interpretation, na.action=na.action, lhs=lhs, verbosity=verbosity-1, nicenames=nicenames,
-										interactions.difference=interactions.difference, extra.nicenames=extra.nicenames, check.symmetric=check.symmetric, link=link)
+										interactions.difference=interactions.difference, extra.nicenames=extra.nicenames, check.symmetric=check.symmetric, link=link,
+										weights=weights, pseudoweights=pseudoweights)
 	if(verbosity>0) cat("Coefficient and covariance estimates\n")
 	actualfit<-pim.fit(pfd=pfd, link=link, estimator=estimator, varianceestimator=varianceestimator, verbosity=verbosity-1, nicenames=nicenames)
 	

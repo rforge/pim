@@ -2,7 +2,7 @@
 #' 
 #' Convert formula to pim formula (incorporating L/R and poset)
 #' 
-#' @aliases pimformula pim.fit.prep pimformula-class pimfitdata-class pimfitdata
+#' @aliases pimformula pim.fit.prep pimformula-class pimfitdata-class pimfitdata pseudoweights.default
 #' 
 #' @param formula Original formula
 #' @param data Context where the formula \code{formula} is to be interpreted
@@ -231,6 +231,10 @@ pimformula<-function(formula, data, interpretation=c("difference", "regular", "m
 #' @param check.symmetric Defaults to \code{TRUE}: if the model does not support the
 #'  symmetry condition, a warning is displayed.
 #' @param link,threshold See \code{\link{pim}}: only needed to check the symmetry condition.
+#' @param weights Defaults to \code{NULL}: vector of weights for every row of \code{data}.
+#' @param pseudoweights Defaults to \code{pseudoweights.default}: function that can convert
+#' 	weights by observation to weights per pseudo-observation. Should have the same signature
+#' 	and outcome as \code{pseudoweights.default}.
 #' @return For \code{pim.fit.prep}: an object of class "pimfitdata". The items in this object are:
 #' \item{X}{The design matrix in pseudo-observation space} 
 #' \item{Y }{The pseudo-observations} 
@@ -241,6 +245,8 @@ pimformula<-function(formula, data, interpretation=c("difference", "regular", "m
 #' \item{pimformula }{Result of \code{pimformula} function.}
 #' \item{original.colnames }{If \code{nicenames} was \code{TRUE}, this will hold the column names
 #' 	before "nicing up".}
+#' \item{weights }{Vector of weights for every item in \code{Y} or \code{NULL} if no
+#' 		weights are to be applied.}
 #' @note TODO: Should probably disallow using intercept in some cases
 #' Also have to consider whether passing in contrasts is relevant/possible
 #' @seealso \code{\link{Lreplacetext}}
@@ -257,7 +263,7 @@ pim.fit.prep<-function(formula, data, blocking.variables=character(), poset=t(co
 											 interpretation=c("difference", "regular", "marginal", "symmetric"), na.action=na.fail, lhs=c("PO", "<", "<="), 
 											 verbosity=0,  nicenames=TRUE, interactions.difference=(interpretation!="marginal"), 
 											 extra.nicenames=data.frame(org=character(), nice=character(), stringsAsFactors=FALSE),
-											 check.symmetric=TRUE, link, threshold=1e-6)
+											 check.symmetric=TRUE, link, threshold=1e-6, weights=NULL, pseudoweights=pseudoweights.default)
 {
 	interpretation<-match.arg(interpretation)
 	interactions.difference<-interactions.difference[1]
@@ -271,7 +277,7 @@ pim.fit.prep<-function(formula, data, blocking.variables=character(), poset=t(co
 	{
 		dd<-.LRDiffData(data=data, poset=poset, resp=formulaconv$orgresp, formula=formulaconv$newformula, suffixes=c(leftsuffix, rightsuffix))
 		
-		retval<-list(Y=dd$Y, X=dd$X, poset=poset, intercept=FALSE, pimformula=formulaconv, original.colnames=colnames(dd$X))
+		retval<-list(Y=dd$Y, X=dd$X, poset=poset, intercept=FALSE, pimformula=formulaconv, original.colnames=colnames(dd$X), weights=pseudoweights(poset, weights) )
 		class(retval)<-"pimfitdata"
 		return(retval)
 		
@@ -294,7 +300,7 @@ pim.fit.prep<-function(formula, data, blocking.variables=character(), poset=t(co
 				#Note: the "self"-pseudo-observations occur twice in this poset, because they
 				#represent their own "inverse"
 				
-				qpd<-.quickpimdata(pimform=formulaconv, data=data, poset=cposet, na.action=na.action, nicenames=FALSE, verbosity=verbosity-1, makenames=.symrownames)
+				qpd<-.quickpimdata(pimform=formulaconv, data=data, poset=cposet, na.action=na.action, nicenames=FALSE, verbosity=verbosity-1, makenames=.symrownames, weights=NULL)
 				
 				issym<-.quicksimcheck(qpd$X, link, threshold=threshold)
 				if(! issym) warning("The PIM model does not fulfill the symmetry condition, so will be valid at most for a subset of the pseudo-observations.")
@@ -303,6 +309,21 @@ pim.fit.prep<-function(formula, data, blocking.variables=character(), poset=t(co
 		}
 	}
 	
-	retval<-.quickpimdata(pimform=formulaconv, data=data, poset=poset, na.action=na.action, nicenames=nicenames, verbosity=verbosity-1)
+	retval<-.quickpimdata(pimform=formulaconv, data=data, poset=poset, na.action=na.action, nicenames=nicenames, verbosity=verbosity-1, weights=pseudoweights(poset, weights))
 	return(retval)
+}
+
+#' @rdname pimformula
+#' 
+#' @return For \code{pseudoweights.default}: a vector holding one "pseudo-weight",
+#' 		i.e. a weight per pseudo-observation. May be \code{NULL} if the incoming
+#' 		weight was as well.
+#' @details This is the default for the \code{pseudoweights} parameter to \code{pim.fit.prep}
+#' 	and will simply multiply the weights of each observation to get to the weight of the
+#' 	pseudo-observations.
+#' @export
+pseudoweights.default<-function(poset, weights)
+{
+	if(is.null(weights)) return(NULL)
+	return(weights[poset[,1]] * weights[poset[,2]])
 }

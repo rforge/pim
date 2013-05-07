@@ -6,12 +6,15 @@
 #' 
 #' @param data Context where the formula \code{formula} is to be interpreted
 #' @param formula Original formula
+#' @param weights Vector of weights per row of \code{data} or \code{NULL}.
 #' @param verbosity The higher this value, the more levels of progress and debug 
 #' information is displayed (note: in R for Windows, turn off buffered output)
-#' @return List with 2 items:
+#' @return List with 3 items:
 #' \item{data}{Similar to the passed along \code{data}, but may contain fewer rows.} 
 #' \item{poset }{Matrix of two columns indicating what the original observation number is
 #' 	for the left and right real observation in the pseudo-observation.} 
+#' \item{weights }{Weight to be applied to each row of the dataset. Should contain one
+#' 		weight per row of data (and match its order) or equal \code{NULL}} 
 #' @details The provided implementations differ as follows:
 #' \enumerate{
 #' \item \code{fullposet} Contains all combinations of rowindices.
@@ -45,31 +48,32 @@
 #' 	lexiposet(dta, y~x)$poset
 #' 	onewayposet(dta, y~x)$poset
 #' @export
-fullposet<-function(data, formula, verbosity=0)
+fullposet<-function(data, formula, weights=NULL, verbosity=0)
 {
 	n<-nrow(data)
 	
 	org<-seq(n)
 	poset<-cbind(rep(org, n), rep(org, each=n))
-	return(list(data=data, poset=poset))
+	return(list(data=data, poset=poset, weights=weights))
 }
 
 #' @rdname fullposet
 #' 
 #' @export
-noselfposet<-function(data, formula, verbosity=0)
+noselfposet<-function(data, formula, weights=NULL, verbosity=0)
 {
 	n<-nrow(data)
-	rv<-fullposet(data, formula, verbosity)
+	rv<-fullposet(data, formula, weights=weights, verbosity)
 	selfrefs<-(seq(n)*(n+1))-n
 	rv$poset<-rv$poset[-selfrefs,]
+	if(!is.null(rv$weights)) rv$weights<-rv$weights[-selfrefs]
 	return(rv)
 }
 
 #' @rdname fullposet
 #' 
 #' @export
-lexiposet<-function(data, formula, verbosity=0)
+lexiposet<-function(data, formula, weights=NULL, verbosity=0)
 {
 	#First, extract the single variable from formula!
 	rhs<-as.character(formula)[3]
@@ -89,16 +93,18 @@ lexiposet<-function(data, formula, verbosity=0)
 	{
 		cat("lexiposet will reorder the data based on these variables:", actualVars, "\n")
 	}
-	data <- data[do.call(order, data[,actualVars, drop=FALSE]), ]
-	return(onewayposet(data = data, formula=formula, verbosity=verbosity))
+	ordr<-do.call(order, data[,actualVars, drop=FALSE])
+	data <- data[ordr, ]
+	if(!is.null(weights)) weights<-weights[ordr]
+	return(onewayposet(data = data, formula=formula, weights=weights, verbosity=verbosity))
 }
 
 #' @rdname fullposet
 #' 
 #' @export
-onewayposet<-function(data, formula, verbosity=0)
+onewayposet<-function(data, formula, weights=NULL, verbosity=0)
 {
-	list(data=data, poset=t(combn(nrow(data),2)))
+	list(data=data, poset=t(combn(nrow(data),2)), weights=weights)
 }
 
 #' @rdname fullposet
@@ -108,11 +114,11 @@ onewayposet<-function(data, formula, verbosity=0)
 forcedcolorderonewayposet<-function(columnnames=NULL)
 {
 	force(columnnames)
-	fn<-function(data, formula, verbosity=0)
+	fn<-function(data, formula, weights=NULL, verbosity=0)
 	{
 		if(is.null(columnnames)) columnnames<-colnames(data)
 		data <- data[do.call(order, data[,columnnames, drop=FALSE]), ]
-		return(onewayposet(data = data, formula=formula, verbosity=verbosity))
+		return(onewayposet(data = data, formula=formula, weights=weights, verbosity=verbosity))
 	}
 	return(fn)
 }
@@ -130,7 +136,7 @@ forcedposet<-function(diffcols=NULL, LLessRcols=NULL, RLessLcols=NULL, no.equals
 	force(diffcols)
 	force(LLessRcols)
 	force(RLessLcols)
-	fn<-function(data, formula, verbosity=0)
+	fn<-function(data, formula, weights=NULL, verbosity=0)
 	{
 		ps<-fullposet(data, formula, verbosity-1)
 		ocols<-list()
@@ -146,7 +152,9 @@ forcedposet<-function(diffcols=NULL, LLessRcols=NULL, RLessLcols=NULL, no.equals
 		if(length(ocols)>0)
 		{
 			#First, we order the data according to the given columns
-			data <- data[do.call(order, ocols),]
+			ordr<-do.call(order, ocols)
+			data <- data[ordr,]
+			if(!is.null(weights)) weights<-weights[ordr]
 			if(no.equals)
 			{
 				#Now, we simply have to avoid the rows where both values are equal
@@ -195,7 +203,7 @@ forcedposet<-function(diffcols=NULL, LLessRcols=NULL, RLessLcols=NULL, no.equals
 		lobs<-rep(seq_along(allowed), sapply(allowed, length))
 		robs<-do.call(c, allowed)
 		
-		return(list(data = data, poset = cbind(lobs, robs)))
+		return(list(data = data, poset = cbind(lobs, robs), weights=weights))
 	}
 	return(fn)
 }

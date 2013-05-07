@@ -2,7 +2,7 @@
 #' 
 #' Pseudo-observation variance sandwich estimator
 #' 
-#' @aliases posandwich.estimator posandwich.estimator.Uforposandwich Uforposandwich.default Uforposandwich.fakeH0 Uforposandwich-class Uforposandwich
+#' @aliases posandwich.estimator posandwich.estimator.Uforposandwich Uforposandwich.default Uforposandwich.fakeH0 Uforposandwich-class Uforposandwich variance.estimator
 #' 
 #' @param U See the formula for sandwich estimator: holds \code{U_{ij}}
 #' @param U.diff See the formula for sandwich estimator: holds the partial derivatives of \code{U}.
@@ -128,8 +128,9 @@ posandwich.estimator.Uforposandwich<-function(Uforposandwich, poset, verbosity=0
 #' 
 #' @param Zbeta Matrix holding \code{Z^T beta}
 #' @param Z Design Matrix in the pseudo-observations.
-#' @param Y Pseudo-observations.
+#' @param Y Pseudo-outcomes.
 #' @param link Name of the link function.
+#' @param W Weights to be applied to the pseudo-observations.
 #' @return For \code{Uforposandwich.default}/\code{Uforposandwich.fakeH0}: an object of class 
 #' 	\code{"Uforposandwich"}, holding items:
 #' \item{U}{see the matching parameter to \code{posandwich.estimator}} 
@@ -142,27 +143,33 @@ posandwich.estimator.Uforposandwich<-function(Uforposandwich, poset, verbosity=0
 #' 	estimator. \code{\link{Uforposandwich.fakeH0}} is provided to generally estimate the
 #' 	variance under H0 (with identity link) through the same sandwich estimator code.
 #' @export
-Uforposandwich.default<-function(Zbeta, Z, Y, link)
+Uforposandwich.default<-function(Zbeta, Z, Y, link, W=NULL)
 {
+	if(! is.null(W))
+	{
+		warning("Currently, weights are not supported in Uforposandwich.default They will be ignored.")
+	}
 	Zbeta <- c(Zbeta)
 	Y <- c(Y)
 	if(link == "probit")
 	{
 		fv <- pnorm(Zbeta)
 		var.PI <- fv*(1-fv)
-		var.PI <- ifelse(var.PI==0,0.01,var.PI) #correction?? Not mentioned in the article!!
+		var.PI <- ifelse(var.PI==0,0.01,var.PI) #correction, not mentioned in the article, low impact
 		m.d <- dnorm(Zbeta)
 		m.dd <- -m.d*Zbeta 
 		res <- Y-fv
 		U <- Z*m.d*res/var.PI
+		#if(!is.null(W)) U<-W * U
 		U.diff <- t(Z)%*%(Z*c((var.PI*(m.dd*res - m.d^2) - res*m.d^2*(1-2*fv))/var.PI^2))
 	}
 	else if(link == "logit")
 	{
 		fv <- plogis(Zbeta)
 		var.PI <- fv*(1-fv)
-		var.PI <- ifelse(var.PI==0,0.01,var.PI) #correction?? Not mentioned in the article!!
+		var.PI <- ifelse(var.PI==0,0.01,var.PI) #correction, not mentioned in the article, low impact
 		U <- Z*c(Y-fv)
+		#if(!is.null(W)) U<-W * U
 		U.diff <- -t(Z)%*%(Z*c(var.PI))
 	}
 	else if(link == "identity")
@@ -170,12 +177,14 @@ Uforposandwich.default<-function(Zbeta, Z, Y, link)
 		#note: for identity, we leave out the variance. This is OK
 		fv<-Zbeta
 		U <- Z*c(Y-fv)
+		#if(!is.null(W)) U<-W * U
 		U.diff <- -t(Z)%*%(Z)
 	}
 	else
 	{
 		stop(paste("Unsupported link function for Uforposandwich.default:"), link)
 	}
+	
 	rv<-list(U=U, U.diff=U.diff, fv=fv, shared.factor=1, switched.factor=1, self.factor=1)
 	class(rv)<-"Uforposandwich"
 	return(rv)
@@ -184,11 +193,15 @@ Uforposandwich.default<-function(Zbeta, Z, Y, link)
 #' @rdname posandwich.estimator
 #' 
 #' @export
-Uforposandwich.fakeH0<-function(Zbeta, Z, Y, link)
+Uforposandwich.fakeH0<-function(Zbeta, Z, Y, link, W=NULL)
 {
 	if(link != "identity")
 	{
 		stop("You are using Uforposandwich.fakeH0 and thus probably varianceestimator.H0. This is only correct if the link function is the identity.")
+	}
+	if(! is.null(W))
+	{
+		warning("Currently, weights are not supported in Uforposandwich.fakeH0. They will be ignored.")
 	}
 	Zbeta <- c(Zbeta)
 	

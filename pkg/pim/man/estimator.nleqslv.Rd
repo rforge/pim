@@ -30,7 +30,7 @@
 
   estimator.trymultiple(scoreFunctionCreator = scorefunctioncreator.default)
 
-  scorefunctioncreator.default(Z, Y, link)
+  scorefunctioncreator.default(Z, Y, link, W = NULL)
 
   estimator.lqa(control = lqa.control(), penalty = NULL,
     method = "lqa.update2", standardize = TRUE,
@@ -72,9 +72,12 @@
 
   \item{Z}{Pseudo-observation design matrix}
 
-  \item{Y}{Pseudo-observations.}
+  \item{Y}{Pseudo-outcomes.}
 
   \item{link}{Name of the link function.}
+
+  \item{W}{Weights to be applied to the
+  pseudo-observations.}
 
   \item{penalty}{Any \code{lqa}-supported penalty.}
 }

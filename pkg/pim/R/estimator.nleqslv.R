@@ -60,7 +60,7 @@ estimator.nleqslv<-function(jac = NULL, method = c("Broyden", "Newton"),
 	force(scoreFunctionCreator)
 	force(treat.convergence.error)
 	rv<-function(startvalues=NULL, pfd, link)	{
-		fn<-scoreFunctionCreator(pfd$X,pfd$Y,link)
+		fn<-scoreFunctionCreator(pfd$X,pfd$Y,link, pfd$weights)
 		if(is.null(startvalues)) startvalues<-rep(0, ncol(pfd$X))
 		thefit<-nleqslv(startvalues, fn, jac = jac, method = method, global = global, xscalm = xscalm, control = control)
 		fit.x <- thefit$x
@@ -151,7 +151,7 @@ estimator.BB<-function(method=c(2,3,1), control=list(), quiet=FALSE,
 	force(scoreFunctionCreator)
 	force(treat.convergence.error)
 	rv<-function(startvalues=NULL, pfd, link)	{
-		fn<-scoreFunctionCreator(pfd$X,pfd$Y,link)
+		fn<-scoreFunctionCreator(pfd$X,pfd$Y,link, pfd$weights)
 		if(is.null(startvalues)) startvalues<-rep(0, ncol(pfd$X))
 		thefit<-BBsolve(startvalues, fn, method = method, control = control, quiet = quiet )
 		fit.x <- thefit$par
@@ -213,30 +213,37 @@ attr(estimator.trymultiple, "reqs")<-c("nleqslv", "BB")
 #' @rdname estimator.nleqslv
 #' 
 #' @param Z Pseudo-observation design matrix
-#' @param Y Pseudo-observations.
+#' @param Y Pseudo-outcomes.
 #' @param link Name of the link function.
+#' @param W Weights to be applied to the pseudo-observations.
 #' @return For \code{scorefunctioncreator.default}: a function that takes a set of parameter 
 #' 	estimates (\code{beta}) and calculates a set of values that should be solved for zero.
 #' @export
-scorefunctioncreator.default<-function(Z,Y,link)
+scorefunctioncreator.default<-function(Z,Y,link, W=NULL)
 {
 	if (link == "probit") {
 		U.func <- function(beta) {
 			Zbeta <- c(Z %*% beta)
-			colSums(Z * dnorm(Zbeta) * c(Y - pnorm(Zbeta))/c(pnorm(Zbeta) * (1 - pnorm(Zbeta))))
+			summat<-Z * dnorm(Zbeta) * c(Y - pnorm(Zbeta))/c(pnorm(Zbeta) * (1 - pnorm(Zbeta)))
+			if(! is.null(W)) summat<-summat * W
+			colSums(summat)
 		}
 	}
 	else if (link == "logit"){
 		U.func <- function(beta) {
 			Zbeta <- c(Z %*% beta)
-			colSums(Z * c(Y - plogis(Zbeta)))
+			summat<-Z * c(Y - plogis(Zbeta))
+			if(! is.null(W)) summat<-summat * W
+			colSums(summat)
 		}
 	}
-	else if (link == "identity") #have to check this, but it should be right
+	else if (link == "identity")
 	{
 		U.func <- function(beta) {
 			Zbeta <- as.vector(c(Z %*% beta))
-			colSums(Z * c(Y - Zbeta))
+			summat<-Z * c(Y - Zbeta)
+			if(! is.null(W)) summat<-summat * W
+			colSums(summat)
 		}
 	}
 	else

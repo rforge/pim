@@ -613,7 +613,7 @@
 
 .onLoad<-function(libname, pkgname)
 {
-	packageStartupMessage("Loading pim version 1.1.3.3")
+	packageStartupMessage("Loading pim version 1.1.5.1")
 }
 
 .handleSpecialData<-function(intercept.handling=FALSE, yties.handling=TRUE,  pfd)
@@ -634,7 +634,7 @@
 		}
 	}
 	
-	wts<-rep(1, length(Y))
+	wts<-if(is.null(pfd$weights)) rep(1, length(Y)) else pfd$weights
 	if(yties.handling)
 	{
 		#If we find Y-values equal to 0.5 (indicating ties), we handle this by weighted fitting
@@ -645,7 +645,8 @@
 			ties<-1+istie
 			tiereps<-rep(seq_along(ties), ties)
 			X<-X[tiereps,] #repeat the rows with ties twice
-			wts<-1/ties[tiereps] #weight those doubled observations by a half
+			wts<-wts[tiereps] #similar for the weights
+			wts<-wts/ties[tiereps] #weight the doubled observations by a half
 			multiplyby<-do.call(c,lapply(istie, function(curtie){if(!curtie) 1 else c(0,2)}))
 			Y<-Y[tiereps] * multiplyby
 		}
@@ -719,7 +720,7 @@
 	return(list(data=data, poset=poset))
 }
 
-.quickpimdata<-function(pimform, data, poset, na.action=na.fail, nicenames=TRUE, verbosity=0, makenames=.stdrownames)
+.quickpimdata<-function(pimform, data, poset, na.action=na.fail, nicenames=TRUE, verbosity=0, makenames=.stdrownames, weights=NULL)
 {
 	newstartdfr<-.LRData(data, poset, pimform$left.variables, pimform$right.variables, makenames=makenames)
 	
@@ -761,7 +762,7 @@
 		pimform$names<-cn
 	}
 	
-	retval<-list(Y=Y, X=X, poset=poset, intercept=intercept, pimformula=pimform, original.colnames=orgcn)
+	retval<-list(Y=Y, X=X, poset=poset, intercept=intercept, pimformula=pimform, original.colnames=orgcn, weights=weights)
 	class(retval)<-"pimfitdata"
 	
 	return(retval)

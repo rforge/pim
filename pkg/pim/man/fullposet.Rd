@@ -8,13 +8,13 @@
 \alias{poset}
 \title{Get a set of pseudo-observation observation indices}
 \usage{
-  fullposet(data, formula, verbosity = 0)
+  fullposet(data, formula, weights = NULL, verbosity = 0)
 
-  noselfposet(data, formula, verbosity = 0)
+  noselfposet(data, formula, weights = NULL, verbosity = 0)
 
-  lexiposet(data, formula, verbosity = 0)
+  lexiposet(data, formula, weights = NULL, verbosity = 0)
 
-  onewayposet(data, formula, verbosity = 0)
+  onewayposet(data, formula, weights = NULL, verbosity = 0)
 
   forcedcolorderonewayposet(columnnames = NULL)
 
@@ -26,6 +26,9 @@
   to be interpreted}
 
   \item{formula}{Original formula}
+
+  \item{weights}{Vector of weights per row of \code{data}
+  or \code{NULL}.}
 
   \item{verbosity}{The higher this value, the more levels
   of progress and debug information is displayed (note: in
@@ -49,11 +52,14 @@
   combined.}
 }
 \value{
-  List with 2 items: \item{data}{Similar to the passed
+  List with 3 items: \item{data}{Similar to the passed
   along \code{data}, but may contain fewer rows.}
   \item{poset }{Matrix of two columns indicating what the
   original observation number is for the left and right
   real observation in the pseudo-observation.}
+  \item{weights }{Weight to be applied to each row of the
+  dataset. Should contain one weight per row of data (and
+  match its order) or equal \code{NULL}}
 }
 \description{
   Get a set of pseudo-observation observation indices

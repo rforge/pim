@@ -5,6 +5,7 @@
 \alias{Uforposandwich-class}
 \alias{Uforposandwich.default}
 \alias{Uforposandwich.fakeH0}
+\alias{variance.estimator}
 \title{Pseudo-observation variance sandwich estimator}
 \usage{
   posandwich.estimator(U, U.diff, g1, g2,
@@ -14,9 +15,9 @@
   posandwich.estimator.Uforposandwich(Uforposandwich,
     poset, verbosity = 0)
 
-  Uforposandwich.default(Zbeta, Z, Y, link)
+  Uforposandwich.default(Zbeta, Z, Y, link, W = NULL)
 
-  Uforposandwich.fakeH0(Zbeta, Z, Y, link)
+  Uforposandwich.fakeH0(Zbeta, Z, Y, link, W = NULL)
 }
 \arguments{
   \item{U}{See the formula for sandwich estimator: holds
@@ -53,9 +54,12 @@
 
   \item{Z}{Design Matrix in the pseudo-observations.}
 
-  \item{Y}{Pseudo-observations.}
+  \item{Y}{Pseudo-outcomes.}
 
   \item{link}{Name of the link function.}
+
+  \item{W}{Weights to be applied to the
+  pseudo-observations.}
 }
 \value{
   For \code{posandwich.estimator(.Uforposandwich)}: the

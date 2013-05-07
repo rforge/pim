@@ -17,7 +17,8 @@
     interactions.difference = (interpretation != "marginal"),
     extra.nicenames = data.frame(org = character(), nice = character(), stringsAsFactors = FALSE),
     check.symmetric = (interpretation == "regular"),
-    threshold = 1e-06)
+    threshold = 1e-06, weights = NULL,
+    pseudoweights = pseudoweights.default)
 }
 \arguments{
   \item{formula}{Original formula}
@@ -110,6 +111,16 @@
 
   \item{threshold}{When checking the symmetry condition,
   how much digression is allowed.}
+
+  \item{weights}{Defaults to \code{NULL}: vector of weights
+  for every row of \code{data}, or \code{NULL} if no
+  weighting is required.}
+
+  \item{pseudoweights}{Defaults to
+  \code{\link{pseudoweights.default}}: function that can
+  convert weights by observation to weights per
+  pseudo-observation. Should have the same signature and
+  outcome as \code{\link{pseudoweights.default}}.}
 }
 \value{
   An object of class \code{pim},which is a list with items:

@@ -4,6 +4,7 @@
 \alias{pimfitdata-class}
 \alias{pimformula}
 \alias{pimformula-class}
+\alias{pseudoweights.default}
 \title{Convert formula to pim formula}
 \usage{
   pimformula(formula, data,
@@ -25,7 +26,10 @@
     verbosity = 0, nicenames = TRUE,
     interactions.difference = (interpretation != "marginal"),
     extra.nicenames = data.frame(org = character(), nice = character(), stringsAsFactors = FALSE),
-    check.symmetric = TRUE, link, threshold = 1e-06)
+    check.symmetric = TRUE, link, threshold = 1e-06,
+    weights = NULL, pseudoweights = pseudoweights.default)
+
+  pseudoweights.default(poset, weights)
 }
 \arguments{
   \item{formula}{Original formula}
@@ -109,6 +113,15 @@
 
   \item{link,threshold}{See \code{\link{pim}}: only needed
   to check the symmetry condition.}
+
+  \item{weights}{Defaults to \code{NULL}: vector of weights
+  for every row of \code{data}.}
+
+  \item{pseudoweights}{Defaults to
+  \code{pseudoweights.default}: function that can convert
+  weights by observation to weights per pseudo-observation.
+  Should have the same signature and outcome as
+  \code{pseudoweights.default}.}
 }
 \value{
   For \code{pimformula}: an object of class "pimformula".
@@ -145,7 +158,13 @@
   contains an intercept.} \item{pimformula }{Result of
   \code{pimformula} function.} \item{original.colnames }{If
   \code{nicenames} was \code{TRUE}, this will hold the
-  column names before "nicing up".}
+  column names before "nicing up".} \item{weights }{Vector
+  of weights for every item in \code{Y} or \code{NULL} if
+  no weights are to be applied.}
+
+  For \code{pseudoweights.default}: a vector holding one
+  "pseudo-weight", i.e. a weight per pseudo-observation.
+  May be \code{NULL} if the incoming weight was as well.
 }
 \description{
   Convert formula to pim formula (incorporating L/R and
@@ -166,6 +185,11 @@
 
   Some sanity checks are already performed, but not all of
   them (I guess)
+
+  This is the default for the \code{pseudoweights}
+  parameter to \code{pim.fit.prep} and will simply multiply
+  the weights of each observation to get to the weight of
+  the pseudo-observations.
 }
 \note{
   TODO: Should probably disallow using intercept in some
