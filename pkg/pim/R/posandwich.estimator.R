@@ -145,10 +145,10 @@ posandwich.estimator.Uforposandwich<-function(Uforposandwich, poset, verbosity=0
 #' @export
 Uforposandwich.default<-function(Zbeta, Z, Y, link, W=NULL)
 {
-	if(! is.null(W))
-	{
-		warning("Currently, weights are not supported in Uforposandwich.default They will be ignored.")
-	}
+# 	if(! is.null(W))
+# 	{
+# 		warning("Currently, weights are not supported in Uforposandwich.default They will be ignored.")
+# 	}
 	Zbeta <- c(Zbeta)
 	Y <- c(Y)
 	if(link == "probit")
@@ -160,8 +160,15 @@ Uforposandwich.default<-function(Zbeta, Z, Y, link, W=NULL)
 		m.dd <- -m.d*Zbeta 
 		res <- Y-fv
 		U <- Z*m.d*res/var.PI
-		#if(!is.null(W)) U<-W * U
-		U.diff <- t(Z)%*%(Z*c((var.PI*(m.dd*res - m.d^2) - res*m.d^2*(1-2*fv))/var.PI^2))
+		if(!is.null(W))
+		{
+			U<-W * U
+			U.diff <- t(Z)%*% diag(W) %*%(Z*c((var.PI*(m.dd*res - m.d^2) - res*m.d^2*(1-2*fv))/var.PI^2))
+		}
+		else
+		{
+			U.diff <- t(Z)%*%(Z*c((var.PI*(m.dd*res - m.d^2) - res*m.d^2*(1-2*fv))/var.PI^2))
+		}
 	}
 	else if(link == "logit")
 	{
@@ -169,16 +176,30 @@ Uforposandwich.default<-function(Zbeta, Z, Y, link, W=NULL)
 		var.PI <- fv*(1-fv)
 		var.PI <- ifelse(var.PI==0,0.01,var.PI) #correction, not mentioned in the article, low impact
 		U <- Z*c(Y-fv)
-		#if(!is.null(W)) U<-W * U
-		U.diff <- -t(Z)%*%(Z*c(var.PI))
+		if(!is.null(W))
+		{
+			U<-W * U
+			U.diff <- -t(Z)%*% diag(W) %*%(Z*c(var.PI))
+		}
+		else
+		{
+			U.diff <- -t(Z)%*%(Z*c(var.PI))
+		}
 	}
 	else if(link == "identity")
 	{
 		#note: for identity, we leave out the variance. This is OK
 		fv<-Zbeta
 		U <- Z*c(Y-fv)
-		#if(!is.null(W)) U<-W * U
-		U.diff <- -t(Z)%*%(Z)
+		if(!is.null(W))
+		{
+			U<-W * U
+			U.diff <- -t(Z)%*% diag(W) %*%(Z)
+		}
+		else
+		{
+			U.diff <- -t(Z)%*%(Z)
+		}
 	}
 	else
 	{

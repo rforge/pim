@@ -34,7 +34,7 @@ varianceestimator.sandwich<-function(Uforposandwich=Uforposandwich.default)
 	force(Uforposandwich) #so that it will be available in the function we return
 	actualfunction<-function(estimationresult, pfd, link, estimator, verbosity=0)
 	{
-		SV.tmp <- Uforposandwich(pfd$X%*%estimationresult$coefficients, pfd$X, pfd$Y, link) 
+		SV.tmp <- Uforposandwich(pfd$X%*%estimationresult$coefficients, pfd$X, pfd$Y, link, W=pfd$weights) 
 		varcov <-   posandwich.estimator.Uforposandwich(SV.tmp, pfd$poset, verbosity=verbosity)
 		rownames(varcov) <- colnames(varcov) <- names(estimationresult$coefficients)
 		return(list(vcov=varcov, morevarfitinfo=SV.tmp))
