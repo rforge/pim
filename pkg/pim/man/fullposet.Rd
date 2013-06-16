@@ -59,7 +59,9 @@
   real observation in the pseudo-observation.}
   \item{weights }{Weight to be applied to each row of the
   dataset. Should contain one weight per row of data (and
-  match its order) or equal \code{NULL}}
+  match its order) or equal \code{NULL}. Important: if
+  order of data is changed/rows are left out: update
+  weights as well!}
 }
 \description{
   Get a set of pseudo-observation observation indices

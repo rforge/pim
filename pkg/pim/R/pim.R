@@ -90,6 +90,11 @@
 #' 		org="I((R(Sepal.Length) - L(Sepal.Length))/sqrt(R(Sepal.Length) * L(Sepal.Length)) )", 
 #' 		nice="Sepal.Length.WDiff", stringsAsFactors=FALSE))
 #' pimc<-pim(out~O(xord), data=iris, link="logit", interpretation="regular")
+#' ##And an example with weighted fitting
+#' iris50<-iris[sample.int(nrow(iris), 50),]
+#' rwt50<-runif(50) #50 random weights
+#' pimd<-pim(out~O(xord), data=iris50, link="logit", interpretation="regular",
+#' 		weights = rwt50)
 #' @export
 pim<-function(formula, data, link=c("logit", "identity", "probit", "inverse", "1/mu^2", "log"), 
 							blocking.variables=character(),

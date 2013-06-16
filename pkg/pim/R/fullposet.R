@@ -14,7 +14,8 @@
 #' \item{poset }{Matrix of two columns indicating what the original observation number is
 #' 	for the left and right real observation in the pseudo-observation.} 
 #' \item{weights }{Weight to be applied to each row of the dataset. Should contain one
-#' 		weight per row of data (and match its order) or equal \code{NULL}} 
+#' 		weight per row of data (and match its order) or equal \code{NULL}. Important: if
+#' 		order of data is changed/rows are left out: update weights as well!} 
 #' @details The provided implementations differ as follows:
 #' \enumerate{
 #' \item \code{fullposet} Contains all combinations of rowindices.
@@ -66,7 +67,6 @@ noselfposet<-function(data, formula, weights=NULL, verbosity=0)
 	rv<-fullposet(data, formula, weights=weights, verbosity)
 	selfrefs<-(seq(n)*(n+1))-n
 	rv$poset<-rv$poset[-selfrefs,]
-	if(!is.null(rv$weights)) rv$weights<-rv$weights[-selfrefs]
 	return(rv)
 }
 
@@ -117,7 +117,9 @@ forcedcolorderonewayposet<-function(columnnames=NULL)
 	fn<-function(data, formula, weights=NULL, verbosity=0)
 	{
 		if(is.null(columnnames)) columnnames<-colnames(data)
-		data <- data[do.call(order, data[,columnnames, drop=FALSE]), ]
+		ordr<-do.call(order, data[,columnnames, drop=FALSE])
+		data <- data[ordr, ]
+		if(!is.null(weights)) weights<-weights[ordr]
 		return(onewayposet(data = data, formula=formula, weights=weights, verbosity=verbosity))
 	}
 	return(fn)
