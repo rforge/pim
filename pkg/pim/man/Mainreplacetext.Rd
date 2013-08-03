@@ -86,7 +86,7 @@
   turns it into the matching formula text for
   pseudo-observations.
 
-  The replace ment texts currently look like this for each
+  The replacement texts currently look like this for each
   of the functions (assuming the default suffixes, and
   where relevant \code{X} a three-level (ordered) factor):
   \itemize{ \item{\code{X}} becomes \code{X_R} if
@@ -106,11 +106,18 @@
   \code{I(as.numeric(as.numeric(X_L)==as.numeric(X_R)))} or
   \code{I(as.numeric(as.numeric(X_L)<as.numeric(X_R)) +
   0.5*as.numeric(as.numeric(X_L)==as.numeric(X_R)))}
-  depending on \code{lhs} } Please note that these
-  replacements will only work for column names present in
-  \code{data}, and not for "calculated" columns. Trying
-  this will likely result in unpredictable behaviour or
-  errors.
+  depending on \code{lhs} } The above is valid for
+  interpretation "regular". For interpretation "symmetric",
+  here are the different results: \itemize{
+  \item{\code{F(X)}} becomes
+  \code{I((as.numeric(X_L="lvl1"&X_R=="lvl2"))-(as.numeric(X_R=="lvl1"&X_L=="lvl2")))}
+  (summed for all ordered combinations of levels)
+  \item{\code{O(X)}} becomes
+  \code{I(as.numeric(as.numeric(X_L)<as.numeric(X_R))-as.numeric(as.numeric(X_R)<as.numeric(X_L)))}
+  } Please note that these replacements will only work for
+  column names present in \code{data}, and not for
+  "calculated" columns. Trying this will likely result in
+  unpredictable behaviour or errors.
 }
 \examples{
 iris$Spord<-as.ordered(iris$Species)

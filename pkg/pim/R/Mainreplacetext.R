@@ -30,7 +30,7 @@
 #' @details Each of these functions (except \code{Mainreplacetext}) takes parts of a formula
 #' 	like \code{"L(somevar)"} and turns it into the matching formula text for pseudo-observations.
 #' 	
-#' 	The replace ment texts currently look like this for each of the functions (assuming the 
+#' 	The replacement texts currently look like this for each of the functions (assuming the 
 #' 	default suffixes, and where relevant \code{X} a three-level (ordered) factor):
 #' 	\itemize{
 #' 	\item{\code{X}} becomes \code{X_R} if \code{interpretation} is \code{"marginal"}, and \code{I(as.numeric(X_R)-as.numeric(X_L))} otherwise
@@ -43,6 +43,12 @@
 #' 		\code{I(as.numeric(as.numeric(X_L)==as.numeric(X_R)))} or
 #' 		\code{I(as.numeric(as.numeric(X_L)<as.numeric(X_R)) + 0.5*as.numeric(as.numeric(X_L)==as.numeric(X_R)))}
 #' 		depending on \code{lhs}
+#' 	}
+#' 	The above is valid for interpretation "regular". For interpretation "symmetric", here are the 
+#' 	different results:
+#' 	\itemize{
+#' 	\item{\code{F(X)}} becomes \code{I((as.numeric(X_L="lvl1"&X_R=="lvl2"))-(as.numeric(X_R=="lvl1"&X_L=="lvl2")))} (summed for all ordered combinations of levels)
+#' 	\item{\code{O(X)}} becomes \code{I(as.numeric(as.numeric(X_L)<as.numeric(X_R))-as.numeric(as.numeric(X_R)<as.numeric(X_L)))}
 #' 	}
 #' 	Please note that these replacements will only work for column names present in \code{data}, and not for 
 #' 	"calculated" columns. Trying this will likely result in unpredictable behaviour or errors.
@@ -154,7 +160,7 @@ Freplacetext<-function(varn, data, verbosity=0, leftsuffix="_L", rightsuffix="_R
 	{
 		uselvls<-combn(lvls, 2)
 		parts<-paste("I((as.numeric(", varn, leftsuffix, "==\"", uselvls[1,], "\"&",varn, rightsuffix, "==\"", uselvls[2,], 
-								 "\"))+(as.numeric(", varn, rightsuffix, "==\"", uselvls[1,], "\"&",varn, leftsuffix, "==\"", uselvls[2,], "\")))", sep="")
+								 "\"))-(as.numeric(", varn, rightsuffix, "==\"", uselvls[1,], "\"&",varn, leftsuffix, "==\"", uselvls[2,], "\")))", sep="")
 		reppart<-paste("(", paste(parts, collapse="+"), ")", sep="")
 		nicename<-paste(varn,leftsuffix, rightsuffix, sep="")
 		nicename<-paste(nicename,"_", uselvls[1,], ",", uselvls[2,], "-", uselvls[2,], ",", uselvls[1,], sep="")
@@ -187,7 +193,7 @@ Oreplacetext<-function(varn, data, verbosity=0, leftsuffix="_L", rightsuffix="_R
 		if(verbosity>0) cat("Should not apply O to non-ordered variable", varn, "\n")
 	}
 	
-	if(interpretation=="marginal")
+	if(interpretation=="symmetric")
 	{
 		reppart<-paste("I((as.numeric(as.numeric(", varn, leftsuffix, ")<as.numeric(", varn, rightsuffix, 
 									 ")))-(as.numeric(as.numeric(", varn, rightsuffix, ")<as.numeric(", varn, leftsuffix, "))))", sep="")
