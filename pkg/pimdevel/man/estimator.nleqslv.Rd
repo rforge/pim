@@ -1,0 +1,144 @@
+\name{estimator.nleqslv}
+\alias{estimator}
+\alias{estimator.BB}
+\alias{estimator.glm}
+\alias{estimator.glmnet}
+\alias{estimator.lqa}
+\alias{estimator.nleqslv}
+\alias{estimator.trymultiple}
+\alias{scorefunctioncreator}
+\alias{scorefunctioncreator.default}
+\title{Estimators for the PIM parameters}
+\usage{
+  estimator.nleqslv(jac = NULL,
+    method = c("Broyden", "Newton"),
+    global = c("dbldog", "pwldog", "qline", "gline", "none"),
+    xscalm = c("fixed", "auto"),
+    control = list(ftol = 1e-06),
+    scoreFunctionCreator = scorefunctioncreator.default,
+    treat.convergence.error = c("warn", "error", "log", "ignore"))
+
+  estimator.glm(control = list())
+
+  estimator.glmnet(alpha = 1, nlambda = 100, lambda = NULL,
+    standardize = TRUE, penalize.intercepts = FALSE)
+
+  estimator.BB(method = c(2, 3, 1), control = list(),
+    quiet = FALSE,
+    scoreFunctionCreator = scorefunctioncreator.default,
+    treat.convergence.error = c("warn", "error", "log", "ignore"))
+
+  estimator.trymultiple(scoreFunctionCreator = scorefunctioncreator.default)
+
+  scorefunctioncreator.default(Z, Y, link, W = NULL)
+
+  estimator.lqa(control = lqa.control(), penalty = NULL,
+    method = "lqa.update2", standardize = TRUE,
+    penalize.intercepts = FALSE)
+}
+\arguments{
+  \item{jac,global,xscalm}{See \code{\link{nleqslv}}.}
+
+  \item{method}{See \code{\link{nleqslv}} / \code{BBsolve}
+  / \code{lqa}.}
+
+  \item{control}{See \code{\link{nleqslv}} / \code{BBsolve}
+  / \code{\link{glm.fit}} / \code{lqa}.}
+
+  \item{scoreFunctionCreator}{Function that will create the
+  score vector function. This defaults to
+  \code{scorefunctioncreator.default} and should be of the
+  same form (and return a function of the same form as
+  \code{scorefunctioncreator.default}).}
+
+  \item{treat.convergence.error}{Defaults to \code{"warn"},
+  so a warning will be issued with the errorcode of the
+  \code{\link{nleqslv}} or \code{BBsolve} call.
+  \code{"error"} will generate an error on convergence
+  issues. \code{"log"} will simply note the occurence in
+  the output window and \code{"ignore"} will do just that.
+  In most situations you can avoid the convergence issues
+  by properly specifying the nleqslv parameters. This can
+  be investigated e.g. through
+  \code{estimator.trymultiple}.}
+
+  \item{alpha,nlambda,lambda,standardize}{See
+  \code{glmnet}.}
+
+  \item{penalize.intercepts}{If an intercept is present in
+  the model, penalize it or not.}
+
+  \item{quiet}{See \code{BBsolve}.}
+
+  \item{Z}{Pseudo-observation design matrix}
+
+  \item{Y}{Pseudo-outcomes.}
+
+  \item{link}{Name of the link function.}
+
+  \item{W}{Weights to be applied to the
+  pseudo-observations.}
+
+  \item{penalty}{Any \code{lqa}-supported penalty.}
+}
+\value{
+  These functions (\code{estimator.*}) each return a
+  function themselves. The returned function should have
+  three parameters (\code{startvalues}, a set of initial
+  estimates of the parameters; \code{pfd}, an object of
+  class \code{\link{pimfitdata}} ; \code{link}, the name of
+  the link function) and should itself return a list of two
+  items: \item{coefficients}{The parameter estimates}
+  \item{morefitinfo }{Implementation specific information
+  on the fit}
+
+  For \code{scorefunctioncreator.default}: a function that
+  takes a set of parameter estimates (\code{beta}) and
+  calculates a set of values that should be solved for
+  zero.
+}
+\description{
+  Estimators for the PIM parameters
+}
+\details{
+  These functions estimate the coefficients (/parameters)
+  of the PIM by solving the (sometimes) nonlinear
+  equations. Each calls upon another library for the
+  solution and some may be more accurate / correct /
+  performant depending on the specific model.
+
+  \code{estimator.glm} returns the regular
+  \code{\link{glm}} estimate (assuming the pseudo-
+  observations are independent)
+
+  \code{estimator.glmnet} returns the elsatic net penalized
+  \code{glmnet} estimate (assuming, again, the
+  pseudo-observations are independent)
+
+  For the different implementations, \code{morefitinfo}
+  contains: \enumerate{ \item \code{estimator.nleqslv} The
+  return value of the \code{\link{nleqslv}} call \item
+  \code{estimator.glm} The return value of the
+  \code{\link{glm}} call \item{estimator.glmnet} The return
+  value of the \code{glmnet} call, with some added items:
+  \code{usedalpha}, \code{usedfamily},\code{usedoffset} and
+  \code{standardize} \item \code{estimator.BB} The return
+  value of the \code{BBsolve} call }
+
+  \code{estimator.trymultiple} is a special case that will
+  simply try to use \code{nleqslv}, \code{} and \code{}
+  with several parameters, hoping that one may lead to a
+  fit. Although it provides the best chance of getting a
+  fit, take care in assuring that the fit matches the
+  covariance estimator! Also be aware that this may be
+  slow.
+}
+\note{
+  For \code{estimator.glmnet}, \code{coefficients} contains
+  a sparse \code{\link{matrix}} holding the coefficient
+  estimates and intercept (!) for all lambda values.
+}
+\keyword{coefficient}
+\keyword{estimate}
+\keyword{pim}
+

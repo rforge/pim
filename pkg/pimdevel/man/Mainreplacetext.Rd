@@ -1,0 +1,143 @@
+\name{Mainreplacetext}
+\alias{Freplacetext}
+\alias{LHSreplacetext}
+\alias{Lreplacetext}
+\alias{Mainreplacetext}
+\alias{Oreplacetext}
+\alias{Rreplacetext}
+\title{Pseudo-observation formula conversion helpers}
+\usage{
+  Mainreplacetext(varn, data, verbosity = 0,
+    leftsuffix = "_L", rightsuffix = "_R",
+    interpretation = c("regular", "difference", "marginal", "symmetric"))
+
+  LHSreplacetext(varn, data, verbosity = 0,
+    leftsuffix = "_L", rightsuffix = "_R",
+    interpretation = c("regular", "difference", "marginal", "symmetric"),
+    lhs = c("PO", "<", "<="))
+
+  Freplacetext(varn, data, verbosity = 0,
+    leftsuffix = "_L", rightsuffix = "_R",
+    interpretation = c("regular", "difference", "marginal", "symmetric"))
+
+  Oreplacetext(varn, data, verbosity = 0,
+    leftsuffix = "_L", rightsuffix = "_R",
+    interpretation = c("regular", "difference", "marginal", "symmetric"))
+
+  Lreplacetext(varn, data, verbosity = 0,
+    leftsuffix = "_L", rightsuffix = "_R",
+    interpretation = c("regular", "difference", "marginal", "symmetric"))
+
+  Rreplacetext(varn, data, verbosity = 0,
+    leftsuffix = "_L", rightsuffix = "_R",
+    interpretation = c("regular", "difference", "marginal", "symmetric"))
+}
+\arguments{
+  \item{varn}{\code{character} holding the variable
+  (column) name that will be considered.}
+
+  \item{data}{Context where the column name can be
+  interpreted}
+
+  \item{verbosity}{The higher this value, the more levels
+  of progress and debug information is displayed (note: in
+  R for Windows, turn off buffered output)}
+
+  \item{leftsuffix,rightsuffix}{Suffixes that will be added
+  to the 'left' and 'right' observation's column name in
+  the pseudo-observation. Note: no checking is done that
+  these suffixes are safe, so the wrong suffixes may lead
+  to unexpected behaviour.}
+
+  \item{interpretation}{If \code{"marginal"} (not the
+  default) parts of the formula are converted to imply
+  marginal pim modeling (see e.g.
+  \code{\link{Mainreplacetext}}). If it is
+  \code{"difference"}, then the design matrix of the PIM is
+  the difference of the design matrices of each part of the
+  pseudo-observations. The default option is
+  \code{"regular"}, which will interpret unaltered columns
+  as differences. A new option is \code{"symmetric"}, which
+  works the same as \code{"regular"}, but will enforce the
+  symmetry condition by making the sign switch when
+  changing the order (typically, this is achieved by
+  subtracting the inverse for each dummy).}
+
+  \item{lhs}{\code{"PO"}, \code{"<"} or \code{"<="}:
+  Unequality used for the lefthandside of the formula. The
+  default (\code{"PO"}) is the normal probabilistic index.}
+}
+\value{
+  A vector of at least two \code{character} values. The
+  first one is the "find" text, the second one holds the
+  "replace" text. Depending on the function, this may or
+  may not hold regular expressions.  What comes after these
+  first two items are more character values. the first half
+  of these represent the expected names of the resulting
+  columns in the design matrix, the second half are (in the
+  same order) somewhat cleaned up names for them.
+}
+\description{
+  Pseudo-observation formula conversion helpers
+}
+\details{
+  Each of these functions (except \code{Mainreplacetext})
+  takes parts of a formula like \code{"L(somevar)"} and
+  turns it into the matching formula text for
+  pseudo-observations.
+
+  The replacement texts currently look like this for each
+  of the functions (assuming the default suffixes, and
+  where relevant \code{X} a three-level (ordered) factor):
+  \itemize{ \item{\code{X}} becomes \code{X_R} if
+  \code{interpretation} is \code{"marginal"}, and
+  \code{I(as.numeric(X_R)-as.numeric(X_L))} otherwise
+  \item{\code{F(X)}} becomes
+  \code{(I(as.numeric(X_R=="lvl1"))+I(as.numeric(X_R=="lvl2"))+I(as.numeric(X_R=="lvl3")))}
+  if \code{interpretation} is \code{"marginal"}, and
+  \code{(
+  I(as.numeric(X_L=="lvl1"&X_R=="lvl2"))+I(as.numeric(X_L=="lvl1"&X_R=="lvl3"))+I(as.numeric(X_L=="lvl2"&X_R=="lvl3")))}
+  otherwise \item{\code{O(X)}} becomes
+  \code{I(as.numeric(as.numeric(X_L)<as.numeric(X_R)))}
+  \item{\code{L(X)}} becomes \code{X_L} \item{\code{R(X)}}
+  becomes \code{X_R} \item{\code{Y} on the left hand side}
+  becomes
+  \code{I(as.numeric(as.numeric(X_L)<as.numeric(X_R)))},
+  \code{I(as.numeric(as.numeric(X_L)==as.numeric(X_R)))} or
+  \code{I(as.numeric(as.numeric(X_L)<as.numeric(X_R)) +
+  0.5*as.numeric(as.numeric(X_L)==as.numeric(X_R)))}
+  depending on \code{lhs} } The above is valid for
+  interpretation "regular". For interpretation "symmetric",
+  here are the different results: \itemize{
+  \item{\code{F(X)}} becomes
+  \code{I((as.numeric(X_L="lvl1"&X_R=="lvl2"))-(as.numeric(X_R=="lvl1"&X_L=="lvl2")))}
+  (summed for all ordered combinations of levels)
+  \item{\code{O(X)}} becomes
+  \code{I(as.numeric(as.numeric(X_L)<as.numeric(X_R))-as.numeric(as.numeric(X_R)<as.numeric(X_L)))}
+  } Please note that these replacements will only work for
+  column names present in \code{data}, and not for
+  "calculated" columns. Trying this will likely result in
+  unpredictable behaviour or errors.
+}
+\examples{
+iris$Spord<-as.ordered(iris$Species)
+Mainreplacetext("Sepal.Length", iris, verbosity=1)
+LHSreplacetext("Sepal.Length", iris, verbosity=1)
+Freplacetext("Species", iris, verbosity=1)
+Oreplacetext("Spord", iris, verbosity=1)
+Lreplacetext("Sepal.Length", iris, verbosity=1)
+Rreplacetext("Sepal.Length", iris, verbosity=1)
+Mainreplacetext("Sepal.Length", iris, verbosity=1, interpretation="marginal")
+LHSreplacetext("Sepal.Length", iris, verbosity=1, interpretation="marginal")
+Freplacetext("Species", iris, verbosity=1, interpretation="marginal")
+Oreplacetext("Spord", iris, verbosity=1, interpretation="marginal")
+Lreplacetext("Sepal.Length", iris, verbosity=1, interpretation="marginal")
+Rreplacetext("Sepal.Length", iris, verbosity=1, interpretation="marginal")
+}
+\seealso{
+  \code{\link{pimformula}}
+}
+\keyword{formula}
+\keyword{pim}
+\keyword{replace}
+
