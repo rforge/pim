@@ -52,7 +52,7 @@ null hypotheses.
 
 Code to check the equivalence (note this includes a legacy implementation):
 <<>>=
-	library(pim)
+	library(pimdevel)
 	set.seed(1)
 	wmw1<-demo.WilcoxonMannWhitney()
 	wmw1$pim2<-pim(y~F(x)-1, data=wmw1$dta, link="identity", poset=lexiposet, 
