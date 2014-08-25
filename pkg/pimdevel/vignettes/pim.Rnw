@@ -38,7 +38,9 @@
 \tableofcontents
 \section{Introduction}\label{S_intro}
 
-This document explains and illustrates how the \pim{pim}-package can be employed to fit a Probabilistic Index Model (PIM). We refer to \cite{Thas2012} for a detailed overview on PIMs. If $(Y,X)$ and $(Y',X')$ are i.i.d. then a PIM is defined as
+This document explains and illustrates how the \pim{pimdevel}-package can be employed to fit a Probabilistic Index Model (PIM). Note that the \pim{pimdevel}-package contains more and different functionality compared to the \pim{pim}-package, and is especially suited for developing and testing more esoteric models.
+
+We refer to \cite{Thas2012} for a detailed overview on PIMs. If $(Y,X)$ and $(Y',X')$ are i.i.d. then a PIM is defined as
 \begin{equation}\label{pim}
 \prob{Y \leqs Y' | X, X'} = m(X,X';\beta) = g^{-1}(Z^T \beta) \quad \text{for} \quad (X,X') \in \mathcal{X},
 \end{equation}
@@ -152,13 +154,13 @@ For the childhood respiratory disease study we consider the PIM with interaction
 \end{eqnarray*}
 Because this PIM corresponds to a covariate vector $Z$ of the form $Z = X' -X$, with $X^T = (AGE, SMOKE, AGE*SMOKE)$, the formula statement of \texttt{pim()} is similar to the formula statement of \texttt{lm()} and \texttt{glm()}. We first read in the data
 <<>>=
-library(pim)
+library(pimdevel)
 data("FEVData")
 head(FEVData)
 @
 Here \verb|FEV| stands for the forced expiratory volume ($FEV$), \verb|Age| for the age of the child ($AGE$) and \verb|Smoke| whether a child smokes or not ($SMOKE$). We fit the PIM:
 <<>>=
-library('pim')
+library('pimdevel')
 pim.fit1 <- pim(FEV ~ Age*Smoke-1, data = FEVData, link="logit", 
   poset=lexiposet, estimator=estimator.nleqslv(), 
   keep.data=TRUE, interpretation="regular")
