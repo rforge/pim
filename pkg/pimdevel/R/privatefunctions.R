@@ -613,7 +613,7 @@
 
 .onLoad<-function(libname, pkgname)
 {
-	packageStartupMessage("Loading pim version 1.1.5.3")
+	packageStartupMessage("Loading pimdevel version 1.1.5.4. This package is meant for developing new methods and testing esoteric models. For normal fitting, please use the pim package instead.")
 }
 
 .handleSpecialData<-function(intercept.handling=FALSE, yties.handling=TRUE,  pfd)
