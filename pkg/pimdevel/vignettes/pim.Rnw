@@ -1,8 +1,8 @@
 % -*- mode: noweb; noweb-default-code-mode: R-mode; -*-
 %\VignetteIndexEntry{An R package for fitting probabilistic index models}
 %\VignetteKeyword{probabilistic index model, regression}
-%\VignetteDepends{pim}
-%\VignettePackage{pim}
+%\VignetteDepends{pimdevel}
+%\VignettePackage{pimdevel}
 %documentclass[12pt, a4paper]{article}
 \documentclass[12pt]{article}
 

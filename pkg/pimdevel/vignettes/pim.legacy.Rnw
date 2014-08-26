@@ -1,8 +1,8 @@
 % -*- mode: noweb; noweb-default-code-mode: R-mode; -*-
 %\VignetteIndexEntry{PIMs as classical distribution free tests}
 %\VignetteKeyword{probabilistic index model, distribution, legacy}
-%\VignetteDepends{pim}
-%\VignettePackage{pim}
+%\VignetteDepends{pimdevel}
+%\VignettePackage{pimdevel}
 %documentclass[12pt, a4paper]{article}
 \documentclass[12pt]{article}
 

@@ -59,6 +59,12 @@ estimator.nleqslv<-function(jac = NULL, method = c("Broyden", "Newton"),
 	force(control)
 	force(scoreFunctionCreator)
 	force(treat.convergence.error)
+  
+  # This solves the problem with nleqslv temporarily.
+  # TODO: needs to be overhauled seriously!
+  
+  global <- match.arg(global)
+  
 	rv<-function(startvalues=NULL, pfd, link)	{
 		fn<-scoreFunctionCreator(pfd$X,pfd$Y,link, pfd$weights)
 		if(is.null(startvalues)) startvalues<-rep(0, ncol(pfd$X))
