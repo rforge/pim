@@ -1,8 +1,8 @@
 Package: pim
 Type: Package
 Title: Probabilistic Index Models
-Version: 1.1.5.4
-Date: 2013-08-03
+Version: 1.1.5.5
+Date: 2013-09-17
 Author: Nick Sabbe, Jan De Neve
 Maintainer: Nick Sabbe <Nick.Sabbe@Ugent.be>
 Description: Fit a probabilistic index model.
@@ -17,30 +17,3 @@ Suggests:
     lqa
 License: GPL (>= 2)
 URL: http://pim.r-forge.r-project.org/
-Collate:
-    'Mainreplacetext.R'
-    'crossvalidate.pim.R'
-    'estimator.nleqslv.R'
-    'fullposet.R'
-    'pim-package.R'
-    'pim.R'
-    'pim.fit.R'
-    'pimformula.R'
-    'posandwich.estimator.R'
-    'print.pim.R'
-    'privatefunctions.R'
-    'varianceestimator.sandwich.R'
-    'IPI.R'
-    'demo.WilcoxonMannWhitney.R'
-    'legacy.WilcoxonMannWhitney.R'
-    'simplifiedpimestimation.marginalcoefficients.R'
-    'plot.pim.R'
-    'summary.pim.R'
-    'DysData.R'
-    'Engeldata.R'
-    'FEVData.R'
-    'MHData.R'
-    'add.varianceestimate.R'
-    'classical.test.R'
-    'SUData.R'
-    'pimsym.R'
