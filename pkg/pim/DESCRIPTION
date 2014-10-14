@@ -2,10 +2,12 @@ Package: pim
 Type: Package
 Title: Probabilistic Index Models
 Version: 1.1.5.5
-Date: 2013-09-17
+Date: 2013-10-14
 Author: Nick Sabbe, Jan De Neve
 Maintainer: Nick Sabbe <Nick.Sabbe@Ugent.be>
-Description: Fit a probabilistic index model.
+Description: Fit a probabilistic index model. Note that we're currently
+    reworking the package, including the interface (see pimdevel). When 2.0
+    comes out, back-compatibility is not guaranteed.
 Depends:
     R (>= 2.12),
     Matrix,

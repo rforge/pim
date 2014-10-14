@@ -4,7 +4,7 @@
 \alias{pim-package}
 \title{Probabilistic Index Models}
 \description{
-Fit a probabilistic index model.
+Fit a probabilistic index model. Note that we're currently reworking the package, including the interface. When 2.0 comes out, we can't guarantee back-compatibility.
 }
 \details{
 \tabular{ll}{ Package: \tab pim\cr Type: \tab Package\cr Version: \tab
@@ -12,7 +12,7 @@ Fit a probabilistic index model.
 LazyLoad: \tab yes\cr Depends: R (>= 2.12), Matrix, nleqslv, MASS\cr Suggests: glmnet (>= 1.9-3), BB, lqa}
 }
 \author{
-Nick Sabbe \email{Nick.Sabbe@UGent.be} Jan De Neve \email{JanR.DeNeve@UGent.be}
+Nick Sabbe \email{Nick.Sabbe@UGent.be} Jan De Neve \email{JanR.DeNeve@UGent.be} Joris Meys \email{Joris.Meys@UGent.be}
 }
 \references{
 [PENDING]
