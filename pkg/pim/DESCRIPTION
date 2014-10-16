@@ -1,8 +1,8 @@
 Package: pim
 Type: Package
 Title: Probabilistic Index Models
-Version: 1.1.5.5
-Date: 2013-10-14
+Version: 1.1.5.6
+Date: 2014-10-16
 Author: Nick Sabbe, Jan De Neve
 Maintainer: Nick Sabbe <Nick.Sabbe@Ugent.be>
 Description: Fit a probabilistic index model. Note that we're currently
@@ -13,6 +13,8 @@ Depends:
     Matrix,
     nleqslv,
     MASS
+Imports:
+    utils
 Suggests:
     glmnet (>= 1.9-3),
     BB,

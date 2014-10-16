@@ -4,11 +4,11 @@
 \alias{pimdevel-package}
 \title{Probabilistic Index Models}
 \description{
-Fit a probabilistic index model. This package contains quite different functionality, and is meant for development of new methods. For standard analysis, please use the pim package instead of the pimdevel package.
+Fit a probabilistic index model. This package is the latest version of the pim package, and will end up being pim 2.0. It's a beta, so don't expect back compatibility with previous versions of pim
 }
 \details{
 \tabular{ll}{ Package: \tab pimdevel\cr Type: \tab Package\cr Version: \tab
-1.1.5.4\cr Date: \tab 2013-08-03\cr License: \tab GPL (>= 2)\cr
+1.1.6.0\cr Date: \tab 2014-10-16\cr License: \tab GPL (>= 2)\cr
 LazyLoad: \tab yes\cr Depends: R (>= 2.12), Matrix, nleqslv, MASS\cr Suggests: glmnet (>= 1.9-3), BB, lqa}
 }
 \author{

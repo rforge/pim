@@ -158,7 +158,7 @@ Freplacetext<-function(varn, data, verbosity=0, leftsuffix="_L", rightsuffix="_R
 	}
 	else if(interpretation=="symmetric")
 	{
-		uselvls<-combn(lvls, 2)
+		uselvls<-utils:::combn(lvls, 2)
 		parts<-paste("I((as.numeric(", varn, leftsuffix, "==\"", uselvls[1,], "\"&",varn, rightsuffix, "==\"", uselvls[2,], 
 								 "\"))-(as.numeric(", varn, rightsuffix, "==\"", uselvls[1,], "\"&",varn, leftsuffix, "==\"", uselvls[2,], "\")))", sep="")
 		reppart<-paste("(", paste(parts, collapse="+"), ")", sep="")

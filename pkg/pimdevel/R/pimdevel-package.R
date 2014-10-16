@@ -3,7 +3,7 @@
 #' Fit a probabilistic index model. This package is the latest version of the pim package, and will end up being pim 2.0. It's a beta, so don't expect back compatibility with previous versions of pim 
 #' 
 #' \tabular{ll}{ Package: \tab pimdevel\cr Type: \tab Package\cr Version: \tab
-#' 1.1.5.6\cr Date: \tab 2013-08-03\cr License: \tab GPL (>= 2)\cr
+#' 1.1.6.0\cr Date: \tab 2014-10-16\cr License: \tab GPL (>= 2)\cr
 #' LazyLoad: \tab yes\cr Depends: R (>= 2.12), Matrix, nleqslv, MASS\cr Suggests: glmnet (>= 1.9-3), BB, lqa} 
 #' @name pimdevel-package
 #' @aliases pimdevel-package
@@ -12,6 +12,7 @@
 #' @references [PENDING]
 #' @keywords package
 #' @import Matrix nleqslv MASS 
+#' @importFrom utils combn
 NULL
 
 

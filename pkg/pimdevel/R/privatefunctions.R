@@ -610,10 +610,13 @@
 	rv<-rbind2(p1,z)
 	return(rv)
 }
-
 .onLoad<-function(libname, pkgname)
 {
-	packageStartupMessage("Loading pimdevel version 1.1.5.4. This package is meant for developing new methods and testing esoteric models. For normal fitting, please use the pim package instead.")
+  version <- packageVersion("pim")
+  message <- paste("Loading pimdevel version",
+                   version,
+                   "\nThis package is meant for developing new methods and testing esoteric models. For normal fitting, please use the pim package instead.")
+  packageStartupMessage(message)
 }
 
 .handleSpecialData<-function(intercept.handling=FALSE, yties.handling=TRUE,  pfd)
