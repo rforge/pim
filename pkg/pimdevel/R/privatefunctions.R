@@ -612,7 +612,7 @@
 }
 .onLoad<-function(libname, pkgname)
 {
-  version <- packageVersion("pim")
+  version <- packageVersion("pimdevel")
   message <- paste("Loading pimdevel version",
                    version,
                    "\nThis package is meant for developing new methods and testing esoteric models. For normal fitting, please use the pim package instead.")
