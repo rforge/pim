@@ -1,23 +1,17 @@
 Package: pimdevel
 Type: Package
 Title: Probabilistic Index Models
-Version: 1.1.6.0
-Date: 2014-10-16
-Author: Nick Sabbe, Jan De Neve
-Maintainer: Nick Sabbe <Nick.Sabbe@Ugent.be>
+Version: 1.9.0.0
+Date: 2014-12-03
+Author: Joris Meys, Nick Sabbe, Jan De Neve
+Maintainer: Joris Meys <Joris.Meys@Ugent.be>
 Description: Fit a probabilistic index model. This package is the latest
-    version of the pim package, and will end up being pim 2.0. It's a beta, so
-    don't expect back compatibility with previous versions of pim
+    version of the pim package, and will end up being pim 2.0. It's an alpha, so
+    don't expect all functionality yet. For pim fitting, use the pim package.
 Depends:
-    R (>= 2.12),
-    Matrix,
-    nleqslv,
-    MASS
+    R (>= 3.0)
 Imports:
-    utils
+    methods
 Suggests:
-    glmnet (>= 1.9-3),
-    BB,
-    lqa
 License: GPL (>= 2)
 URL: http://pim.r-forge.r-project.org/
