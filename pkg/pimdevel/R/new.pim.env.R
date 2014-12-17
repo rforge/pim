@@ -14,6 +14,7 @@
 #' \code{\link{parent.env()}}
 #' 
 #' @return an object of the class 
+#' @include pim.environment-class.R
 setGeneric("new.pim.env",
            function(data,poset=FALSE,...){
              standardGeneric("new.pim.env")

@@ -40,6 +40,8 @@
 #' this object is part of. This is done automatically by the function
 #' \code{\link{add.poset}}.
 #' 
+#' @include pim.poset-class.R
+#' 
 setGeneric("new.pim.poset",
            function(compare,nobs,parent=parent.frame(),...){
              standardGeneric("new.pim.poset")

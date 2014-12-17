@@ -9,6 +9,8 @@
 #' @return an integer with the information in the nobs slot. If the
 #' environment is empty, it returns \code{NA}
 #' 
+#' @include pim.environment-class.R
+#' 
 setGeneric("nobs",function(x) standardGeneric("nobs"))
 
 setMethod("nobs",

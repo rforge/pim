@@ -12,6 +12,24 @@ Depends:
     R (>= 3.0)
 Imports:
     methods
-Suggests:
-License: GPL (>= 2)
-URL: http://pim.r-forge.r-project.org/
+License: NA
+URL: NA
+Collate:
+    'DysData.R'
+    'Engeldata.R'
+    'FEVData.R'
+    'InternalFunctions.R'
+    'LR.R'
+    'MHData.R'
+    'SUData.R'
+    'create.poset.R'
+    'evalPimExpression.R'
+    'make.posfun.R'
+    'pim.poset-class.R'
+    'pim.environment-class.R'
+    'new.pim.env.R'
+    'new.pim.poset.R'
+    'nobs.R'
+    'pim.R'
+    'pim.fit.prep.R'
+    'pimdevel-package.R'

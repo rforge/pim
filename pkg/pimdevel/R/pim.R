@@ -24,10 +24,20 @@
 #' this parameter is set automatically to "customized"
 #' 
 #' @param na.action a function which indicates what should happen when the data
-#' contains NAs. The default is set by thhe \code{na.action} setting of
+#' contains NAs. The default is set by the \code{na.action} setting of
 #' \code{\link{options}}, and is \code{\link{na.fail}} when unset. 
 #' 
 #' @param vcov a function to determine the variance-covariance matrix. Possibilities are \code{\link{vcov.sandwich}} and \code{link{vcov.score}}
 #' 
 #' @return An object of class \code{pim}
-#' 
+#' @export
+pim <- function(formula,
+                data,
+                link = c("identity","logit","probit"),
+                compare = c("unique","all"),
+                model = c("difference","marginal",
+                          "regular","customized"),
+                na.action,
+                vcov){
+  NULL
+}

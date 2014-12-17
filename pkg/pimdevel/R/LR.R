@@ -19,7 +19,8 @@
 #' The actual functions used by \code{pim} are saved in a specific environment, a \code{\link{pim.environment}}, which resides in the \code{\link{pim-class}} object returned by \code{pim}. This way of working
 #' is chosen in order to avoid unnecessary copying of data.
 #' 
-#' @warning
+#' @section warning:
+#' 
 #' These functions serve only as placeholder. During the fitting process
 #' of a pim, they get updated to include the posets (the indices that
 #' determine which observations are compared)

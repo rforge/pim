@@ -6,7 +6,7 @@
 #' can be used as a value for its argument \code{compare}.
 #' 
 #' @param compare a character value, either 'unique' or 'all'
-#' @n an single integer value indicating how many observations there
+#' @param n an single integer value indicating how many observations there
 #' are in the model.
 #' @return A named list with 2 elements, called "L" and "R", containing
 #'  the selection indices for the left hand and right hand side of a pim.

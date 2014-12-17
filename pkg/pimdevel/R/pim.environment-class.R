@@ -20,6 +20,8 @@
 #' @slot is.complete a logical value indicating whether or not the poset
 #' was added before. 
 #' 
+#' @include pim.poset-class.R
+#' 
 setClass("pim.environment",
          slots=c(
            poset="pim.poset",
