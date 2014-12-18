@@ -25,7 +25,7 @@ model compares observations. It can take the values "unique" or "all". Alternati
 
 \item{model}{a single character value with possible values "difference"
 (the default), "marginal", "regular" or "customized". If the formula indicates
-a customized model (by the use of \code{\link{L()}} or \code{\link{R()}}),
+a customized model (by the use of \code{\link{L}()} or \code{\link{R}()}),
 this parameter is set automatically to "customized"}
 
 \item{na.action}{a function which indicates what should happen when the data
@@ -40,5 +40,9 @@ An object of class \code{pim}
 \description{
 This function is the main function to fit a probabilistic index model
 or PIM.
+}
+\section{Note}{
+
+THIS FUNCTION DOESN'T DO ANYTHING FOR THE MOMENT. WORK NEEDED.
 }
 

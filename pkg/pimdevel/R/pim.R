@@ -20,7 +20,7 @@
 #' 
 #' @param model a single character value with possible values "difference" 
 #' (the default), "marginal", "regular" or "customized". If the formula indicates
-#' a customized model (by the use of \code{\link{L()}} or \code{\link{R()}}),
+#' a customized model (by the use of \code{\link{L}()} or \code{\link{R}()}),
 #' this parameter is set automatically to "customized"
 #' 
 #' @param na.action a function which indicates what should happen when the data
@@ -30,6 +30,10 @@
 #' @param vcov a function to determine the variance-covariance matrix. Possibilities are \code{\link{vcov.sandwich}} and \code{link{vcov.score}}
 #' 
 #' @return An object of class \code{pim}
+#' 
+#' @section Note:
+#' THIS FUNCTION DOESN'T DO ANYTHING FOR THE MOMENT. WORK NEEDED.
+#' 
 #' @export
 pim <- function(formula,
                 data,

@@ -27,11 +27,20 @@
 #' Note that this makes the functions behave fundamentally
 #' different from what you would expect R. The result of these
 #' functions depends on the context in which they are called.
-#' 
+#' @examples
+#' \dontrun{
+#' pim(income~(L(foodexp) - R(foodexp)), data=Engeldata)
+#' L() # Gives an error
+#' }
+#' @aliases R L
+#' @export
 L <- function(x){
   stop("L() is not correctly defined. Please see ?L for more information.")  
 }
 
+#' @rdname L
+#' @name L
+#' @export
 R <- function(x){
   stop("R() is not correctly defined. Please see ?R for more information.")  
 }

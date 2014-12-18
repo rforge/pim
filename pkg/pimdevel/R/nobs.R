@@ -10,9 +10,10 @@
 #' environment is empty, it returns \code{NA}
 #' 
 #' @include pim.environment-class.R
-#' 
+#' @export
 setGeneric("nobs",function(x) standardGeneric("nobs"))
 
+#' @describeIn nobs
 setMethod("nobs",
           signature="pim.environment",
           function(x){
@@ -23,6 +24,7 @@ setMethod("nobs",
             }
           })
 
+#' @describeIn nobs
 setMethod("nobs",
           signature="pim.poset",
           function(x){

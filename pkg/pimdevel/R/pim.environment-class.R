@@ -7,6 +7,13 @@
 #' behave much like an environment, but contain some extra slots
 #' with information on the objects inside the environment.
 #' 
+#' @section Note: 
+#' This class is not exported, so it can't be extended as for now. 
+#' Although it is possible to use the function \code{\link{new}} for
+#' creation of new instances, users are strongly advised to use
+#' the function \code{\link{new.pim.env}} in case they need to manually
+#' create a new instance of the class \code{pim.environment}.
+#' 
 #' @slot poset an environment of class \code{\link{pim.poset}} containing the  poset-related functions
 #' (normally these are \code{\link{L}} and \code{\link{R}}). This 
 #' environment has the object itself as parent.
@@ -20,6 +27,7 @@
 #' @slot is.complete a logical value indicating whether or not the poset
 #' was added before. 
 #' 
+#' @aliases pim.environment
 #' @include pim.poset-class.R
 #' 
 setClass("pim.environment",

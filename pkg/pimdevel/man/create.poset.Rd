@@ -21,4 +21,8 @@ number of observations and a comparison type. This function is
 called from \code{\link{new.pim.poset}} and returns a list that
 can be used as a value for its argument \code{compare}.
 }
+\examples{
+create.poset(n=10)
+create.poset('all',n=4)
+}
 

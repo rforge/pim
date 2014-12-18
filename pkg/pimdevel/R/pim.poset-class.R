@@ -11,6 +11,12 @@
 #' take the values "unique", "all" and "custom".
 #' @slot nobs an integer value describing the number of observations 
 #' for which this poset is meant to be used. 
+#' 
+#' @section Note:
+#' The pim.poset class doesn't really make sense to be used on itself.
+#' It is part of the \code{\link{pim.environment}} class and shouldn't
+#' be used outside this context.
+#' @aliases pim.poset
 setClass("pim.poset",
          slots = c(compare="character",
                  nobs="integer"),

@@ -40,13 +40,27 @@
 #' this object is part of. This is done automatically by the function
 #' \code{\link{add.poset}}.
 #' 
+#' @param ... arguments passed to other methods.
+#' 
+#' @examples
+#' mypos <- new.pim.poset('unique',n=10) # creates empty environment
+#' ls(mypos)
+#' # Using the created poset functions L and R
+#' # Note this is purely as illustration, this makes no sense
+#' # in the context of a pim analysis.
+#' mypos$L(1:10)
+#' mypos$R(1:10)
+#' 
 #' @include pim.poset-class.R
 #' 
+#' 
+#' @export
 setGeneric("new.pim.poset",
            function(compare,nobs,parent=parent.frame(),...){
              standardGeneric("new.pim.poset")
            })
 
+#' @describeIn new.pim.poset
 setMethod("new.pim.poset",
           signature=c(compare="character",
                       nobs="numeric"),
@@ -58,6 +72,7 @@ setMethod("new.pim.poset",
           }
           )
 
+#' @describeIn new.pim.poset
 setMethod("new.pim.poset",
           signature=c(compare="matrix",
                       nobs="numeric"),
@@ -68,6 +83,7 @@ setMethod("new.pim.poset",
             new.pim.poset(poset,nobs,parent,...)
           })
 
+#' @describeIn new.pim.poset
 setMethod("new.pim.poset",
           signature=c(compare="list",
                       nobs="numeric"),
@@ -97,6 +113,7 @@ setMethod("new.pim.poset",
             out
           })
 
+#' @describeIn new.pim.poset
 setMethod("new.pim.poset",
           signature=c(compare="matrix",
                       nobs="missing"),
@@ -105,6 +122,7 @@ setMethod("new.pim.poset",
             new.pim.poset(compare,nobs,parent,...)
           })
 
+#' @describeIn new.pim.poset
 setMethod("new.pim.poset",
           signature=c(compare="list",
                       nobs="missing"),

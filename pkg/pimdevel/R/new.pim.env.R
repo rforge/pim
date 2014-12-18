@@ -1,7 +1,7 @@
 #' Constructor for a pim.environment
 #' 
 #' This functions serves as a constructor for an object of the class
-#' \code{\link{pim.environment}}. 
+#' \code{\link{pim.environment}}. FUNCTION TO BE COMPLETED
 #' 
 #' @param data a data frame, a list or an environment containing
 #' the data for a probabilistic index model. 
@@ -9,17 +9,26 @@
 #' should be added, or list with 2 elements that give the 
 #' left- and right hand side of the poset. See also \code{\link{create.poset}}
 #' @param env an environment that is the parent environment of the object.
+#' @param data.names An optional character vector with the names of the variables
+#' in the pim environment.
+#' @param classes An optional character vector with the classes of the 
+#' variables in the environment, given in the same order as 
+#' the argument \code{data.names}.
 #' @param ... extra parameters for construction of the poset and
 #' specification of the parent environment of the object. See also
-#' \code{\link{parent.env()}}
+#' \code{\link{parent.env}}
 #' 
-#' @return an object of the class 
+#' @return an object of the class \code{\link{pim.environment}}
 #' @include pim.environment-class.R
+#' @aliases new.pim.env
+#' @examples
+#' new.pim.env() # Creates an empty object
+#' @export
 setGeneric("new.pim.env",
            function(data,poset=FALSE,...){
              standardGeneric("new.pim.env")
            })
-
+#' @describeIn new.pim.env
 setMethod("new.pim.env",
           signature=c(data="missing",
                       poset="ANY"),
@@ -27,6 +36,7 @@ setMethod("new.pim.env",
             new("pim.environment")
           })
 
+#' @describeIn new.pim.env
 setMethod("new.pim.env",
           signature=c(data="environment",
                       poset="ANY"),
@@ -43,6 +53,7 @@ setMethod("new.pim.env",
             out
           })
 
+#' @describeIn new.pim.env
 setMethod("new.pim.env",
           signature=c(data="list",
                       poset="ANY"),
@@ -57,7 +68,6 @@ setMethod("new.pim.env",
             if(length(nobs <- unique(sapply(data,length)))!=1){
               stop("All elements in the list should have the same length")
             }
-            browser()
             .new.pim.env(data,
                          poset,
                          data.names=data.names,
@@ -65,10 +75,11 @@ setMethod("new.pim.env",
                          ...)
           })
 
+#' @describeIn new.pim.env
 setMethod("new.pim.env",
           signature=c(data="data.frame",
                       poset="ANY"),
-          function(data,poset,...){
+          function(data,poset=FALSE,...){
             .new.pim.env(data,poset,...)
           })
 
@@ -84,15 +95,14 @@ setMethod("new.pim.env",
   
   if(!(is.list(poset) || is.logical(poset)))
     stop("poset should be logical or a list.")
-  print(poset)
-  
+    
   if(is.list(poset)){
     
     if(!"custom" %in% compare)
       warning("custom poset specified. Argument compare ignored.")
     
   } else if(poset){
-    
+    # TO BE FINISHED !!!!
   }
   
 }

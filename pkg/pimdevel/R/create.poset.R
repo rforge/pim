@@ -10,7 +10,10 @@
 #' are in the model.
 #' @return A named list with 2 elements, called "L" and "R", containing
 #'  the selection indices for the left hand and right hand side of a pim.
-#' 
+#' @examples
+#' create.poset(n=10)
+#' create.poset('all',n=4)
+#' @export
 create.poset <- function(compare=c('unique','all'),n){
   ind <- seq_len(n)
   unique <- match.arg(compare) == 'unique'
