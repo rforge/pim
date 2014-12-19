@@ -4,31 +4,32 @@
 #' of class \code{\link{pim.environment}}, or the number of observations
 #' for which a \code{\link{pim.poset}} is constructed
 #' 
-#' @param x an object of the class \code{\link{pim.environment}} or \code{\link{pim.poset}}
+#' @param object an object of the class \code{\link{pim.environment}} or \code{\link{pim.poset}}
+#' @param ... arguments passed to other methods
 #' 
 #' @return an integer with the information in the nobs slot. If the
 #' environment is empty, it returns \code{NA}
 #' 
 #' @include pim.environment-class.R
-#' @export
-setGeneric("nobs",function(x) standardGeneric("nobs"))
+#' 
 
 #' @describeIn nobs
 setMethod("nobs",
           signature="pim.environment",
-          function(x){
-            if(identical(x@nobs,integer(0))){
+          function(object){
+            if(identical(object@nobs,integer(0))){
               NA
             } else {
-              x@nobs
+              object@nobs
             }
           })
 
 #' @describeIn nobs
+#' @export
 setMethod("nobs",
           signature="pim.poset",
-          function(x){
-            x@nobs
+          function(object){
+            object@nobs
           }
           
           )

@@ -1,13 +1,22 @@
 #' Constructor for a pim.environment
 #' 
 #' This functions serves as a constructor for an object of the class
-#' \code{\link{pim.environment}}. FUNCTION TO BE COMPLETED
+#' \code{\link{pim.environment}}. In most cases, calling this function directly
+#' is not necessary.
+#' 
+#' @details This function is called during the preparation of the model
+#' matrix for a pim. The resulting object is used to evaluate the formula
+#' of a pim, and stores information on how this is done. 
+#' 
+#' TODO : Currently there's no automatic assignment of a parent frame, but this
+#' will be added in the near future.
 #' 
 #' @param data a data frame, a list or an environment containing
 #' the data for a probabilistic index model. 
 #' @param poset either a logical value indicating whether or not a poset
-#' should be added, or list with 2 elements that give the 
-#' left- and right hand side of the poset. See also \code{\link{create.poset}}
+#' should be added, or otherwise a matrix or list with 2 elements that give the 
+#' left- and right hand side of the poset. See also \code{\link{new.pim.poset}} 
+#' for more information on how to specify a custom poset
 #' @param env an environment that is the parent environment of the object.
 #' @param data.names An optional character vector with the names of the variables
 #' in the pim environment.
@@ -33,8 +42,21 @@ setMethod("new.pim.env",
           signature=c(data="missing",
                       poset="ANY"),
           function(data,poset,...){
+            if(!is.logical(poset))
+              stop("data not specified.")
+            if(poset) 
+              stop("data not specified, so poset cannot be constructed.")
             new("pim.environment")
           })
+
+#' @describeIn new.pim.env
+setMethod("new.pim.env",
+          signature=c(data="missing",
+                      poset="missing"),
+          function(data,poset,...){
+            new("pim.environment")
+          })
+
 
 #' @describeIn new.pim.env
 setMethod("new.pim.env",
@@ -72,6 +94,7 @@ setMethod("new.pim.env",
                          poset,
                          data.names=data.names,
                          classes=classes,
+                         nobs=nobs,
                          ...)
           })
 
@@ -80,7 +103,11 @@ setMethod("new.pim.env",
           signature=c(data="data.frame",
                       poset="ANY"),
           function(data,poset=FALSE,...){
-            .new.pim.env(data,poset,...)
+            .new.pim.env(data,
+                         poset,
+                         data.names=names(data),
+                         nobs=nrow(data),
+                         ...)
           })
 
 # The function .new.pim.env : the actual workhorse.
@@ -88,21 +115,44 @@ setMethod("new.pim.env",
 .new.pim.env <- function(data,poset=FALSE,env=parent.frame(),
                          data.names,
                          classes,
-                         nobs=NULL,
+                         nobs,
                          compare=c('unique','all','custom'),
                          ...){
   object <- new("pim.environment")
   
+  # check input
+  compare <- match.arg(compare)
+  
+  if(missing(classes))
+    classes <- sapply(data,class,simplify=FALSE)
+  
+  if(missing(data.names))
+    data.names <- names(data)
+  
   if(!(is.list(poset) || is.logical(poset)))
     stop("poset should be logical or a list.")
+  
+  # Add information
+  object@.xData <- as.environment(data)
+  object@data.names <- data.names
+  object@classes <- classes
+  object@nobs <- nobs
     
-  if(is.list(poset)){
+  if(!is.logical(poset) & compare != "custom"){
     
-    if(!"custom" %in% compare)
+    if(compare != "custom")
       warning("custom poset specified. Argument compare ignored.")
     
+    object@poset <- new.pim.poset(compare,nobs)
+    object@is.complete <- TRUE
+    
   } else if(poset){
-    # TO BE FINISHED !!!!
+    if(compare == "custom")
+      stop("custom poset not applied as list")
+    object@poset <- new.pim.poset(compare,nobs)
+    object@is.complete <- TRUE
   }
+  validObject(object)
+  object
   
 }
