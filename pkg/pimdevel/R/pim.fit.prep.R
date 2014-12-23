@@ -25,7 +25,7 @@ pim.fit.prep <- function(
   compare <- match.arg(compare)
   
   # Get info on formula
-  orig.terms <- terms(formula, specials=c('L','R','I','f')) 
+  orig.terms <- terms(formula, specials=c('L','R','I')) 
   varnames <- all.vars(orig.terms)
   fenv <- environment(formula)
   

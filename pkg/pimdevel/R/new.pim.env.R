@@ -71,6 +71,10 @@ setMethod("new.pim.env",
             out@data.names <- data.names
             out@classes <- classes
             out@nobs <- length(get(data.names[1],envir=data,inherits=FALSE))
+            
+            # create poset
+            
+            
             validObject(out)
             out
           })

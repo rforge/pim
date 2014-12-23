@@ -25,6 +25,17 @@
 #' column/element as the left poset, and the second column/element as
 #' the right poset.
 #' 
+#' @section Note:
+#' You can omit the argument \code{compare} if you supply a value for
+#' \code{nobs}. You can also omit the argument \code{nobs} if you
+#' provide a matrix or list as value for \code{compare}. The function
+#' will try to deduct the number of observations from the highest 
+#' index value present in the matrix/list
+#' 
+#' You can't omit both arguments together though, as the function
+#' needs at least some information on the number of observations
+#' the poset is designed for.
+#' 
 #' @param compare A character value, matrix or list indicating how the
 #' poset should be constructed. Defaults to the default value of 
 #' \code{\link{create.poset}}. See Details section for more information.
@@ -33,14 +44,24 @@
 #' this poset is created for. If compare is not a character value,
 #' the number of observations 
 #' 
-#' @param parent An environment that serves as the parent for the
+#' @param parent An optional environment that serves as the parent for the
 #' \code{pim.poset} environment. By default this is the environment
 #' from which the function is called. Note that for a correct functioning,
 #' the parent environment should be set to the \code{\link{pim.environment}}
 #' this object is part of. This is done automatically by the function
 #' \code{\link{add.poset}}.
 #' 
+#' @param comp.value a character value to be used as value for the 
+#' compare slot of the object. Defaults to 'custom' and 
+#' should be left at the default without
+#' a very good reason to change it. 
+#' 
 #' @param ... arguments passed to other methods.
+#' 
+#' @section Warning:
+#' Changing the value of \code{comp.value} by hand might result in 
+#' errors or a wrongly fitted model. The argument exists for internal
+#' purposes and possible extensions later on, but should not be used.
 #' 
 #' @examples
 #' mypos <- new.pim.poset('unique',n=10) # creates empty environment
@@ -92,7 +113,7 @@ setMethod("new.pim.poset",
 setMethod("new.pim.poset",
           signature=c(compare="list",
                       nobs="numeric"),
-          function(compare,nobs,parent,...){
+          function(compare,nobs,parent,comp.value='custom',...){
             
             if(length(compare) != 2L )
               stop("Compare should contain exact 2 columns/elements")
@@ -105,8 +126,8 @@ setMethod("new.pim.poset",
             out <- new("pim.poset")
             parent.env(out) <- environment()
               # This makes sure the object compare can be found
-              # 
-            out@compare <- "custom"
+              # Will be set correctly at the end of the function
+            out@compare <- comp.value
             out@nobs <- as.integer(nobs)
             
             
@@ -134,4 +155,13 @@ setMethod("new.pim.poset",
           function(compare,parent,...){
             nobs <- max(.Internal(unlist(compare,FALSE,FALSE)))
             new.pim.poset(compare,nobs,parent,...)
+          })
+
+#' @describeIn new.pim.poset
+setMethod('new.pim.poset',
+          signature=c(compare='missing',
+                      nobs='numeric'),
+          function(nobs, parent, ...){
+            compare <- create.poset(n=nobs)
+            new.pim.poset(compare, nobs, parent, comp.value='unique',...)
           })
