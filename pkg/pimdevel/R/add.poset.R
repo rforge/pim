@@ -3,8 +3,6 @@
 #' This function adds a poset to a \code{\link{pim.environment}}
 #' object.
 #' 
-#' TO DO: CHECK IDEA AND IMPLEMENT FURTHER (control of nobs)
-#' 
 #' @param x a pim.environment object
 #' @param overwrite a logical value indicating whether the poset
 #' should be overwritten if it's already present. Defaults to 
@@ -19,7 +17,7 @@
 #' note that you can easily create a poset that doesn't use all the 
 #' observations. This might or might not be your intention. If the poset
 #' you try to create contains indices that go beyond the number of
-#' observations, an error is thrown.
+#' observations, you will get errors.
 #' 
 #' @return The object with a (new) poset attached.
 #' @seealso \code{\link{new.pim.poset}} for the possible values of the
@@ -37,5 +35,8 @@ setMethod('add.poset',
               stop('pim.environment has already a poset attached. Set overwrite to FALSE if you want to replace the current one.')
             }
             x@poset <- new.pim.poset(...)
+            
+            if(x@poset@nobs > x@nobs)
+              stop('poset contains indices larger than the number of observations')
             x
           })
