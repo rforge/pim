@@ -2,6 +2,9 @@
 % Please edit documentation in R/nobs.R
 \docType{methods}
 \name{nobs,pim.environment-method}
+\alias{nobs,ANY-method}
+\alias{nobs,data.frame-method}
+\alias{nobs,matrix-method}
 \alias{nobs,pim.environment-method}
 \alias{nobs,pim.poset-method}
 \title{Extract the number of observations}
@@ -9,6 +12,12 @@
 \S4method{nobs}{pim.environment}(object)
 
 \S4method{nobs}{pim.poset}(object)
+
+\S4method{nobs}{matrix}(object)
+
+\S4method{nobs}{data.frame}(object)
+
+\S4method{nobs}{ANY}(object)
 }
 \arguments{
 \item{object}{an object of the class \code{\link{pim.environment}} or \code{\link{pim.poset}}}
@@ -16,18 +25,32 @@
 \item{...}{arguments passed to other methods.}
 }
 \value{
-an integer with the information in the nobs slot. If the
-environment is empty, it returns \code{NA}
+In case the function is called on a \code{pim.environment}
+or a \code{pim.poset} object,
+an integer with the number of (foreseen) observations. If the
+pim.environment is empty, it returns \code{NA}.
+
+In all other cases, it returns the output of either \code{\link{nrow}}
+or \code{\link{length}}.
 }
 \description{
 This function extracts the number of observations in an object
 of class \code{\link{pim.environment}}, or the number of observations
-for which a \code{\link{pim.poset}} is constructed
+for which a \code{\link{pim.poset}} is constructed. If applied to
+a matrix or data.frame, it returns the number of rows.
+For any other object it
+does the same as \code{\link{length}}.
 }
 \section{Methods (by class)}{
 \itemize{
 \item \code{pim.environment}: 
 
 \item \code{pim.poset}: 
+
+\item \code{matrix}: 
+
+\item \code{data.frame}: 
+
+\item \code{ANY}: 
 }}
 

@@ -17,7 +17,8 @@ new.pim.env(data, poset = FALSE, ...)
 \S4method{new.pim.env}{missing,missing}(data, poset = FALSE, ...)
 
 \S4method{new.pim.env}{environment,ANY}(data, poset = FALSE,
-  data.names = ls(data), classes = .get.classes(data), ...)
+  env = parent.frame(), data.names = ls(data),
+  classes = .get.classes(data), ...)
 
 \S4method{new.pim.env}{list,ANY}(data, poset = FALSE, ...)
 
@@ -32,9 +33,10 @@ should be added, or otherwise a matrix or list with 2 elements that give the
 left- and right hand side of the poset. See also \code{\link{new.pim.poset}}
 for more information on how to specify a custom poset}
 
-\item{...}{extra parameters for construction of the poset and
-specification of the parent environment of the object. See also
-\code{\link{parent.env}}}
+\item{...}{extra parameters for construction of the poset, like
+the argument \code{compare} from \code{\link{new.pim.poset}}.}
+
+\item{env}{an environment that is the parent environment of the object.}
 
 \item{data.names}{An optional character vector with the names of the variables
 in the pim environment.}
@@ -42,8 +44,6 @@ in the pim environment.}
 \item{classes}{An optional character vector with the classes of the
 variables in the environment, given in the same order as
 the argument \code{data.names}.}
-
-\item{env}{an environment that is the parent environment of the object.}
 }
 \value{
 an object of the class \code{\link{pim.environment}}

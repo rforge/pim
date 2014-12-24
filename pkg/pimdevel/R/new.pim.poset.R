@@ -101,7 +101,7 @@ setMethod("new.pim.poset",
             if(ncol(compare) != 2 ) 
               stop("matrix should have 2 columns")
             poset <- lapply(seq_len(ncol(compare)),
-                            function(i) x[,i])
+                            function(i) compare[,i])
             names(poset) <- 
               if(is.null(namescomp <- colnames(compare)))
                 c("L","R") else namescomp

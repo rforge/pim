@@ -58,9 +58,9 @@
   identical(all.classes, classes)
 }
 
-.equal.lengths <- function(envir){
+.equal.nobs <- function(envir){
   all.lengths <- sapply(ls(envir), function(i){
-    length(get(i,envir=envir,inherits=FALSE))
+    nobs(get(i,envir=envir,inherits=FALSE))
   })
   length(unique(all.lengths)) <= 1
 }
@@ -68,4 +68,10 @@
 valid.classes <- function(x){
   valids <- c("character","factor","numeric","integer","logical")
   all(match(x,valids,0L) > 0)
+}
+
+# Currently not used. valid.classes should do it
+# Could be adapted 
+is.variable <- function(x){
+  is.vector(x) | inherits(x, 'factor')
 }

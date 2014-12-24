@@ -46,10 +46,15 @@ setClass("pim.environment",
            out <- TRUE
            dups <- duplicated(given)
            ndata <- length(get(allnames[1],
-                                 envir=object@.xData,inherits=FALSE))   
-           if(!all(sapply(object@.xData, is.vector))){
-             out <- "Not all elements in the environment are vectors"
-           } else if(!.equal.lengths(as.environment(object))){
+                                 envir=object@.xData,inherits=FALSE))  
+           
+#            if(!all(sapply(object@.xData, is.variable))){
+#              out <- "Not all elements in the environment are useable as variable"
+# These lines check whether all objects are valid variables. Problem is
+# that they expect all objects to be vectors, and this wouldn't allow
+# extensions to eg survival fits with Surv() objects.
+
+           if(!.equal.nobs(as.environment(object))){
              out <- "Not all variables in the environment have the same length."
            } else if(object@nobs != ndata){
              out <- "nobs doesn't match number of observations"

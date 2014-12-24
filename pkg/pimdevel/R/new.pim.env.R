@@ -23,9 +23,8 @@
 #' @param classes An optional character vector with the classes of the 
 #' variables in the environment, given in the same order as 
 #' the argument \code{data.names}.
-#' @param ... extra parameters for construction of the poset and
-#' specification of the parent environment of the object. See also
-#' \code{\link{parent.env}}
+#' @param ... extra parameters for construction of the poset, like
+#' the argument \code{compare} from \code{\link{new.pim.poset}}.
 #' 
 #' @return an object of the class \code{\link{pim.environment}}
 #' @include pim.environment-class.R
@@ -63,8 +62,13 @@ setMethod("new.pim.env",
           signature=c(data="environment",
                       poset="ANY"),
           function(data,poset=FALSE,
+                   env=parent.frame(),
                    data.names=ls(data),
                    classes=.get.classes(data),...){
+            
+            dots <- match.call(expand.dots=FALSE)[['...']]
+            if(match('nobs',names(dots),0L) >0L)
+              warning('nobs argument is ignored.')
             
             out <- new("pim.environment")
             out@.xData <- data
@@ -73,9 +77,17 @@ setMethod("new.pim.env",
             out@nobs <- length(get(data.names[1],envir=data,inherits=FALSE))
             
             # create poset
-            
+            if(is.logical(poset)){
+              if(poset)
+                out@poset <- new.pim.poset(nobs=out@nobs,...)
+              out@is.complete <- TRUE
+            } else{
+              out@poset <- new.pim.poset(poset)
+              out@is.complete <- TRUE
+            }
             
             validObject(out)
+            parent.env(out) <- env
             out
           })
 
@@ -147,7 +159,7 @@ setMethod("new.pim.env",
     if(compare != "custom")
       warning("custom poset specified. Argument compare ignored.")
     
-    object@poset <- new.pim.poset(compare,nobs)
+    object@poset <- new.pim.poset(poset,nobs)
     object@is.complete <- TRUE
     
   } else if(poset){
@@ -156,7 +168,9 @@ setMethod("new.pim.env",
     object@poset <- new.pim.poset(compare,nobs)
     object@is.complete <- TRUE
   }
+
   validObject(object)
+  parent.env(object) <- env
   object
   
 }

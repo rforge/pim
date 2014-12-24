@@ -2,13 +2,21 @@
 #' 
 #' This function extracts the number of observations in an object
 #' of class \code{\link{pim.environment}}, or the number of observations
-#' for which a \code{\link{pim.poset}} is constructed
+#' for which a \code{\link{pim.poset}} is constructed. If applied to
+#' a matrix or data.frame, it returns the number of rows. 
+#' For any other object it 
+#' does the same as \code{\link{length}}.
 #' 
 #' @param object an object of the class \code{\link{pim.environment}} or \code{\link{pim.poset}}
 #' @param ... arguments passed to other methods.
 #' 
-#' @return an integer with the information in the nobs slot. If the
-#' environment is empty, it returns \code{NA}
+#' @return In case the function is called on a \code{pim.environment}
+#' or a \code{pim.poset} object, 
+#' an integer with the number of (foreseen) observations. If the
+#' pim.environment is empty, it returns \code{NA}. 
+#' 
+#' In all other cases, it returns the output of either \code{\link{nrow}}
+#' or \code{\link{length}}. 
 #' 
 #' @include pim.environment-class.R
 
@@ -31,6 +39,28 @@ setMethod("nobs",
           signature="pim.poset",
           function(object){
             object@nobs
-          }
-          
-          )
+          })
+
+#' @describeIn nobs
+#' @export
+setMethod("nobs",
+          signature="matrix",
+          function(object){
+            nrow(object)
+          })
+
+#' @describeIn nobs
+#' @export
+setMethod("nobs",
+          signature="data.frame",
+          function(object){
+            nrow(object)
+          })
+
+#' @describeIn nobs
+#' @export
+setMethod("nobs",
+          signature="ANY",
+          function(object){
+            length(object)
+          })
