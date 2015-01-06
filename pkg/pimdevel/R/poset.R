@@ -23,6 +23,11 @@
 #' returns a named list with 2 elements, each element containing the
 #' indices related to the poset function of the same name
 #' 
+#' @examples
+#' data(DysData)
+#' DysPimEnv <- new.pim.env(DysData, poset=TRUE)
+#' poset(DysPimEnv)
+#' 
 #' @export
 setGeneric('poset', function(x,...) standardGeneric('poset'))
 

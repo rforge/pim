@@ -10,6 +10,14 @@
 #' contained in the \code{pim.environment}
 #' 
 #' @seealso \code{\link{nobs}}, \code{\link{poset}}, \code{\link{is.complete}}
+#' 
+#' @examples
+#' data(DysData)
+#' DysPimEnv <- new.pim.env(DysData,poset=TRUE)
+#' classes(DysPimEnv)
+#' names(DysPimEnv)
+#' compare(DysPimEnv)
+#' 
 #' @aliases data.names, compare
 #' @include pim.environment-class.R
 #' @export
@@ -23,13 +31,16 @@ setMethod('classes',
             unlist(x@classes)
           })
 
-#' @export
-#' @rdname classes
+## NOTE:
+# names is a primitive function, hence a S4 generic
+# is already available in the base package. Creating
+# a generic in the package here only results in warnings.
+# The generic won't be created, so when trying to export,
+# there's nothing to export.
+
 #' @return \code{names()}: For an object of class \code{pim.environment} the names
 #' of the variables in the object. For an object of class \code{pim.poset},
 #' the name of the poset functions inside the environment
-setGeneric('names')
-
 #' @export
 #' @rdname classes
 setMethod('names',

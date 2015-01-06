@@ -12,7 +12,7 @@
 \usage{
 new.pim.env(data, poset = FALSE, ...)
 
-\S4method{new.pim.env}{missing,ANY}(data, poset = FALSE, ...)
+\S4method{new.pim.env}{missing,ANY}(data, poset)
 
 \S4method{new.pim.env}{missing,missing}(data, poset = FALSE, ...)
 
@@ -75,5 +75,12 @@ will be added in the near future.
 }}
 \examples{
 new.pim.env() # Creates an empty object
+
+# Starting from a data frame
+data(DysData)
+env1 <- new.pim.env(DysData)
+
+env2 <- new.pim.env(DysData, poset=TRUE)
+env3 <- new.pim.env(DysData, poset=TRUE, compare="all")
 }
 

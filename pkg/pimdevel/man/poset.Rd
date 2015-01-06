@@ -45,4 +45,9 @@ The poset can be extracted as a matrix or a list.
 
 \item \code{pim.poset}: 
 }}
+\examples{
+data(DysData)
+DysPimEnv <- new.pim.env(DysData, poset=TRUE)
+poset(DysPimEnv)
+}
 

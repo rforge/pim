@@ -31,6 +31,16 @@
 #' @aliases new.pim.env
 #' @examples
 #' new.pim.env() # Creates an empty object
+#' 
+#' # Starting from a data frame
+#' data(DysData)
+#' env1 <- new.pim.env(DysData)
+#' 
+#' env2 <- new.pim.env(DysData, poset=TRUE)
+#' env3 <- new.pim.env(DysData, poset=TRUE, compare="all")
+#' 
+#' 
+#' 
 #' @export
 setGeneric("new.pim.env",
            function(data,poset=FALSE,...){
@@ -40,7 +50,7 @@ setGeneric("new.pim.env",
 setMethod("new.pim.env",
           signature=c(data="missing",
                       poset="ANY"),
-          function(data,poset,...){
+          function(data,poset){
             if(!is.logical(poset))
               stop("data not specified.")
             if(poset) 

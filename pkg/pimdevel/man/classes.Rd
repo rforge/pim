@@ -8,7 +8,6 @@
 \alias{compare,pim.environment-method}
 \alias{compare,pim.poset-method}
 \alias{data.names,}
-\alias{names}
 \alias{names,pim.environment-method}
 \alias{names,pim.poset-method}
 \title{Extract information from pim.environment and pim.poset objects}
@@ -16,8 +15,6 @@
 classes(x)
 
 \S4method{classes}{pim.environment}(x)
-
-names(x)
 
 \S4method{names}{pim.environment}(x)
 
@@ -48,6 +45,13 @@ a \code{pim.environment} object respectively.
 These functions serve to extract the information contained
 in the objects of class \code{\link{pim.environment}} and
 \code{\link{pim.poset}}.
+}
+\examples{
+data(DysData)
+DysPimEnv <- new.pim.env(DysData,poset=TRUE)
+classes(DysPimEnv)
+names(DysPimEnv)
+compare(DysPimEnv)
 }
 \seealso{
 \code{\link{nobs}}, \code{\link{poset}}, \code{\link{is.complete}}
