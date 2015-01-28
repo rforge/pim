@@ -66,8 +66,7 @@
 }
 
 valid.classes <- function(x){
-  valids <- c("character","factor","numeric","integer","logical")
-  all(match(x,valids,0L) > 0)
+  all(match(x,.valids.pim,0L) > 0)
 }
 
 # Currently not used. valid.classes should do it

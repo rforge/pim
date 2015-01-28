@@ -14,7 +14,9 @@ R(x)
 }
 \value{
 a vector with the pseudo-observations for x, based on the
-poset used to create the function
+poset used to create the function. If used in a wrong context (i.e.
+not in a call to \code{pim}), it returns \code{x} unchanged and throws
+a warning.
 }
 \description{
 These functions allow you to specify the left hand side and
@@ -45,7 +47,7 @@ functions depends on the context in which they are called.
 \examples{
 \dontrun{
 pim(income~(L(foodexp) - R(foodexp)), data=Engeldata)
-L() # Gives an error
+L(1:10) # Gives a warning
 }
 }
 

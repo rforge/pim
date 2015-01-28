@@ -18,8 +18,9 @@
 #' left- and right hand side of the poset. See also \code{\link{new.pim.poset}} 
 #' for more information on how to specify a custom poset
 #' @param env an environment that is the parent environment of the object.
-#' @param data.names An optional character vector with the names of the variables
-#' in the pim environment.
+#' @param vars An optional character vector with the names of the variables
+#' that should be included in the pim environment. Note that the
+#' variable names should be found in the object passed to argument \code{data}. 
 #' @param classes An optional character vector with the classes of the 
 #' variables in the environment, given in the same order as 
 #' the argument \code{data.names}.
@@ -37,8 +38,14 @@
 #' env1 <- new.pim.env(DysData)
 #' 
 #' env2 <- new.pim.env(DysData, poset=TRUE)
+#' poset(env2)
 #' env3 <- new.pim.env(DysData, poset=TRUE, compare="all")
+#' poset(env3)
 #' 
+#' 
+#' data(FEVData)
+#' env4 <- new.pim.env(FEVData,poset=TRUE, vars=c('Age','Sex'))
+#' ls(env4)
 #' 
 #' 
 #' @export
@@ -73,7 +80,7 @@ setMethod("new.pim.env",
                       poset="ANY"),
           function(data,poset=FALSE,
                    env=parent.frame(),
-                   data.names=ls(data),
+                   vars=NULL,
                    classes=.get.classes(data),...){
             
             dots <- match.call(expand.dots=FALSE)[['...']]
@@ -81,10 +88,16 @@ setMethod("new.pim.env",
               warning('nobs argument is ignored.')
             
             out <- new("pim.environment")
-            out@.xData <- data
-            out@data.names <- data.names
+            
+            if(is.null(vars)){
+              out@.xData <- data
+              vars <- ls(data)
+            } else {
+              out@.xData <- list2env(mget(vars,data))
+            }
+            out@data.names <- vars
             out@classes <- classes
-            out@nobs <- length(get(data.names[1],envir=data,inherits=FALSE))
+            out@nobs <- length(get(vars[1],envir=data,inherits=FALSE))
             
             # create poset
             if(is.logical(poset)){
@@ -105,7 +118,12 @@ setMethod("new.pim.env",
 setMethod("new.pim.env",
           signature=c(data="list",
                       poset="ANY"),
-          function(data,poset=FALSE,...){
+          function(data,poset=FALSE,vars=NULL,...){
+            
+            if(!is.null(vars)){
+              data <- data[vars]
+            }
+            
             data.names <- names(data)
             classes <- sapply(data,class, simplify=FALSE)
             
@@ -128,10 +146,17 @@ setMethod("new.pim.env",
 setMethod("new.pim.env",
           signature=c(data="data.frame",
                       poset="ANY"),
-          function(data,poset=FALSE,...){
+          function(data,poset=FALSE,vars=NULL,...){
+            
+            if(!is.null(vars)){
+              data <- data[vars]
+            } else {
+              vars <- names(data)
+            }
+            
             .new.pim.env(data,
                          poset,
-                         data.names=names(data),
+                         data.names=vars,
                          nobs=nrow(data),
                          ...)
           })

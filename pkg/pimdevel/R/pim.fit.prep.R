@@ -20,52 +20,28 @@ pim.fit.prep <- function(
   compare=c('unique','all','custom'),
   ...
   ){
+  
   # Argument checks
   model <- match.arg(model)
   compare <- match.arg(compare)
+  nodata <- missing(data)
   
-  # Get info on formula
-  orig.terms <- terms(formula, specials=c('L','R','I')) 
-  varnames <- all.vars(orig.terms)
-  fenv <- environment(formula)
+  # Check formula and extract info
+  lhs <- formula[[2]]
+  rhs <- formula[[3]]
   
-  # Checking data and getting the variables if necessary
-  if(missing(data) & 
-       all(sapply(varnames,exists,envir=fenv))){
-    data <- mget(varnames,
-                 envir = fenv,
-                 inherits = TRUE)
-    nobs <- unique(sapply(data,length))
-    browser()
-    
-    if(length(nobs) != 1)
-      stop("Not all variables in the formula have the same length.")
-    
-    if(any(sapply(data,class)=="character"))
-      warning("Character variable(s) converted to factor.")
-  } else {
-    nobs <- nrow(data)
-  }  
+  response <- all.vars(lhs)
+  predictors <- all.vars(rhs)
   
-  data <- list2env(data, parent=fenv)
-  pimenv <- new.env(parent=data)
-  # pimenv will contain the poset and L() and R() functions
-  # to use model.frame etc, we need the data to be an environment
-  # and also a parent of this pimenv. Otherwise one will get
-  # into trouble with variables called "poset" or "data" when
-  # evaluating the formulas. 
+  funs.rhs <- setdiff(all.names(formula[[3]],unique=TRUE),
+                      predictors)
+  funs.lhs <- setdiff(all.names(formula[[2]],unique=TRUE),
+                      predictors)
   
+  has.funs <- any(match(funs,.specials.pim,0L) >0L  )
   
-  # Create the poset
-  pimenv$poset <- create.poset(compare,nobs)
-  
-  #Create the left and right functions
   
   browser()
   
-  # Rework the formula.
-  # TODO: This needs some thinking about names, see Nicks work #TODO
-  
-  # export all shit.
 
 }

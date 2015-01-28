@@ -8,7 +8,9 @@
 #' @param x any vector specified in a formula
 #' 
 #' @return a vector with the pseudo-observations for x, based on the 
-#' poset used to create the function
+#' poset used to create the function. If used in a wrong context (i.e.
+#' not in a call to \code{pim}), it returns \code{x} unchanged and throws
+#' a warning.
 #' 
 #' @details These specific functions are actually not used by the 
 #' function \code{\link{pim}}. \code{pim} calls the internal function
@@ -30,17 +32,19 @@
 #' @examples
 #' \dontrun{
 #' pim(income~(L(foodexp) - R(foodexp)), data=Engeldata)
-#' L() # Gives an error
+#' L(1:10) # Gives a warning
 #' }
 #' @aliases R L
 #' @export
 L <- function(x){
-  stop("L() is not correctly defined. Please see ?L for more information.")  
+  warning("L() is not correctly defined. Please see ?L for more information.")  
+  x
 }
 
 #' @rdname L
 #' @name L
 #' @export
 R <- function(x){
-  stop("R() is not correctly defined. Please see ?R for more information.")  
+  warning("R() is not correctly defined. Please see ?R for more information.")  
+  x
 }

@@ -17,12 +17,12 @@ new.pim.env(data, poset = FALSE, ...)
 \S4method{new.pim.env}{missing,missing}(data, poset = FALSE, ...)
 
 \S4method{new.pim.env}{environment,ANY}(data, poset = FALSE,
-  env = parent.frame(), data.names = ls(data),
-  classes = .get.classes(data), ...)
+  env = parent.frame(), vars = NULL, classes = .get.classes(data), ...)
 
-\S4method{new.pim.env}{list,ANY}(data, poset = FALSE, ...)
+\S4method{new.pim.env}{list,ANY}(data, poset = FALSE, vars = NULL, ...)
 
-\S4method{new.pim.env}{data.frame,ANY}(data, poset = FALSE, ...)
+\S4method{new.pim.env}{data.frame,ANY}(data, poset = FALSE, vars = NULL,
+  ...)
 }
 \arguments{
 \item{data}{a data frame, a list or an environment containing
@@ -38,8 +38,9 @@ the argument \code{compare} from \code{\link{new.pim.poset}}.}
 
 \item{env}{an environment that is the parent environment of the object.}
 
-\item{data.names}{An optional character vector with the names of the variables
-in the pim environment.}
+\item{vars}{An optional character vector with the names of the variables
+that should be included in the pim environment. Note that the
+variable names should be found in the object passed to argument \code{data}.}
 
 \item{classes}{An optional character vector with the classes of the
 variables in the environment, given in the same order as
@@ -81,6 +82,13 @@ data(DysData)
 env1 <- new.pim.env(DysData)
 
 env2 <- new.pim.env(DysData, poset=TRUE)
+poset(env2)
 env3 <- new.pim.env(DysData, poset=TRUE, compare="all")
+poset(env3)
+
+
+data(FEVData)
+env4 <- new.pim.env(FEVData,poset=TRUE, vars=c('Age','Sex'))
+ls(env4)
 }
 
