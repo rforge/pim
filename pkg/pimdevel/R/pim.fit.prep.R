@@ -38,9 +38,12 @@ pim.fit.prep <- function(
   funs.lhs <- setdiff(all.names(formula[[2]],unique=TRUE),
                       predictors)
   
-  has.funs <- any(match(funs,.specials.pim,0L) >0L  )
+  has.funs.lhs <- any(match(funs.lhs,.specials.pim.lhs,0L) >0L  )
+  has.funs.rhs <- any(match(funs.rhs,.specials.pim.rhs,0L) >0L  )
   
+  X <- eval(parse(text=paste("quote(","PO(L(Height),R(Height))",")")))
   
+
   browser()
   
 

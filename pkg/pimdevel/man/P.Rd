@@ -28,10 +28,6 @@ to \code{\link{as.numeric}}, apart from an extra control
 to check whether it actually makes sense to do so.
 The function \code{PO} is just short for \code{P(x < y) + 0.5*P(x == y)}
 }
-\section{Functions}{
-\itemize{
-\item \code{PO}: 
-}}
 \examples{
 # Check in pim
 }

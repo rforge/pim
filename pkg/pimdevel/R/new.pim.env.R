@@ -9,7 +9,9 @@
 #' of a pim, and stores information on how this is done. 
 #' 
 #' TODO : Currently there's no automatic assignment of a parent frame, but this
-#' will be added in the near future.
+#' will be added in the near future. 
+#' 
+#' If a poset is created for the 
 #' 
 #' @param data a data frame, a list or an environment containing
 #' the data for a probabilistic index model. 
@@ -102,7 +104,8 @@ setMethod("new.pim.env",
             # create poset
             if(is.logical(poset)){
               if(poset)
-                out@poset <- new.pim.poset(nobs=out@nobs,...)
+                out@poset <- new.pim.poset(nobs=out@nobs,
+                                           parent=env,...)
               out@is.complete <- TRUE
             } else{
               out@poset <- new.pim.poset(poset)
@@ -110,7 +113,7 @@ setMethod("new.pim.env",
             }
             
             validObject(out)
-            parent.env(out) <- env
+            parent.env(out) <- out@poset
             out
           })
 

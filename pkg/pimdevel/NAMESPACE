@@ -3,6 +3,7 @@
 export(L)
 export(P)
 export(PO)
+export(PP)
 export(R)
 export(add.poset)
 export(classes)

@@ -9,7 +9,7 @@ Fit a probabilistic index model. This package is the latest version of the pim p
 }
 \details{
 \tabular{ll}{ Package: \tab pimdevel\cr Type: \tab Package\cr Version: \tab
-1.9.0.5\cr Date: \tab 2014-01-13\cr License: \tab GPL (>= 2)\cr
+1.9.0.6\cr Date: \tab 2014-01-29\cr License: \tab GPL (>= 2)\cr
 LazyLoad: \tab yes\cr Depends: R (>= 3.0)}
 }
 \author{

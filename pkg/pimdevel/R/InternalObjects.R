@@ -8,4 +8,5 @@
 # 
 .valids.pim <- c("character","factor","numeric","integer","logical")
 
-.specials.pim <- c("P","PO","L","R")
+.specials.pim.lhs <- c("P","PO")
+.specials.pim.rhs <- c("L","R")

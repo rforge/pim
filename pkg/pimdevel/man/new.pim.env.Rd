@@ -61,6 +61,8 @@ of a pim, and stores information on how this is done.
 
 TODO : Currently there's no automatic assignment of a parent frame, but this
 will be added in the near future.
+
+If a poset is created for the
 }
 \section{Methods (by class)}{
 \itemize{

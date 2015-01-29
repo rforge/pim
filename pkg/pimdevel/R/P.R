@@ -24,7 +24,7 @@ P <- function(x){
     stop("P requires logical values.")
 }
 
-#' @describeIn P
+#' @rdname P
 #' @export
 PO <- function(x,y){
   P(x < y) + 0.5*P(x == y)

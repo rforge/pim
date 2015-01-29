@@ -21,6 +21,9 @@
 #' The actual functions used by \code{pim} are saved in a specific environment, a \code{\link{pim.environment}}, which resides in the \code{\link{pim-class}} object returned by \code{pim}. This way of working
 #' is chosen in order to avoid unnecessary copying of data.
 #' 
+#' The function \code{PP} serves simply as short for \code{R(x) - L(x)}. If used outside the context of a pim model, it will generate
+#' multiple warnings (see section warning).
+#' 
 #' @section warning:
 #' 
 #' These functions serve only as placeholder. During the fitting process
@@ -34,7 +37,7 @@
 #' pim(income~(L(foodexp) - R(foodexp)), data=Engeldata)
 #' L(1:10) # Gives a warning
 #' }
-#' @aliases R L
+#' @aliases R L PP
 #' @export
 L <- function(x){
   warning("L() is not correctly defined. Please see ?L for more information.")  
@@ -47,4 +50,11 @@ L <- function(x){
 R <- function(x){
   warning("R() is not correctly defined. Please see ?R for more information.")  
   x
+}
+
+#' @rdname L
+#' @name L
+#' @export
+PP <- function(x){
+  R(x) - L(x)
 }

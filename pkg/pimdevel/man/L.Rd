@@ -2,12 +2,15 @@
 % Please edit documentation in R/LR.R
 \name{L}
 \alias{L}
+\alias{PP}
 \alias{R}
 \title{Specify the left hand and right hand side of an expression used in pims}
 \usage{
 L(x)
 
 R(x)
+
+PP(x)
 }
 \arguments{
 \item{x}{any vector specified in a formula}
@@ -33,6 +36,9 @@ interest.
 
 The actual functions used by \code{pim} are saved in a specific environment, a \code{\link{pim.environment}}, which resides in the \code{\link{pim-class}} object returned by \code{pim}. This way of working
 is chosen in order to avoid unnecessary copying of data.
+
+The function \code{PP} serves simply as short for \code{R(x) - L(x)}. If used outside the context of a pim model, it will generate
+multiple warnings (see section warning).
 }
 \section{warning}{
 
