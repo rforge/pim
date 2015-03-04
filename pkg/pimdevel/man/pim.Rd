@@ -6,7 +6,7 @@
 \usage{
 pim(formula, data, link = c("identity", "logit", "probit"),
   compare = c("unique", "all"), model = c("difference", "marginal",
-  "regular", "customized"), na.action, vcov)
+  "regular", "customized"), na.action = getOption("na.action"), vcov)
 }
 \arguments{
 \item{formula}{An object of class \code{\link{formula}} (or one that

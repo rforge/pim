@@ -32,12 +32,10 @@
 }
 
 # Gets the classes of all objects in an environment
-# Takes an environment as 
+# Takes an environment as argument
 .get.classes <- function(envir){
-  all.names <- ls(envir)
-  all.classes <- lapply(mget(all.names,envir=envir),
+  all.classes <- lapply(mget(ls(envir),envir=envir),
          class)
-  names(all.classes) <- all.names
   all.classes
 }
 
@@ -73,4 +71,10 @@ valid.classes <- function(x){
 # Could be adapted 
 is.variable <- function(x){
   is.vector(x) | inherits(x, 'factor')
+}
+
+# Converts a string to a language object for use in
+# formula manipulation:
+as.language <- function(x){
+  eval(parse(text=paste("quote(",x,")")))
 }

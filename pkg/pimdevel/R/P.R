@@ -10,7 +10,11 @@
 #' The function \code{PO} is just short for \code{P(x < y) + 0.5*P(x == y)}
 #' 
 #' @param x for \code{P}, a logical value. For \code{PO} a numeric value.
-#' @param y a numeric value
+#' @param y a numeric value or \code{NULL}. If \code{NULL}, the function
+#' will try to calculate \code{PO(L(x),R(x))}, provided the functions
+#' \code{\link{L}} and \code{\link{R}} are defined correctly. This
+#' is the case when \code{PO} is used in the context of a probabilistic
+#' index model fitted with \code{\link{pim}}.
 #' 
 #' @return either 0 or 1
 #' 
@@ -26,6 +30,7 @@ P <- function(x){
 
 #' @rdname P
 #' @export
-PO <- function(x,y){
+PO <- function(x,y=NULL){
+  if(is.null(y)) PO(L(x),R(x)) else
   P(x < y) + 0.5*P(x == y)
 }

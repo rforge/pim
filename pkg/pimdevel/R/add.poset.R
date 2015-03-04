@@ -38,5 +38,8 @@ setMethod('add.poset',
             
             if(x@poset@nobs > x@nobs)
               stop('poset contains indices larger than the number of observations')
+            parent.env(x) <- x@poset
+            x@is.complete <- TRUE
+            
             x
           })

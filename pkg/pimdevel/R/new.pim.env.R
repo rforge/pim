@@ -8,17 +8,20 @@
 #' matrix for a pim. The resulting object is used to evaluate the formula
 #' of a pim, and stores information on how this is done. 
 #' 
-#' TODO : Currently there's no automatic assignment of a parent frame, but this
-#' will be added in the near future. 
-#' 
-#' If a poset is created for the 
+#' Note that the parent of the environment is actually the 
+#' \code{\link{pim.poset}} object in the \code{poset} slot. 
+#' The parent you set using the \code{env} argument, 
+#' is the parent of the \code{pim.poset} object.  This ensures that
+#' when a formula is evaluated in the \code{pim.environment} it 
+#' will use a suitable search path to find all functions and objects.
 #' 
 #' @param data a data frame, a list or an environment containing
 #' the data for a probabilistic index model. 
-#' @param poset either a logical value indicating whether or not a poset
-#' should be added, or otherwise a matrix or list with 2 elements that give the 
-#' left- and right hand side of the poset. See also \code{\link{new.pim.poset}} 
-#' for more information on how to specify a custom poset
+#' @param compare a character vector, matrix or list that defines how the
+#' set of pseudo observations (poset) should be constructed. 
+#' if set to \code{NULL}, no poset is constructed.
+#' See also \code{\link{new.pim.poset}} 
+#' for more information on how to specify a custom poset.
 #' @param env an environment that is the parent environment of the object.
 #' @param vars An optional character vector with the names of the variables
 #' that should be included in the pim environment. Note that the
@@ -39,51 +42,39 @@
 #' data(DysData)
 #' env1 <- new.pim.env(DysData)
 #' 
-#' env2 <- new.pim.env(DysData, poset=TRUE)
+#' env2 <- new.pim.env(DysData, compare=NULL)
 #' poset(env2)
-#' env3 <- new.pim.env(DysData, poset=TRUE, compare="all")
+#' env3 <- new.pim.env(DysData, compare="all")
 #' poset(env3)
 #' 
 #' 
 #' data(FEVData)
-#' env4 <- new.pim.env(FEVData,poset=TRUE, vars=c('Age','Sex'))
+#' env4 <- new.pim.env(FEVData, vars=c('Age','Sex'))
 #' ls(env4)
 #' 
 #' 
 #' @export
 setGeneric("new.pim.env",
-           function(data,poset=FALSE,...){
+           function(data, ...){
              standardGeneric("new.pim.env")
            })
 #' @describeIn new.pim.env
 setMethod("new.pim.env",
-          signature=c(data="missing",
-                      poset="ANY"),
-          function(data,poset){
-            if(!is.logical(poset))
-              stop("data not specified.")
-            if(poset) 
-              stop("data not specified, so poset cannot be constructed.")
+          signature=c(data="missing"),
+          function(data, ...){
+            mc <- match.call()
+            if(!is.null(mc$compare))
+              stop("No data specified, poset cannot be constructed.")
             new("pim.environment")
           })
 
 #' @describeIn new.pim.env
 setMethod("new.pim.env",
-          signature=c(data="missing",
-                      poset="missing"),
-          function(data,poset,...){
-            new("pim.environment")
-          })
-
-
-#' @describeIn new.pim.env
-setMethod("new.pim.env",
-          signature=c(data="environment",
-                      poset="ANY"),
-          function(data,poset=FALSE,
+          signature=c(data="environment"),
+          function(data, compare = "unique",
                    env=parent.frame(),
                    vars=NULL,
-                   classes=.get.classes(data),...){
+                   classes=NULL,...){
             
             dots <- match.call(expand.dots=FALSE)[['...']]
             if(match('nobs',names(dots),0L) >0L)
@@ -92,36 +83,34 @@ setMethod("new.pim.env",
             out <- new("pim.environment")
             
             if(is.null(vars)){
-              out@.xData <- data
               vars <- ls(data)
-            } else {
-              out@.xData <- list2env(mget(vars,data))
-            }
+            } 
+            # You can't just assign an environment to .xData
+            # if happening with the global environment, this hangs R.
+
+            out@.xData <- list2env(mget(vars,data))
             out@data.names <- vars
-            out@classes <- classes
+            out@classes <- .get.classes(out@.xData)
             out@nobs <- length(get(vars[1],envir=data,inherits=FALSE))
             
             # create poset
-            if(is.logical(poset)){
-              if(poset)
-                out@poset <- new.pim.poset(nobs=out@nobs,
-                                           parent=env,...)
+            if(!is.null(compare)){
+              out@poset <- new.pim.poset(compare, nobs=out@nobs,
+                                         parent=env,...)
               out@is.complete <- TRUE
             } else{
-              out@poset <- new.pim.poset(poset)
-              out@is.complete <- TRUE
+              out@is.complete <- FALSE
             }
-            
+           
             validObject(out)
-            parent.env(out) <- out@poset
+            if (out@is.complete) parent.env(out) <- out@poset
             out
           })
 
 #' @describeIn new.pim.env
 setMethod("new.pim.env",
-          signature=c(data="list",
-                      poset="ANY"),
-          function(data,poset=FALSE,vars=NULL,...){
+          signature=c(data="list"),
+          function(data,compare = "unique",vars=NULL,...){
             
             if(!is.null(vars)){
               data <- data[vars]
@@ -138,7 +127,7 @@ setMethod("new.pim.env",
               stop("All elements in the list should have the same length")
             }
             .new.pim.env(data,
-                         poset,
+                         compare,
                          data.names=data.names,
                          classes=classes,
                          nobs=nobs,
@@ -147,9 +136,8 @@ setMethod("new.pim.env",
 
 #' @describeIn new.pim.env
 setMethod("new.pim.env",
-          signature=c(data="data.frame",
-                      poset="ANY"),
-          function(data,poset=FALSE,vars=NULL,...){
+          signature=c(data="data.frame"),
+          function(data,compare = "unique",vars=NULL,...){
             
             if(!is.null(vars)){
               data <- data[vars]
@@ -158,7 +146,7 @@ setMethod("new.pim.env",
             }
             
             .new.pim.env(data,
-                         poset,
+                         compare,
                          data.names=vars,
                          nobs=nrow(data),
                          ...)
@@ -166,25 +154,20 @@ setMethod("new.pim.env",
 
 # The function .new.pim.env : the actual workhorse.
 
-.new.pim.env <- function(data,poset=FALSE,env=parent.frame(),
+.new.pim.env <- function(data,
+                         compare = "unique",
+                         env=parent.frame(),
                          data.names,
                          classes,
                          nobs,
-                         compare=c('unique','all','custom'),
                          ...){
   object <- new("pim.environment")
-  
-  # check input
-  compare <- match.arg(compare)
-  
+    
   if(missing(classes))
     classes <- sapply(data,class,simplify=FALSE)
   
   if(missing(data.names))
     data.names <- names(data)
-  
-  if(!(is.list(poset) || is.logical(poset)))
-    stop("poset should be logical or a list.")
   
   # Add information
   object@.xData <- as.environment(data)
@@ -192,23 +175,18 @@ setMethod("new.pim.env",
   object@classes <- classes
   object@nobs <- nobs
     
-  if(!is.logical(poset) & compare != "custom"){
-    
-    if(compare != "custom")
-      warning("custom poset specified. Argument compare ignored.")
-    
-    object@poset <- new.pim.poset(poset,nobs)
+  if(!is.null(compare) ){
+    object@poset <- new.pim.poset(compare,nobs, parent = env)
     object@is.complete <- TRUE
     
-  } else if(poset){
-    if(compare == "custom")
-      stop("custom poset not applied as list")
-    object@poset <- new.pim.poset(compare,nobs)
-    object@is.complete <- TRUE
+  } else {
+    object@is.complete <- FALSE
   }
 
   validObject(object)
-  parent.env(object) <- env
+  if(object@is.complete)  
+    parent.env(object) <- object@poset
+  
   object
   
 }

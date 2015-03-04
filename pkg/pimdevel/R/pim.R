@@ -41,7 +41,33 @@ pim <- function(formula,
                 compare = c("unique","all"),
                 model = c("difference","marginal",
                           "regular","customized"),
-                na.action,
-                vcov){
+                na.action = getOption("na.action"),
+                vcov
+                ){
+  
+  # Check the arguments
+  model <- match.arg(model)
+  compare <- match.arg(compare)
+  link <- match.arg(link)
+  nodata <- missing(data)
+  
+  if(is.null(na.action)) na.action <- "na.fail"
+  
+  # Check formula and extract info
+  f.terms <- terms(formula, simplify=TRUE)
+    
+  vars <- all.vars(formula)
+  browser()
+  
+  # Create the pim environment (similar to model frame)
+  
+  penv <- if(nodata) 
+    new.pim.env(parent.frame(),compare = compare, vars=vars)
+  else
+    new.pim.env(data, compare = compare, vars=vars)
+  
+  
+
+
   NULL
 }

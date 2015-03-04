@@ -26,22 +26,9 @@ pim.fit.prep <- function(
   compare <- match.arg(compare)
   nodata <- missing(data)
   
-  # Check formula and extract info
-  lhs <- formula[[2]]
-  rhs <- formula[[3]]
   
-  response <- all.vars(lhs)
-  predictors <- all.vars(rhs)
   
-  funs.rhs <- setdiff(all.names(formula[[3]],unique=TRUE),
-                      predictors)
-  funs.lhs <- setdiff(all.names(formula[[2]],unique=TRUE),
-                      predictors)
-  
-  has.funs.lhs <- any(match(funs.lhs,.specials.pim.lhs,0L) >0L  )
-  has.funs.rhs <- any(match(funs.rhs,.specials.pim.rhs,0L) >0L  )
-  
-  X <- eval(parse(text=paste("quote(","PO(L(Height),R(Height))",")")))
+  X <- as.language("PO(L(Height),R(Height))")
   
 
   browser()

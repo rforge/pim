@@ -7,12 +7,16 @@
 \usage{
 P(x)
 
-PO(x, y)
+PO(x, y = NULL)
 }
 \arguments{
 \item{x}{for \code{P}, a logical value. For \code{PO} a numeric value.}
 
-\item{y}{a numeric value}
+\item{y}{a numeric value or \code{NULL}. If \code{NULL}, the function
+will try to calculate \code{PO(L(x),R(x))}, provided the functions
+\code{\link{L}} and \code{\link{R}} are defined correctly. This
+is the case when \code{PO} is used in the context of a probabilistic
+index model fitted with \code{\link{pim}}.}
 }
 \value{
 either 0 or 1

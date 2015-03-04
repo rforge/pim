@@ -3,38 +3,36 @@
 \docType{methods}
 \name{new.pim.env}
 \alias{new.pim.env}
-\alias{new.pim.env,data.frame,ANY-method}
-\alias{new.pim.env,environment,ANY-method}
-\alias{new.pim.env,list,ANY-method}
-\alias{new.pim.env,missing,ANY-method}
-\alias{new.pim.env,missing,missing-method}
+\alias{new.pim.env,data.frame-method}
+\alias{new.pim.env,environment-method}
+\alias{new.pim.env,list-method}
+\alias{new.pim.env,missing-method}
 \title{Constructor for a pim.environment}
 \usage{
-new.pim.env(data, poset = FALSE, ...)
+new.pim.env(data, ...)
 
-\S4method{new.pim.env}{missing,ANY}(data, poset)
+\S4method{new.pim.env}{missing}(data, ...)
 
-\S4method{new.pim.env}{missing,missing}(data, poset = FALSE, ...)
+\S4method{new.pim.env}{environment}(data, compare = "unique",
+  env = parent.frame(), vars = NULL, classes = NULL, ...)
 
-\S4method{new.pim.env}{environment,ANY}(data, poset = FALSE,
-  env = parent.frame(), vars = NULL, classes = .get.classes(data), ...)
+\S4method{new.pim.env}{list}(data, compare = "unique", vars = NULL, ...)
 
-\S4method{new.pim.env}{list,ANY}(data, poset = FALSE, vars = NULL, ...)
-
-\S4method{new.pim.env}{data.frame,ANY}(data, poset = FALSE, vars = NULL,
+\S4method{new.pim.env}{data.frame}(data, compare = "unique", vars = NULL,
   ...)
 }
 \arguments{
 \item{data}{a data frame, a list or an environment containing
 the data for a probabilistic index model.}
 
-\item{poset}{either a logical value indicating whether or not a poset
-should be added, or otherwise a matrix or list with 2 elements that give the
-left- and right hand side of the poset. See also \code{\link{new.pim.poset}}
-for more information on how to specify a custom poset}
-
 \item{...}{extra parameters for construction of the poset, like
 the argument \code{compare} from \code{\link{new.pim.poset}}.}
+
+\item{compare}{a character vector, matrix or list that defines how the
+set of pseudo observations (poset) should be constructed.
+if set to \code{NULL}, no poset is constructed.
+See also \code{\link{new.pim.poset}}
+for more information on how to specify a custom poset.}
 
 \item{env}{an environment that is the parent environment of the object.}
 
@@ -59,22 +57,22 @@ This function is called during the preparation of the model
 matrix for a pim. The resulting object is used to evaluate the formula
 of a pim, and stores information on how this is done.
 
-TODO : Currently there's no automatic assignment of a parent frame, but this
-will be added in the near future.
-
-If a poset is created for the
+Note that the parent of the environment is actually the
+\code{\link{pim.poset}} object in the \code{poset} slot.
+The parent you set using the \code{env} argument,
+is the parent of the \code{pim.poset} object.  This ensures that
+when a formula is evaluated in the \code{pim.environment} it
+will use a suitable search path to find all functions and objects.
 }
 \section{Methods (by class)}{
 \itemize{
-\item \code{data = missing,poset = ANY}: 
+\item \code{missing}: 
 
-\item \code{data = missing,poset = missing}: 
+\item \code{environment}: 
 
-\item \code{data = environment,poset = ANY}: 
+\item \code{list}: 
 
-\item \code{data = list,poset = ANY}: 
-
-\item \code{data = data.frame,poset = ANY}: 
+\item \code{data.frame}: 
 }}
 \examples{
 new.pim.env() # Creates an empty object
@@ -83,14 +81,14 @@ new.pim.env() # Creates an empty object
 data(DysData)
 env1 <- new.pim.env(DysData)
 
-env2 <- new.pim.env(DysData, poset=TRUE)
+env2 <- new.pim.env(DysData, compare=NULL)
 poset(env2)
-env3 <- new.pim.env(DysData, poset=TRUE, compare="all")
+env3 <- new.pim.env(DysData, compare="all")
 poset(env3)
 
 
 data(FEVData)
-env4 <- new.pim.env(FEVData,poset=TRUE, vars=c('Age','Sex'))
+env4 <- new.pim.env(FEVData, vars=c('Age','Sex'))
 ls(env4)
 }
 
