@@ -31,8 +31,7 @@
 #' @slot lhs a call with the processed left-hand side of
 #' the formula
 #' 
-#' @slot rhs a call with the processed right-hand side of 
-#' the formula
+#' @slot orig a formula object with the original formula
 #' 
 #' @slot penv an \code{environment} object to which the
 #' formula is related (i.e. the environment containing possible
@@ -69,7 +68,7 @@ setClass(
           predictors = "character",
           response = "character",
           lhs = "call",
-          rhs = "call",
+          orig = "formula",
           penv = "environment"
           )
   )

@@ -11,28 +11,28 @@
 #' @param ... extra arguments to \code{\link{new.pim.env}}
 #' 
 #' @return a \code{\link{pim.formula}} object.
-#' 
+#' @export
 setGeneric("new.pim.formula",
            function(formula, data, ...) standardGeneric("new.pim.formula"))
 
+#' @export
 setMethod("new.pim.formula",
           signature=c("formula","pim.environment"),
           function(formula, data){
             environment(formula) <- data
+            orig <- formula
             ft <- terms(formula, simplify=TRUE)
-            formula <- formula(ft)
             
             lhs <- formula[[2]]
             rhs <- formula[[3]]
             
             response <- all.vars(lhs)
             predictors <- all.vars(rhs)
-            vars <- union(response, predictors)
             
             funs.rhs <- setdiff(all.names(rhs,unique=TRUE),
                                 predictors)
             funs.lhs <- setdiff(all.names(lhs,unique=TRUE),
-                                predictors)
+                                response)
 
             has.funs.lhs <- any(match(funs.lhs,.specials.pim.lhs,0L) >0L  )
             has.specials <- any(match(funs.rhs,.specials.pim.rhs,0L) >0L  )
@@ -41,16 +41,18 @@ setMethod("new.pim.formula",
             has.lhs.fun <- FALSE
             
             if(!has.funs.lhs)
-              rhs <- as.language(paste("PO(L(",response,"),R(",
+              lhs <- as.language(paste("PO(L(",response,"),R(",
                                        response,"))"))
             
             out <- new("pim.formula",
                 terms = ft,
                 has.specials = has.specials,
                 has.lhs.fun = has.lhs.fun,
-                lhs = enquote(lhs),
-                rhs = enquote(rhs),
-                penv = data)
+                lhs = lhs,
+                orig = orig,
+                penv = data,
+                predictors = predictors,
+                response = response)
             out
           })
 

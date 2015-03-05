@@ -42,6 +42,10 @@ An object of class \code{pim}
 This function is the main function to fit a probabilistic index model
 or PIM.
 }
+\section{WARNING}{
+ THIS FUNCTION CURRENTLY ONLY RETURNS A MODEL MATRIX
+}
+
 \section{Note}{
 
 THIS FUNCTION DOESN'T DO ANYTHING FOR THE MOMENT. WORK NEEDED.

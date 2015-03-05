@@ -54,8 +54,7 @@ variable.}
 \item{\code{lhs}}{a call with the processed left-hand side of
 the formula}
 
-\item{\code{rhs}}{a call with the processed right-hand side of
-the formula}
+\item{\code{orig}}{a formula object with the original formula}
 
 \item{\code{penv}}{an \code{environment} object to which the
 formula is related (i.e. the environment containing possible

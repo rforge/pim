@@ -3,6 +3,8 @@
 #' This function is the main function to fit a probabilistic index model
 #' or PIM. 
 #' 
+#' @section WARNING: THIS FUNCTION CURRENTLY ONLY RETURNS A MODEL MATRIX
+#' 
 #' @param formula An object of class \code{\link{formula}} (or one that
 #' can be coerced to that class): A symbolic description of the model
 #' to be fitted. The details of model specification are given under 'Details'.
@@ -57,7 +59,6 @@ pim <- function(formula,
   f.terms <- terms(formula, simplify=TRUE)
     
   vars <- all.vars(formula)
-  browser()
   
   # Create the pim environment (similar to model frame)
   
@@ -66,8 +67,8 @@ pim <- function(formula,
   else
     new.pim.env(data, compare = compare, vars=vars)
   
+  ff <- new.pim.formula(formula, penv)
   
-
-
-  NULL
+  model.matrix(ff)
+  
 }

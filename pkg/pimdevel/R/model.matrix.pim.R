@@ -16,6 +16,15 @@ setGeneric("model.matrix")
 
 setMethod("model.matrix",
           signature="pim.formula",
-          function(object){
-            NULL
+          function(object, data, ...){
+            model.matrix.pim.formula(object, data, ...)
           })
+
+model.matrix.pim.formula <-
+  function(object, data, ...){
+    if(missing(data)) data <- object@penv
+    mm <- model.matrix(terms(object),
+                       data)
+    # HEEEEEEEEEEEERRRRRRRRRRRRREEEEEEEEEEEEEEEEEEEEEEEEEEEE
+    mm
+  }
