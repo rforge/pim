@@ -11,6 +11,7 @@
 #' 
 #' - Create method for pim object for extracting model matrix
 #' 
+#' @export
 #' @include pim.formula-class.R
 setGeneric("model.matrix")
 
@@ -23,7 +24,15 @@ setMethod("model.matrix",
 model.matrix.pim.formula <-
   function(object, data, ...){
     if(missing(data)) data <- object@penv
-    mm <- model.matrix(terms(object),
+    
+    tt <- terms(object)
+    
+    if(has.specials(object)){
+      tt[[2]] <- object@lhs
+      tt <- as.formula(tt, env=data)
+    } 
+
+    mm <- model.matrix(tt,
                        data)
     # HEEEEEEEEEEEERRRRRRRRRRRRREEEEEEEEEEEEEEEEEEEEEEEEEEEE
     mm
