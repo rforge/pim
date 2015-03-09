@@ -5,7 +5,8 @@
 #' The poset can be extracted as a matrix or a list. 
 #' 
 #' @param x an object of class \code{\link{pim.environment}} 
-#' or \code{\link{pim.poset}}
+#' or \code{\link{pim.poset}}, or an environment derived from
+#' either object.
 #' 
 #' @param as.list a logical value indicating whether the poset should
 #' be returned as list or as a matrix. Defaults to FALSE, which returns
@@ -63,5 +64,19 @@ setMethod('poset',
               } else {
                 return(do.call(cbind,out))
               }
+            }
+          })
+#' @describeIn poset
+setMethod('poset',
+          signature='environment',
+          function(x,as.list=FALSE){
+            out <- list(
+              L = environment(get("L", x))$poset,
+              R = environment(get("R", x))$poset
+              )
+            if(as.list){
+              return(out)
+            } else {
+              return(do.call(cbind,out))
             }
           })

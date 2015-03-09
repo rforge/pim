@@ -6,7 +6,8 @@
 \usage{
 pim(formula, data, link = c("identity", "logit", "probit"),
   compare = c("unique", "all"), model = c("difference", "marginal",
-  "regular", "customized"), na.action = getOption("na.action"), vcov)
+  "regular", "customized"), na.action = getOption("na.action"),
+  vcov = "vcov.sandwich", ...)
 }
 \arguments{
 \item{formula}{An object of class \code{\link{formula}} (or one that
@@ -33,7 +34,10 @@ this parameter is set automatically to "customized"}
 contains NAs. The default is set by the \code{na.action} setting of
 \code{\link{options}}, and is \code{\link{na.fail}} when unset.}
 
-\item{vcov}{a function to determine the variance-covariance matrix. Possibilities are \code{\link{vcov.sandwich}} and \code{link{vcov.score}}}
+\item{vcov}{a function to determine the variance-covariance matrix. Possibilities are \code{\link{vcov.sandwich}} and \code{link{vcov.score}}.
+Defaults to \code{vcov.sandwich} --- NOT IMPLEMENTED YET ---}
+
+\item{...}{extra parameters sent to \code{\link{pim.fit}}}
 }
 \value{
 An object of class \code{pim}

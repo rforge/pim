@@ -26,14 +26,22 @@ model.matrix.pim.formula <-
     if(missing(data)) data <- object@penv
     
     tt <- terms(object)
+    specials <- has.specials(object)
     
-    if(has.specials(object)){
+    if(specials){
       tt[[2]] <- object@lhs
-      tt <- as.formula(tt, env=data)
+      tt <- terms(formula(tt, env=data))
     } 
 
     mm <- model.matrix(tt,
                        data)
-    # HEEEEEEEEEEEERRRRRRRRRRRRREEEEEEEEEEEEEEEEEEEEEEEEEEEE
+    
+    if (!specials){
+      pos <- poset(data, as.list=TRUE)
+      mm <- mm[pos$L,] - mm[pos$R,]
+    }
+    if(id <- match("(Intercept)",colnames(mm),0L) > 0L){
+      mm <- mm[,-id, drop=FALSE]
+    }
     mm
   }

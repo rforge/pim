@@ -24,3 +24,11 @@ setGeneric("terms")
 setMethod("terms",
           signature= "pim.formula",
           function(x) x@terms)
+
+#' @rdname has.specials
+setGeneric("lhs",
+           function(x)standardGeneric("lhs"))
+
+setMethod("lhs",
+          signature= "pim.formula",
+          function(x) x@lhs)

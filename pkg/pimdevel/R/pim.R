@@ -29,7 +29,10 @@
 #' contains NAs. The default is set by the \code{na.action} setting of
 #' \code{\link{options}}, and is \code{\link{na.fail}} when unset. 
 #' 
-#' @param vcov a function to determine the variance-covariance matrix. Possibilities are \code{\link{vcov.sandwich}} and \code{link{vcov.score}}
+#' @param vcov a function to determine the variance-covariance matrix. Possibilities are \code{\link{vcov.sandwich}} and \code{link{vcov.score}}.
+#' Defaults to \code{vcov.sandwich} --- NOT IMPLEMENTED YET ---
+#' 
+#' @param ... extra parameters sent to \code{\link{pim.fit}}
 #' 
 #' @return An object of class \code{pim}
 #' 
@@ -44,7 +47,8 @@ pim <- function(formula,
                 model = c("difference","marginal",
                           "regular","customized"),
                 na.action = getOption("na.action"),
-                vcov
+                vcov = 'vcov.sandwich',
+                ...
                 ){
   
   # Check the arguments
@@ -52,6 +56,7 @@ pim <- function(formula,
   compare <- match.arg(compare)
   link <- match.arg(link)
   nodata <- missing(data)
+  #vcov <- match.fun(vcov)
   
   if(is.null(na.action)) na.action <- "na.fail"
   
@@ -69,6 +74,10 @@ pim <- function(formula,
   
   ff <- new.pim.formula(formula, penv)
   
-  model.matrix(ff)
+  x <- model.matrix(ff)
+  y <- eval(lhs(ff), env=penv)
   
+  res <- pim.fit(x, y, link, ...)
+  
+  res
 }

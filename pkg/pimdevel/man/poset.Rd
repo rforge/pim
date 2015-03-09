@@ -3,6 +3,7 @@
 \docType{methods}
 \name{poset}
 \alias{poset}
+\alias{poset,environment-method}
 \alias{poset,pim.environment-method}
 \alias{poset,pim.poset-method}
 \title{Extract the poset as a matrix or list}
@@ -12,10 +13,13 @@ poset(x, ...)
 \S4method{poset}{pim.environment}(x, ...)
 
 \S4method{poset}{pim.poset}(x, as.list = FALSE)
+
+\S4method{poset}{environment}(x, as.list = FALSE)
 }
 \arguments{
 \item{x}{an object of class \code{\link{pim.environment}}
-or \code{\link{pim.poset}}}
+or \code{\link{pim.poset}}, or an environment derived from
+either object.}
 
 \item{...}{arguments passed to other methods. Currently ignored.}
 
@@ -44,6 +48,8 @@ The poset can be extracted as a matrix or a list.
 \item \code{pim.environment}: 
 
 \item \code{pim.poset}: 
+
+\item \code{environment}: 
 }}
 \examples{
 data(DysData)

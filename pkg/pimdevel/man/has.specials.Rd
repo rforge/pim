@@ -2,12 +2,15 @@
 % Please edit documentation in R/Getters_pim.formula.R
 \name{has.specials}
 \alias{has.specials}
+\alias{lhs}
 \alias{terms}
 \title{Extract information from a pim.formula object}
 \usage{
 has.specials(x)
 
 terms(x, ...)
+
+lhs(x)
 }
 \value{
 \code{has.specials()}: a single \code{TRUE} or \code{FALSE}
