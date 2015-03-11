@@ -4,7 +4,8 @@
 \alias{pim.fit}
 \title{Fitter function for a probabilistic index model}
 \usage{
-pim.fit(x, y, link, ...)
+pim.fit(x, y, link, estim = "estimator.nleqslv", start = rep(0, ncol(x)),
+  ...)
 }
 \arguments{
 \item{x}{a model matrix of dimensions n*p}
@@ -12,6 +13,14 @@ pim.fit(x, y, link, ...)
 \item{y}{a response vector with n values}
 
 \item{link}{a character vector with a link function}
+
+\item{estim}{a character vector or a function indicating the solver
+to be used for estimating the coefficients. By default this is
+the function \code{\link[nleqslv]{nleqslv}}. Other possibilities are
+given in the help page on \code{\link{estimators}}.}
+
+\item{start}{A numeric vector with the starting values for the fitting
+algorithm, if required.}
 }
 \description{
 This is the basic computing engine called by \code{\link{pim}}

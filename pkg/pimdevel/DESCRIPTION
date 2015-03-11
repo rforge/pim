@@ -1,8 +1,8 @@
 Package: pimdevel
 Type: Package
 Title: Probabilistic Index Models
-Version: 1.9.1.0
-Date: 2015-03-09
+Version: 1.9.1.1
+Date: 2015-03-11
 Author: Joris Meys, Nick Sabbe, Jan De Neve
 Maintainer: Joris Meys <Joris.Meys@Ugent.be>
 Description: Fit a probabilistic index model. This package is the latest
@@ -13,13 +13,15 @@ Depends:
     R (>= 3.0)
 Imports:
     methods,
-    stats4
+    stats4,
+    nleqslv
 License: GPL (>= 2)
 URL: NA
 Collate:
     'CreateScoreFun.R'
     'DysData.R'
     'Engeldata.R'
+    'Estimators.R'
     'FEVData.R'
     'pim.poset-class.R'
     'pim.environment-class.R'

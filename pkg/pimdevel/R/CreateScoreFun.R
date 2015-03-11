@@ -23,7 +23,8 @@ CreateScoreFun <-function(Z,Y,
   if (link == "probit") {
     U.func <- function(beta) {
       Zbeta <- c(Z %*% beta)
-      summat<-Z * dnorm(Zbeta) * c(Y - pnorm(Zbeta))/c(pnorm(Zbeta) * (1 - pnorm(Zbeta)))
+      pZbeta <- pnorm(Zbeta)
+      summat<-Z * dnorm(Zbeta) * c(Y - pZbeta)/c(pZbeta * (1 - pZbeta))
       if(! is.null(W)) summat<-summat * W
       colSums(summat)
     }
@@ -47,7 +48,7 @@ CreateScoreFun <-function(Z,Y,
   }
   else
   {
-    stop(paste("Unsupported link function for scorefunctioncreator.default:"), link)
+    stop(paste("Unsupported link function for CreateScoreFun:"), link)
   }
   return(U.func)
 }

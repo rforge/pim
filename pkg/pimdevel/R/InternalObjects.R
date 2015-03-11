@@ -10,3 +10,10 @@
 
 .specials.pim.lhs <- c("P","PO")
 .specials.pim.rhs <- c("L","R")
+
+.glmfamilies <- list(identity=gaussian(), 
+                     logit=binomial(link = "logit"), 
+                     probit=binomial(link = "probit"), 
+                     inverse=Gamma(), 
+                     `1/mu^2`=inverse.gaussian(), 
+                     log=poisson())

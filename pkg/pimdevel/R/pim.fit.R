@@ -10,13 +10,21 @@
 #' @param x a model matrix of dimensions n*p
 #' @param y a response vector with n values
 #' @param link a character vector with a link function
+#' @param estim a character vector or a function indicating the solver
+#' to be used for estimating the coefficients. By default this is
+#' the function \code{\link[nleqslv]{nleqslv}}. Other possibilities are
+#' given in the help page on \code{\link{estimators}}.
+#' @param start A numeric vector with the starting values for the fitting
+#' algorithm, if required. 
 #' 
 #' @export
 #' @import nleqslv
-pim.fit <- function(x,y,link,...
+pim.fit <- function(x,y,link,
+                    estim = 'estimator.nleqslv',
+                    start = rep(0,ncol(x)),
+                    ...
                     )
-  {
-  fn <- CreateScoreFun(x,y,link)
-  startvalues <- rep(0,ncol(x))
-  nleqslv(startvalues, fn)
+{
+  estim <- match.fun(estim)
+  estim(x, y, link = link, start=start, ...)
 }
