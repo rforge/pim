@@ -92,5 +92,7 @@ pim <- function(formula,
   
   res <- pim.fit(x, y, link, ...)
   
+  names(res$coef) <- colnames(x)
+  
   res
 }
