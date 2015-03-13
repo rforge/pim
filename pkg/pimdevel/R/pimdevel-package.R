@@ -1,9 +1,9 @@
 #' Probabilistic Index Models
 #' 
-#' Fit a probabilistic index model. This package is the latest version of the pim package, and will end up being pim 2.0. It's a beta, so don't expect back compatibility with previous versions of pim 
+#' Fit a probabilistic index model. This package is the latest version of the pim package, and will end up being pim 2.0. It's a beta, so don't expect back compatibility with previous versions of pim. Note the fitting engine isn't fully implemented.
 #' 
 #' \tabular{ll}{ Package: \tab pimdevel\cr Type: \tab Package\cr Version: \tab
-#' 1.9.1.1\cr Date: \tab 2015-03-11\cr License: \tab GPL (>= 2)\cr
+#' 1.9.1.2\cr Date: \tab 2015-03-13\cr License: \tab GPL (>= 2)\cr
 #' LazyLoad: \tab yes\cr Depends: R (>= 3.0)} 
 #' @name pimdevel-package
 #' @aliases pimdevel-package

@@ -32,3 +32,11 @@ setGeneric("lhs",
 setMethod("lhs",
           signature= "pim.formula",
           function(x) x@lhs)
+
+#' @rdname has.specials
+setGeneric("penv",
+           function(x) standardGeneric("penv"))
+
+setMethod("penv",
+          signature = "pim.formula",
+          function(x) x@penv)

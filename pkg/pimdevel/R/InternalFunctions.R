@@ -78,3 +78,8 @@ is.variable <- function(x){
 as.language <- function(x){
   eval(parse(text=paste("quote(",x,")")))
 }
+
+# Catches the warning in glm.fit abput non-integer successes
+catch.noninteger.handler <- function(w)
+  if( any (grepl("non-integer #successes in a binomial glm", w)))
+    invokeRestart("muffleWarning")

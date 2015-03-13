@@ -17,14 +17,20 @@
 #' @param start A numeric vector with the starting values for the fitting
 #' algorithm, if required. 
 #' 
+#' @return In all cases, a list with the coefficients
+#' 
 #' @export
-#' @import nleqslv
-pim.fit <- function(x,y,link,
+pim.fit <- function(x,y,link = "probit",
                     estim = 'estimator.nleqslv',
                     start = rep(0,ncol(x)),
                     ...
                     )
 {
   estim <- match.fun(estim)
-  estim(x, y, link = link, start=start, ...)
+  res <- estim(x, y, link = link, start=start, ...)
+  
+  vcov <- "not yet implemented"
+  
+  return(list(coef = res$coef,vcov = vcov))
+  
 }

@@ -65,6 +65,19 @@ pim <- function(formula,
     
   vars <- all.vars(formula)
   
+  if(nodata){
+    if(!all(pres <- vars %in% ls(parent.frame())) )
+      stop(paste("Following variables can't be found:",
+                 .lpaste(vars[!pres]))
+           )
+  } else {
+    if(!all(pres <- vars %in% names(data)))
+      stop(paste("Following variables can't be found:",
+                 .lpaste(vars[!pres]))
+           )
+           
+  }
+  
   # Create the pim environment (similar to model frame)
   
   penv <- if(nodata) 
