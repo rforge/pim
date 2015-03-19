@@ -12,5 +12,5 @@
 response <- function(formula){
   if(!inherits(formula,"pim.formula"))
     stop("formula is not a pim.formula object.")
-  eval(lhs(formula), env=penv(formula))
+  eval(formula@lhs, env=penv(formula))
 }

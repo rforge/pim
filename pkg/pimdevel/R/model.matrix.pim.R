@@ -38,7 +38,7 @@ model.matrix.pim.formula <-
     
     if (!specials){
       pos <- poset(data, as.list=TRUE)
-      mm <- mm[pos$L,] - mm[pos$R,]
+      mm <- mm[pos$R,] - mm[pos$L,]
     }
     if(id <- match("(Intercept)",colnames(mm),0L) > 0L){
       mm <- mm[,-id, drop=FALSE]
