@@ -4,13 +4,13 @@
 \alias{pim.fit}
 \title{Fitter function for a probabilistic index model}
 \usage{
-pim.fit(x, y, link = "probit", estim = "estimator.nleqslv", start = rep(0,
+pim.fit(x, y, link = "logit", estim = "estimator.nleqslv", start = rep(0,
   ncol(x)), ...)
 }
 \arguments{
-\item{x}{a model matrix of dimensions n*p}
+\item{x}{a model matrix with as many rows as \code{y}.}
 
-\item{y}{a response vector with n values}
+\item{y}{a vector with the pseudo-responses}
 
 \item{link}{a character vector with a link function}
 
@@ -33,5 +33,9 @@ these components using the sandwich estimators.
 }
 \details{
 NEEDS WORK
+}
+\seealso{
+\code{\link{model.matrix}} for how to construct a valid model matrix
+for a pim, \code{\link{pim}} for the general user interface
 }
 

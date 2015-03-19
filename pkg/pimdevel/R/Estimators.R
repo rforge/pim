@@ -32,7 +32,7 @@
 #' @rdname estimators
 #' @export
 estimator.nleqslv <-
-  function(x,y,start=rep(0,ncol(x)), link="probit", ...){
+  function(x,y,start=rep(0,ncol(x)), link="logit", ...){
     
     fn <- CreateScoreFun(x,y,link)
     res <- nleqslv(start,fn, ...)
@@ -49,7 +49,7 @@ estimator.nleqslv <-
 #' @rdname estimators
 #' @export
 estimator.glm <-
-  function(x, y, start= rep(0,ncol(x)), link="probit", ...){
+  function(x, y, start= rep(0,ncol(x)), link="logit", ...){
     
     if(is.character(link)){
       
@@ -70,7 +70,7 @@ estimator.glm <-
 #' @import BB
 #' @export
 estimator.BB <-
-  function(x, y, start= rep(0,ncol(x)), link="probit", 
+  function(x, y, start= rep(0,ncol(x)), link="logit", 
            control=list(NM = c(FALSE,TRUE),
                         method = c(1,2,3)), ...){
     fn <- CreateScoreFun(x,y,link)

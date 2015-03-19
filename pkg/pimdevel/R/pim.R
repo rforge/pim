@@ -15,7 +15,7 @@
 #' 
 #' @param link a character vector with a single value that determines the
 #' used link function. Possible values are "logit", "probit" and "identity".
-#' The default is "identity".
+#' The default is "logit".
 #' 
 #' @param compare a character vector with a single value that describes how the 
 #' model compares observations. It can take the values "unique" or "all". Alternatively you can pass a matrix with two columns. Each row represents the rownumbers in the original data frame that should be compared to eachother. See Details.
@@ -42,7 +42,7 @@
 #' @export
 pim <- function(formula,
                 data,
-                link = c("identity","logit","probit"),
+                link = c("logit","probit","identity"),
                 compare = c("unique","all"),
                 model = c("difference","marginal",
                           "regular","customized"),
@@ -54,9 +54,9 @@ pim <- function(formula,
   # Check the arguments
   model <- match.arg(model)
   compare <- match.arg(compare)
-  link <- match.arg(link)
   nodata <- missing(data)
   #vcov <- match.fun(vcov)
+  link <- match.arg(link)
   
   if(is.null(na.action)) na.action <- "na.fail"
   

@@ -7,11 +7,11 @@
 \alias{estimators}
 \title{Estimator functions for probabilistic index models}
 \usage{
-estimator.nleqslv(x, y, start = rep(0, ncol(x)), link = "probit", ...)
+estimator.nleqslv(x, y, start = rep(0, ncol(x)), link = "logit", ...)
 
-estimator.glm(x, y, start = rep(0, ncol(x)), link = "probit", ...)
+estimator.glm(x, y, start = rep(0, ncol(x)), link = "logit", ...)
 
-estimator.BB(x, y, start = rep(0, ncol(x)), link = "probit",
+estimator.BB(x, y, start = rep(0, ncol(x)), link = "logit",
   control = list(NM = c(FALSE, TRUE), method = c(1, 2, 3)), ...)
 }
 \arguments{

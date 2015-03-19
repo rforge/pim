@@ -4,7 +4,7 @@
 \alias{pim}
 \title{Fitting a Probabilistic Index Model}
 \usage{
-pim(formula, data, link = c("identity", "logit", "probit"),
+pim(formula, data, link = c("logit", "probit", "identity"),
   compare = c("unique", "all"), model = c("difference", "marginal",
   "regular", "customized"), na.action = getOption("na.action"),
   vcov = "vcov.sandwich", ...)
@@ -20,7 +20,7 @@ the variables in the model. Objects that can be coerced by
 
 \item{link}{a character vector with a single value that determines the
 used link function. Possible values are "logit", "probit" and "identity".
-The default is "identity".}
+The default is "logit".}
 
 \item{compare}{a character vector with a single value that describes how the
 model compares observations. It can take the values "unique" or "all". Alternatively you can pass a matrix with two columns. Each row represents the rownumbers in the original data frame that should be compared to eachother. See Details.}

@@ -7,8 +7,8 @@
 #' 
 #' NEEDS WORK
 #' 
-#' @param x a model matrix of dimensions n*p
-#' @param y a response vector with n values
+#' @param x a model matrix with as many rows as \code{y}.
+#' @param y a vector with the pseudo-responses
 #' @param link a character vector with a link function
 #' @param estim a character vector or a function indicating the solver
 #' to be used for estimating the coefficients. By default this is
@@ -19,8 +19,11 @@
 #' 
 #' @return In all cases, a list with the coefficients
 #' 
+#' @seealso \code{\link{model.matrix}} for how to construct a valid model matrix
+#' for a pim, \code{\link{pim}} for the general user interface
+#' 
 #' @export
-pim.fit <- function(x,y,link = "probit",
+pim.fit <- function(x,y,link = "logit",
                     estim = 'estimator.nleqslv',
                     start = rep(0,ncol(x)),
                     ...
