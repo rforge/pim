@@ -88,7 +88,7 @@ pim <- function(formula,
   ff <- new.pim.formula(formula, penv)
   
   x <- model.matrix(ff)
-  y <- eval(lhs(ff), env=penv)
+  y <- eval(lhs(ff), envir=penv)
   
   res <- pim.fit(x, y, link, ...)
   
