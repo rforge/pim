@@ -19,7 +19,7 @@
 sandwich.estimator<-function(U, U.diff, 
                              g1, g2, 
                              shared.factor=1, switched.factor=1,
-                             self.factor=1, verbosity=0)
+                             self.factor=1)
 {
   #note: this estimator is greatly optimized, based on T Lumley's code!
   
@@ -35,29 +35,16 @@ sandwich.estimator<-function(U, U.diff,
   usum1.tmp <- rowsum(U,g1,reorder=FALSE)
   usum2.tmp <- rowsum(U,g2,reorder=FALSE)
   
-  #TODO : optimize code below
-  # use crossprod() etc.
+  ng <- length(union(g1,g2))
   
-  usum1  <- matrix(nrow=length(union(g1,g2)),ncol=ncol(usum1.tmp),0)
-  usum2  <- matrix(nrow=length(union(g1,g2)),ncol=ncol(usum2.tmp),0)
-  usum1 [unique(g1),] <- usum1.tmp; usum2[unique(g2),] <- usum2.tmp
+  usum1  <- matrix(nrow = ng, ncol = ncol(usum1.tmp),0)
+  usum2  <- matrix(nrow = ng, ncol = ncol(usum2.tmp),0)
+  usum1[unique(g1),] <- usum1.tmp
+  usum2[unique(g2),] <- usum2.tmp
   
-  utushared<-((t(usum1)%*%usum1)+t(usum2)%*%usum2)
-  utuswitched<-((t(usum1)%*%usum2)+t(usum2)%*%usum1)
-  uDiag<-t(U)%*%U #Is counted twice as shared.factor, but needs to be counted as self.factor
-  if(verbosity>0)
-  {
-    cat("usums:\n")
-    print(cbind(usum1, usum2))
-    cat("With colSums:\n")
-    print(colSums(cbind(usum1, usum2)))
-    cat("utushared:\n")
-    print(utushared)
-    cat("utuswitched:\n")
-    print(utuswitched)
-    cat("uDiag:\n")
-    print(uDiag)
-  }
+  utushared <- crossprod(usum1) + crossprod(usum2) 
+  utuswitched <- crossprod(usum1,usum2) + crossprod(usum2,usum1)
+  uDiag<-crossprod(U) #Is counted twice as shared.factor, but needs to be counted as self.factor
   
   utu<-shared.factor*utushared  + 
     (switched.factor)*utuswitched +
@@ -65,11 +52,9 @@ sandwich.estimator<-function(U, U.diff,
   
   #if the inverses occur (ij, ji), they are counted doubly as switched!!
   #However: they should be counted as - self
-  #So I need all of these combinations:
-  mx<-nrow(usum1)+1
-  #This implementation expects mx not to be too big
-  #It should work up to just about sqrt(2 ^ .Machine$double.digits)
-  #which is actually above 90.000.000 on my own machine
+  
+  mx<-ng+1
+  
   uids<-g1*mx+g2
   invuids<-g2*mx+g1
   invrowperrow<-match(uids, invuids)

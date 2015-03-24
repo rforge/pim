@@ -1,8 +1,8 @@
 Package: pimdevel
 Type: Package
 Title: Probabilistic Index Models
-Version: 1.9.1.3
-Date: 2015-03-19
+Version: 1.9.1.4
+Date: 2015-03-24
 Author: Joris Meys, Nick Sabbe, Jan De Neve
 Maintainer: Joris Meys <Joris.Meys@Ugent.be>
 Description: Fit a probabilistic index model. This package is the latest
@@ -52,5 +52,6 @@ Collate:
     'poset.R'
     'response.R'
     'sandwich.estimator.R'
+    'vcov.estimators.R'
 Suggests:
     testthat
