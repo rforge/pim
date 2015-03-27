@@ -29,9 +29,6 @@
 #' contains NAs. The default is set by the \code{na.action} setting of
 #' \code{\link{options}}, and is \code{\link{na.fail}} when unset. 
 #' 
-#' @param vcov a function to determine the variance-covariance matrix. Possibilities are \code{\link{vcov.sandwich}} and \code{link{vcov.score}}.
-#' Defaults to \code{vcov.sandwich} --- NOT IMPLEMENTED YET ---
-#' 
 #' @param ... extra parameters sent to \code{\link{pim.fit}}
 #' 
 #' @return An object of class \code{pim}
@@ -47,7 +44,7 @@ pim <- function(formula,
                 model = c("difference","marginal",
                           "regular","customized"),
                 na.action = getOption("na.action"),
-                vcov = 'vcov.sandwich',
+                weights=NULL,
                 ...
                 ){
   
@@ -90,7 +87,10 @@ pim <- function(formula,
   x <- model.matrix(ff)
   y <- eval(lhs(ff), envir=penv)
   
-  res <- pim.fit(x, y, link, ...)
+  res <- pim.fit(x, y, link, weights = weights, 
+                 penv = as.environment(penv@poset), ...)
+  # as.environment will only pass the environment of the penv to avoid
+  # copying the whole thing. makes it easier to get the poset out
   
   names(res$coef) <- colnames(x)
   

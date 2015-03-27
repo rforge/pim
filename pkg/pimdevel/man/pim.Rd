@@ -7,7 +7,7 @@
 pim(formula, data, link = c("logit", "probit", "identity"),
   compare = c("unique", "all"), model = c("difference", "marginal",
   "regular", "customized"), na.action = getOption("na.action"),
-  vcov = "vcov.sandwich", ...)
+  weights = NULL, ...)
 }
 \arguments{
 \item{formula}{An object of class \code{\link{formula}} (or one that
@@ -33,9 +33,6 @@ this parameter is set automatically to "customized"}
 \item{na.action}{a function which indicates what should happen when the data
 contains NAs. The default is set by the \code{na.action} setting of
 \code{\link{options}}, and is \code{\link{na.fail}} when unset.}
-
-\item{vcov}{a function to determine the variance-covariance matrix. Possibilities are \code{\link{vcov.sandwich}} and \code{link{vcov.score}}.
-Defaults to \code{vcov.sandwich} --- NOT IMPLEMENTED YET ---}
 
 \item{...}{extra parameters sent to \code{\link{pim.fit}}}
 }

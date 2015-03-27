@@ -5,14 +5,23 @@
 #' These functions are meant to be used within a call to \code{\link{pim}}
 #' as a value for the argument \code{vcov}.
 #' 
+#' You can create your own estimating functions for the variance-covariance
+#' matrix. To do so, you have to make sure that your function allows for
+#' the exact same arguments. As the function \code{pim.fit} calculates the
+#' fitted values already, there's no need to incorporate the 
+#' 
 #' @note You should only use \code{vcov.score} in combination with an 
 #' identity link
 #' 
-#' @param Z the design matrix
-#' @param beta a numeric vector with the fitted coefficients
+#' @param fitted The fitted values (calculated as \code{X \%*\% coef} with
+#' \code{X} the design matrix and \code{coef} the coefficients)
+#' @param X the design matrix
 #' @param Y a numeric vector with pseudoresponses
 #' @param W a numeric vector with weights. If weights are not applicable,
 #' set to \code{NULL} (the default)
+#' @param link a character vector with the link function
+#' @param poset a list with the left and right indices. See \code{\link{poset}}
+#' for more information.
 #' @param ... arguments passed to downstream methods.
 #' 
 #' @return the variance-covariance matrix
@@ -20,7 +29,24 @@
 #' @rdname vcov.estimators
 #' @name vcov.estimators
 #' @aliases vcov.sandwich vcov.score
-#' 
-vcov.sandwich <- function(Z,beta,Y,W,...){
-  NULL
+#' @seealso \code{\link{sandwich.estimator}} for more information on the
+#' actual fitting process.
+vcov.sandwich <- function(fitted, X, Y, W, link, poset, ...){
+  Ulist <- U.sandwich(fitted, X, Y, link, W)
+  Ulist$g1 <- poset[[1]] 
+  Ulist$g2 <- poset[[2]]
+  fv <- Ulist$fv
+  Ulist$fv <- NULL
+  do.call(sandwich.estimator, Ulist)
+  
+}
+
+#' @rdname vcov.estimators
+#' @name vcov.estimators
+vcov.score <- function(fitted, X, Y, W, link, poset, ...){
+  Ulist <- U.score(fitted, X, Y, link, W)
+  Ulist <- c(Ulist, g1=poset[[1]], g2=poset[[2]])
+  fv <- Ulist$fv
+  Ulist$fv <- NULL
+  do.call(sandwich.estimator, Ulist) 
 }

@@ -6,17 +6,25 @@
 \alias{vcov.score}
 \title{vcov estimators for pim}
 \usage{
-\method{vcov}{sandwich}(Z, beta, Y, W, ...)
+vcov.sandwich(fitted, X, Y, W, link, poset, ...)
+
+vcov.score(fitted, X, Y, W, link, poset, ...)
 }
 \arguments{
-\item{Z}{the design matrix}
+\item{fitted}{The fitted values (calculated as \code{X \%*\% coef} with
+\code{X} the design matrix and \code{coef} the coefficients)}
 
-\item{beta}{a numeric vector with the fitted coefficients}
+\item{X}{the design matrix}
 
 \item{Y}{a numeric vector with pseudoresponses}
 
 \item{W}{a numeric vector with weights. If weights are not applicable,
 set to \code{NULL} (the default)}
+
+\item{link}{a character vector with the link function}
+
+\item{poset}{a list with the left and right indices. See \code{\link{poset}}
+for more information.}
 
 \item{...}{arguments passed to downstream methods.}
 }
@@ -29,8 +37,18 @@ for the variance-covariance matrix of a probabilistic index model.
 These functions are meant to be used within a call to \code{\link{pim}}
 as a value for the argument \code{vcov}.
 }
+\details{
+You can create your own estimating functions for the variance-covariance
+matrix. To do so, you have to make sure that your function allows for
+the exact same arguments. As the function \code{pim.fit} calculates the
+fitted values already, there's no need to incorporate the
+}
 \note{
 You should only use \code{vcov.score} in combination with an
 identity link
+}
+\seealso{
+\code{\link{sandwich.estimator}} for more information on the
+actual fitting process.
 }
 
