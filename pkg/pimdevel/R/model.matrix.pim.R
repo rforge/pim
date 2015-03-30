@@ -31,24 +31,21 @@ model.matrix.pim.formula <-
     if(specials){
       tt[[2]] <- object@lhs
       tt <- terms(formula(tt, env=data))
-    } 
-
-    mm <- model.matrix(tt,
-                       data)
-    
-    if (!specials){
+      mm <- model.matrix(tt,
+                         data)
+    } else {
       pos <- poset(data, as.list=TRUE)
       mm <- mm[pos$R,] - mm[pos$L,]
     }
     
     if(has.intercept(object)){
-      if(id <- match("(Intercept)",colnames(mm),0L) > 0L){
+      if((id <- match("(Intercept)",colnames(mm),0L)) > 0L){
         mm[,id] <- 1
       } else {
         mm <- cbind(mm, "(Intercept)" = 1)
       }
     } else{
-      if(id <- match("(Intercept)",colnames(mm),0L) > 0L){
+      if((id <- match("(Intercept)",colnames(mm),0L)) > 0L){
         mm <- mm[,-id, drop=FALSE]
       }
     }

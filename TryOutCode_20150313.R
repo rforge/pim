@@ -14,7 +14,7 @@ FEV <- within(FEVData,{
 
 Model <- pim(FEV~ Age + Smoke*Sex, data=FEV)
 
-Model2 <- pim(FEV ~ I(L(Age)-R(Age))+1, data=FEV,
+Model2 <- pim(FEV ~ Age +1, data=FEV,
               compare="all")
 
 
@@ -45,7 +45,7 @@ pos <- poset(FEVenv, as.list=TRUE)
 
 # create the formula and bind it to the pim.environment.
 FEVform <- new.pim.formula(
-  as.formula( Age ~ I(L(Height) - R(Height))),
+  as.formula( Age ~ I(L(Height) - R(Height)) ) ,
   FEVenv
   )
 
@@ -56,5 +56,5 @@ MM <- model.matrix(FEVform)
 Y <- response(FEVform)
 
 # Now pim.fit can do what it does
-pim.fit(MM,Y, estim = "estimator.glm")
+pim.fit(MM,Y, estim = "estimator.glm", penv=FEVenv)
 

@@ -31,6 +31,7 @@
 #' @aliases vcov.sandwich vcov.score
 #' @seealso \code{\link{sandwich.estimator}} for more information on the
 #' actual fitting process.
+#' @export
 vcov.sandwich <- function(fitted, X, Y, W, link, poset, ...){
   Ulist <- U.sandwich(fitted, X, Y, link, W)
   Ulist$g1 <- poset[[1]] 
@@ -43,6 +44,7 @@ vcov.sandwich <- function(fitted, X, Y, W, link, poset, ...){
 
 #' @rdname vcov.estimators
 #' @name vcov.estimators
+#' @export
 vcov.score <- function(fitted, X, Y, W, link, poset, ...){
   Ulist <- U.score(fitted, X, Y, link, W)
   Ulist <- c(Ulist, g1=poset[[1]], g2=poset[[2]])
