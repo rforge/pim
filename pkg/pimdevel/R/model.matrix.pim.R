@@ -31,9 +31,12 @@ model.matrix.pim.formula <-
     if(specials){
       tt[[2]] <- object@lhs
       tt <- terms(formula(tt, env=data))
-      mm <- model.matrix(tt,
-                         data)
-    } else {
+      
+    }
+    mm <- model.matrix(tt,
+                       data)
+    
+    if(!specials){
       pos <- poset(data, as.list=TRUE)
       mm <- mm[pos$R,] - mm[pos$L,]
     }
