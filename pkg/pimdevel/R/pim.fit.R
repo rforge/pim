@@ -24,7 +24,15 @@
 #' Alternatively this can be a list with two objects, containing the
 #' poset indices for the left and right side of the pim.
 #' 
-#' @return In all cases, a list with the coefficients
+#' @return A list with the following elements
+#' \describe{
+#'  \item{coef}{a numeric vector with the coefficients}
+#'  \item{vcov}{a numeric matrix with the variance-covarianc matrix for
+#'  the coefficients}
+#'  \item{fitted}{a numeric vector with the raw fitted values}
+#'  \item{estim}{a list with two components named \code{coef} and \code{vcov}
+#'  containing information on the used estimators for both.}
+#' }
 #' 
 #' @seealso \code{\link{model.matrix}} for how to construct a valid model matrix
 #' for a pim, \code{\link{pim}} for the general user interface
@@ -44,11 +52,13 @@ pim.fit <- function(x,y,link = "logit",
   res <- estim(x, y, link = link, start=start, ...)
   
   fits <- x %*% res$coef
+  dim(fits) <- NULL
 
   if(!is.list(penv)) penv <- poset(penv, as.list=TRUE)
   
   vc <- vcov.estim(fits, x, y, weights, link, penv)
   
-  return(list(coef = res$coef,vcov = vc))
+  return(list(coef = res$coef,vcov = vc, fitted=fits,
+              estim = list(coef = estim, vcov = vcov.estim)))
   
 }

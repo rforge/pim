@@ -1,8 +1,8 @@
 Package: pimdevel
 Type: Package
 Title: Probabilistic Index Models
-Version: 1.9.1.5
-Date: 2015-03-27
+Version: 1.9.1.6
+Date: 2015-03-30
 Author: Joris Meys, Nick Sabbe, Jan De Neve
 Maintainer: Joris Meys <Joris.Meys@Ugent.be>
 Description: Fit a probabilistic index model. This package is the latest
@@ -38,22 +38,25 @@ Collate:
     'SUData.R'
     'add.poset.R'
     'as.data.frame.pim.environment.R'
+    'pim-class.R'
+    'coef.R'
     'create.poset.R'
     'has.intercept.R'
     'is.complete.R'
     'make.posfun.R'
     'model.matrix.pim.R'
+    'new.pim.R'
     'new.pim.env.R'
     'new.pim.formula.R'
     'new.pim.poset.R'
     'nobs.R'
-    'pim-class.R'
     'pim.R'
     'pim.fit.R'
     'pimdata.R'
     'poset.R'
     'response.R'
     'sandwich.estimator.R'
+    'vcov.R'
     'vcov.estimators.R'
     'vcov.internal.R'
 Suggests:

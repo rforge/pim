@@ -32,7 +32,15 @@ Alternatively this can be a list with two objects, containing the
 poset indices for the left and right side of the pim.}
 }
 \value{
-In all cases, a list with the coefficients
+A list with the following elements
+\describe{
+ \item{coef}{a numeric vector with the coefficients}
+ \item{vcov}{a numeric matrix with the variance-covarianc matrix for
+ the coefficients}
+ \item{fitted}{a numeric vector with the raw fitted values}
+ \item{estim}{a list with two components named \code{coef} and \code{vcov}
+ containing information on the used estimators for both.}
+}
 }
 \description{
 This is the basic computing engine called by \code{\link{pim}}

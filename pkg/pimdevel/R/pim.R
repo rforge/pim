@@ -94,5 +94,12 @@ pim <- function(formula,
   
   names(res$coef) <- colnames(x)
   
-  res
+  new.pim(
+    formula = ff,
+    coef = res$coef,
+    vcov = res$vcov,
+    fitted = res$fitted,
+    penv = penv,
+    link = link,
+    estimators=res$estim)
 }
