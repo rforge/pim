@@ -77,12 +77,8 @@ sandwich.estimator<-function(U, U.diff,
         tmp<-matrix(tmp, nrow=1)
       }
     }
+    
     uijji<-matrix(rowSums(tmp), ncol=ncol(usum1.tmp))
-    if(verbosity>0)
-    {
-      cat("uijji:\n")
-      print(uijji)
-    }
     
     utu<-utu-(2 *  switched.factor + self.factor)*uijji
   }

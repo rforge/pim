@@ -22,7 +22,7 @@ setMethod("new.pim.formula",
             environment(formula) <- data
             orig <- formula
             ft <- terms(formula, simplify=TRUE)
-            
+
             lhs <- formula[[2]]
             rhs <- formula[[3]]
             
@@ -52,7 +52,9 @@ setMethod("new.pim.formula",
                 orig = orig,
                 penv = data,
                 predictors = predictors,
-                response = response)
+                response = response,
+                has.intercept = has.intercept(orig)
+                )
             out
           })
 

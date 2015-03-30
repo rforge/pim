@@ -39,6 +39,7 @@ Collate:
     'add.poset.R'
     'as.data.frame.pim.environment.R'
     'create.poset.R'
+    'has.intercept.R'
     'is.complete.R'
     'make.posfun.R'
     'model.matrix.pim.R'

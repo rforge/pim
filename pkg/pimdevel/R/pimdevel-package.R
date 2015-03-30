@@ -17,6 +17,7 @@ NULL
 
 # All things needed for S4 definitions.
 setOldClass("terms")
+setOldClass("formula")
 
 
 

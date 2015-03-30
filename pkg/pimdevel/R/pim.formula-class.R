@@ -37,6 +37,9 @@
 #' formula is related (i.e. the environment containing possible
 #' \code{L} and \code{R} function definitions.) See Details. 
 #' 
+#' @slot has.intercept a logical value indicating whether the formula has
+#' an explicit intercept (indicated by + 1)
+#' 
 #' @details Although a future version of this package will include the
 #' possibility to fit survival models, this is currently not implemented.
 #' If the \code{\link{pim}} function encounters special functions on the
@@ -69,6 +72,7 @@ setClass(
           response = "character",
           lhs = "call",
           orig = "formula",
-          penv = "environment"
+          penv = "environment",
+          has.intercept = "logical"
           )
   )

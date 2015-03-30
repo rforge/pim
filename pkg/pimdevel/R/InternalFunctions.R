@@ -83,3 +83,8 @@ as.language <- function(x){
 catch.noninteger.handler <- function(w)
   if( any (grepl("non-integer #successes in a binomial glm", w)))
     invokeRestart("muffleWarning")
+
+# Removes parentheses from a character input
+remove.pars <- function(x){
+  gsub("\\w\\(.*\\)","",x)
+}

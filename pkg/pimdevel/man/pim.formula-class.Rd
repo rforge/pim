@@ -59,6 +59,9 @@ the formula}
 \item{\code{penv}}{an \code{environment} object to which the
 formula is related (i.e. the environment containing possible
 \code{L} and \code{R} function definitions.) See Details.}
+
+\item{\code{has.intercept}}{a logical value indicating whether the formula has
+an explicit intercept (indicated by + 1)}
 }}
 \section{Note}{
 
