@@ -40,8 +40,18 @@ model.matrix.pim.formula <-
       pos <- poset(data, as.list=TRUE)
       mm <- mm[pos$R,] - mm[pos$L,]
     }
-    if(id <- match("(Intercept)",colnames(mm),0L) > 0L){
-      mm <- mm[,-id, drop=FALSE]
+    
+    if(has.intercept(object)){
+      if(id <- match("(Intercept)",colnames(mm),0L) > 0L){
+        mm[,id] <- 1
+      } else {
+        mm <- cbind(mm, "(Intercept)" = 1)
+      }
+    } else{
+      if(id <- match("(Intercept)",colnames(mm),0L) > 0L){
+        mm <- mm[,-id, drop=FALSE]
+      }
     }
+    
     mm
   }

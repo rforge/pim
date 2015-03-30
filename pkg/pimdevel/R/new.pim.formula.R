@@ -43,7 +43,7 @@ setMethod("new.pim.formula",
             if(!has.funs.lhs)
               lhs <- as.language(paste("PO(L(",response,"),R(",
                                        response,"))"))
-            
+       
             out <- new("pim.formula",
                 terms = ft,
                 has.specials = has.specials,

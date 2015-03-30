@@ -14,7 +14,7 @@ FEV <- within(FEVData,{
 
 Model <- pim(FEV~ Age + Smoke*Sex, data=FEV)
 
-Model2 <- pim(FEV ~ I(L(Age)-R(Age)), data=FEV,
+Model2 <- pim(FEV ~ I(L(Age)-R(Age))+1, data=FEV,
               compare="all")
 
 
