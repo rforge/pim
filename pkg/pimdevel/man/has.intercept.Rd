@@ -40,9 +40,7 @@ indicating that an intercept has to be fit in a \code{\link{pim}}.
 }
 \note{
 This function is meant to be used in the context of a \code{\link{pim}}
-call. Correct results are not guaranteed in all other cases.
-Noteably in the case where a standard formula is used in eg an \code{lm}
-context, this function will return \code{FALSE} even if an intercept
-is implicitly included in the formula.
+call. Although the function should work for standard formulas as well,
+correct results are not guaranteed when used outside a pim context.
 }
 

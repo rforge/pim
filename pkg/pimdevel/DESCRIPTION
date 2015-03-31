@@ -41,6 +41,7 @@ Collate:
     'pim-class.R'
     'coef.R'
     'create.poset.R'
+    'formula.R'
     'has.intercept.R'
     'is.complete.R'
     'make.posfun.R'

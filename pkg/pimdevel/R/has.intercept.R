@@ -11,10 +11,8 @@
 #' indicating that an intercept has to be fit in a \code{\link{pim}}.
 #' 
 #' @note This function is meant to be used in the context of a \code{\link{pim}}
-#' call. Correct results are not guaranteed in all other cases.
-#' Noteably in the case where a standard formula is used in eg an \code{lm}
-#' context, this function will return \code{FALSE} even if an intercept
-#' is implicitly included in the formula.
+#' call. Although the function should work for standard formulas as well,
+#' correct results are not guaranteed when used outside a pim context.
 #' 
 #' @param x either a \code{formula}, \code{pim.formula}, \code{terms.object}
 #' or a character vector representing a formula.
@@ -37,7 +35,7 @@ setMethod('has.intercept',
 setMethod('has.intercept',
           signature='formula',
           function(x){
-            has.intercept(as.character(x)[[3]])
+            has.intercept(terms(x))
           })
 
 #' @rdname has.intercept

@@ -16,7 +16,6 @@ index model. This model matrix can be passed to \code{\link{pim.fit}}
 }
 \section{TO DO}{
 
-- Finish function
 
 - Create method for pim object for extracting model matrix
 }

@@ -7,13 +7,22 @@
 #' the formula necessary for constructing the model matrix. 
 #' 
 #' @section TO DO:
-#' - Finish function
 #' 
 #' - Create method for pim object for extracting model matrix
 #' 
 #' @export
 #' @include pim.formula-class.R
 setGeneric("model.matrix")
+
+setMethod("model.matrix",
+          signature="pim",
+          function(object, ...){
+            if(length(object@model.matrix)){
+              return(object@model.matrix)
+            } else {
+              model.matrix(object@formula)
+            }
+          })
 
 setMethod("model.matrix",
           signature="pim.formula",
@@ -34,7 +43,7 @@ model.matrix.pim.formula <-
       
     }
     mm <- model.matrix(tt,
-                       data)
+                       data, ...)
     
     if(!specials){
       pos <- poset(data, as.list=TRUE)

@@ -24,7 +24,9 @@ setClass(
           penv = 'pim.environment',
           fitted = 'numeric',
           link = 'character',
-          estimators = 'list'),
+          estimators = 'list',
+          model.matrix = 'matrix',
+          na.action = 'character'),
   validity=function(object){
     if(any(names(object@estimators) != c('coef','vcov'))){
       "The list of estimators is malformed"

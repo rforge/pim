@@ -18,7 +18,7 @@
 #' names(DysPimEnv)
 #' compare(DysPimEnv)
 #' 
-#' @aliases data.names, compare
+#' @aliases names, compare
 #' @include pim.environment-class.R
 #' @export
 setGeneric('classes', function(x) standardGeneric('classes'))

@@ -3,8 +3,6 @@
 #' This function is the main function to fit a probabilistic index model
 #' or PIM. 
 #' 
-#' @section WARNING: THIS FUNCTION CURRENTLY ONLY RETURNS A MODEL MATRIX
-#' 
 #' @param formula An object of class \code{\link{formula}} (or one that
 #' can be coerced to that class): A symbolic description of the model
 #' to be fitted. The details of model specification are given under 'Details'.
@@ -25,16 +23,20 @@
 #' a customized model (by the use of \code{\link{L}()} or \code{\link{R}()}),
 #' this parameter is set automatically to "customized"
 #' 
-#' @param na.action a function which indicates what should happen when the data
+#' @param na.action the name of a function which indicates what should happen when the data
 #' contains NAs. The default is set by the \code{na.action} setting of
-#' \code{\link{options}}, and is \code{\link{na.fail}} when unset. 
+#' \code{\link{options}}, and is \code{\link{na.fail}} when unset.
+#' 
+#' @param keep.model.matrix
 #' 
 #' @param ... extra parameters sent to \code{\link{pim.fit}}
 #' 
-#' @return An object of class \code{pim}
+#' @return An object of class \code{pim}. See \code{\link{pim-class}}
+#' for more information.
 #' 
-#' @section Note:
-#' THIS FUNCTION DOESN'T DO ANYTHING FOR THE MOMENT. WORK NEEDED.
+#' @seealso \code{\link{pim-class}} for more information on the returned
+#' object, \code{\link{pim.fit}} for more information on the fitting
+#' itself, and --- INSERT GETTERS ---
 #' 
 #' @export
 pim <- function(formula,
@@ -45,6 +47,7 @@ pim <- function(formula,
                           "regular","customized"),
                 na.action = getOption("na.action"),
                 weights=NULL,
+                keep.model.matrix = FALSE,
                 ...
                 ){
   
@@ -56,6 +59,8 @@ pim <- function(formula,
   link <- match.arg(link)
   
   if(is.null(na.action)) na.action <- "na.fail"
+  if(!is.character(na.action)) 
+    na.action <- deparse(substitute(na.action))
   
   # Check formula and extract info
   f.terms <- terms(formula, simplify=TRUE)
@@ -84,7 +89,7 @@ pim <- function(formula,
   
   ff <- new.pim.formula(formula, penv)
   
-  x <- model.matrix(ff)
+  x <- model.matrix(ff, na.action = na.action)
   y <- eval(lhs(ff), envir=penv)
   
   res <- pim.fit(x, y, link, weights = weights, 
@@ -94,6 +99,8 @@ pim <- function(formula,
   
   names(res$coef) <- colnames(x)
   
+  if(!keep.model.matrix) x <- matrix(nrow=0,ncol=0)
+  
   new.pim(
     formula = ff,
     coef = res$coef,
@@ -101,5 +108,7 @@ pim <- function(formula,
     fitted = res$fitted,
     penv = penv,
     link = link,
-    estimators=res$estim)
+    estimators=res$estim,
+    model.matrix = x,
+    na.action = na.action)
 }

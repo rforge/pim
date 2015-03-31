@@ -7,7 +7,7 @@
 \alias{compare}
 \alias{compare,pim.environment-method}
 \alias{compare,pim.poset-method}
-\alias{data.names,}
+\alias{names,}
 \alias{names,pim.environment-method}
 \alias{names,pim.poset-method}
 \title{Extract information from pim.environment and pim.poset objects}

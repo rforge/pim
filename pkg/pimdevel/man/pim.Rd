@@ -7,7 +7,7 @@
 pim(formula, data, link = c("logit", "probit", "identity"),
   compare = c("unique", "all"), model = c("difference", "marginal",
   "regular", "customized"), na.action = getOption("na.action"),
-  weights = NULL, ...)
+  weights = NULL, keep.model.matrix = FALSE, ...)
 }
 \arguments{
 \item{formula}{An object of class \code{\link{formula}} (or one that
@@ -30,25 +30,25 @@ model compares observations. It can take the values "unique" or "all". Alternati
 a customized model (by the use of \code{\link{L}()} or \code{\link{R}()}),
 this parameter is set automatically to "customized"}
 
-\item{na.action}{a function which indicates what should happen when the data
+\item{na.action}{the name of a function which indicates what should happen when the data
 contains NAs. The default is set by the \code{na.action} setting of
 \code{\link{options}}, and is \code{\link{na.fail}} when unset.}
+
+\item{keep.model.matrix}{}
 
 \item{...}{extra parameters sent to \code{\link{pim.fit}}}
 }
 \value{
-An object of class \code{pim}
+An object of class \code{pim}. See \code{\link{pim-class}}
+for more information.
 }
 \description{
 This function is the main function to fit a probabilistic index model
 or PIM.
 }
-\section{WARNING}{
- THIS FUNCTION CURRENTLY ONLY RETURNS A MODEL MATRIX
-}
-
-\section{Note}{
-
-THIS FUNCTION DOESN'T DO ANYTHING FOR THE MOMENT. WORK NEEDED.
+\seealso{
+\code{\link{pim-class}} for more information on the returned
+object, \code{\link{pim.fit}} for more information on the fitting
+itself, and --- INSERT GETTERS ---
 }
 
