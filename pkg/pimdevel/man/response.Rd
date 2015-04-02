@@ -4,7 +4,7 @@
 \alias{response}
 \title{Extract response from a pim.formula}
 \usage{
-response(formula)
+response(object)
 }
 \arguments{
 \item{formula}{a \code{\link{pim.formula}} object.}

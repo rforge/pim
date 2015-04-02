@@ -2,6 +2,7 @@
 % Please edit documentation in R/sandwich.estimator.R
 \name{sandwich.estimator}
 \alias{sandwich.estimator}
+\alias{score.estimator}
 \title{Pseudo-observation variance sandwich estimator}
 \usage{
 sandwich.estimator(U, U.diff, g1, g2, shared.factor = 1,

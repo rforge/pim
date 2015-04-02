@@ -5,10 +5,7 @@
 #' 
 #' @param object a \code{\link{pim.formula}} object that contains
 #' the formula necessary for constructing the model matrix. 
-#' 
-#' @section TO DO:
-#' 
-#' - Create method for pim object for extracting model matrix
+#' @param data 
 #' 
 #' @export
 #' @include pim.formula-class.R
@@ -17,19 +14,16 @@ setGeneric("model.matrix")
 setMethod("model.matrix",
           signature="pim",
           function(object, ...){
-            if(length(object@model.matrix)){
+            if(object@keep.data){
               return(object@model.matrix)
             } else {
               model.matrix(object@formula)
             }
           })
 
-setMethod("model.matrix",
-          signature="pim.formula",
-          function(object, data, ...){
-            model.matrix.pim.formula(object, data, ...)
-          })
-
+# The actual (S3) method to keep functionality flowing even when
+# model.matrix is called in other packages.
+#' @export
 model.matrix.pim.formula <-
   function(object, data, ...){
     if(missing(data)) data <- object@penv
@@ -64,3 +58,8 @@ model.matrix.pim.formula <-
     
     mm
   }
+
+setMethod("model.matrix",
+          signature="pim.formula",
+          model.matrix.pim.formula
+)

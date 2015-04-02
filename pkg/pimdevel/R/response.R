@@ -9,8 +9,19 @@
 #' a pim. 
 #' 
 #' @export
-response <- function(formula){
-  if(!inherits(formula,"pim.formula"))
-    stop("formula is not a pim.formula object.")
-  eval(formula@lhs, env=penv(formula))
-}
+setGeneric("response", function(object) standardGeneric("response"))
+
+setMethod("response",
+          signature = "pim.formula",
+          function(object){
+            eval(object@lhs, env=penv(object))
+  })
+
+setMethod("response",
+          signature = "pim",
+          function(object){
+            if(keep.data(object))
+              object@response
+            else
+              response(object@formula)
+          })

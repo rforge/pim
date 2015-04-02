@@ -7,7 +7,7 @@
 pim(formula, data, link = c("logit", "probit", "identity"),
   compare = c("unique", "all"), model = c("difference", "marginal",
   "regular", "customized"), na.action = getOption("na.action"),
-  weights = NULL, keep.model.matrix = FALSE, ...)
+  weights = NULL, keep.data = FALSE, ...)
 }
 \arguments{
 \item{formula}{An object of class \code{\link{formula}} (or one that
@@ -34,7 +34,8 @@ this parameter is set automatically to "customized"}
 contains NAs. The default is set by the \code{na.action} setting of
 \code{\link{options}}, and is \code{\link{na.fail}} when unset.}
 
-\item{keep.model.matrix}{}
+\item{keep.data}{a logical value indicating whether the model
+matrix should be saved in the object. Defaults to \code{FALSE}. See Details.}
 
 \item{...}{extra parameters sent to \code{\link{pim.fit}}}
 }
@@ -45,6 +46,18 @@ for more information.
 \description{
 This function is the main function to fit a probabilistic index model
 or PIM.
+}
+\details{
+A BIT MORE INFO ON FITTING MODELS IS NEEDED
+
+It's possible to store the model matrix and psuedo responses in the
+resulting object. By default this is not done
+(\code{keep.data = FALSE}) as this is less burden on the memory and
+the \code{\link{pim.formula}} object contains all information to
+reconstruct both the model matrix and the pseudo responses.
+If either the model matrix or the pseudo responses are needed for
+further calculations, setting \code{keep.data} to \code{TRUE} might
+reduce calculation time for these further calculations.
 }
 \seealso{
 \code{\link{pim-class}} for more information on the returned

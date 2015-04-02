@@ -4,7 +4,8 @@
 #' \code{\link{pim.environment}} or a \code{\link{pim.poset}} object.
 #' The poset can be extracted as a matrix or a list. 
 #' 
-#' @param x an object of class \code{\link{pim.environment}} 
+#' @param x an object of class \code{\link{pim.environment}},
+#' \code{\link{pim.formula}}, \code{\link{pim}} 
 #' or \code{\link{pim.poset}}, or an environment derived from
 #' either object.
 #' 
@@ -22,7 +23,8 @@
 #' The returned matrix hax 2 columns, each named after the 
 #' respective poset function. In case a list is requested, the function
 #' returns a named list with 2 elements, each element containing the
-#' indices related to the poset function of the same name
+#' indices related to the poset function of the same name 
+#' (either \code{\link{L}} or \code{\link{R}}).
 #' 
 #' @examples
 #' data(DysData)
@@ -79,4 +81,18 @@ setMethod('poset',
             } else {
               return(do.call(cbind,out))
             }
+          })
+
+#' @describeIn poset
+setMethod('poset',
+          signature = 'pim',
+          function(x, ...){
+            poset(pim@penv, ...)  
+          })
+
+#' @describeIn poset
+setMethod('poset',
+          signature = "pim.formula",
+          function(x, ...){
+            poset(penv(x), ...)
           })

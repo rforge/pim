@@ -14,6 +14,8 @@
 #' @slot estimators a list with the elements \code{coef} and \code{vcov},
 #' containing either a character value with the name of the used estimator,
 #' or the function itself.
+#' @slot model.matrix If indicated while calling \code{\link{pim}} the original model matrix. Otherwise an empty matrix with 0 rows and columns.
+#' @slot response 
 #' 
 #' @include pim.formula-class.R pim.environment-class.R
 setClass(
@@ -26,6 +28,7 @@ setClass(
           link = 'character',
           estimators = 'list',
           model.matrix = 'matrix',
+          response = 'numeric',
           na.action = 'character'),
   validity=function(object){
     if(any(names(object@estimators) != c('coef','vcov'))){

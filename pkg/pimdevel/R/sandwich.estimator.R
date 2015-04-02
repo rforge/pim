@@ -16,6 +16,7 @@
 #' \code{-UijUji} will be multiplied
 #' 
 #' @return Some matrix. CHECK HERE!
+#' @aliases score.estimator
 sandwich.estimator<-function(U, U.diff, 
                              g1, g2, 
                              shared.factor=1, switched.factor=1,

@@ -28,5 +28,9 @@ data used to fit this}
 \item{\code{estimators}}{a list with the elements \code{coef} and \code{vcov},
 containing either a character value with the name of the used estimator,
 or the function itself.}
+
+\item{\code{model.matrix}}{If indicated while calling \code{\link{pim}} the original model matrix. Otherwise an empty matrix with 0 rows and columns.}
+
+\item{\code{response}}{}
 }}
 

@@ -26,6 +26,7 @@ setMethod("terms",
           function(x) x@terms)
 
 #' @rdname has.specials
+#' @export
 setGeneric("lhs",
            function(x)standardGeneric("lhs"))
 
@@ -34,6 +35,7 @@ setMethod("lhs",
           function(x) x@lhs)
 
 #' @rdname has.specials
+#' @export
 setGeneric("penv",
            function(x) standardGeneric("penv"))
 

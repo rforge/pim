@@ -9,14 +9,11 @@ model.matrix(object, ...)
 \arguments{
 \item{object}{a \code{\link{pim.formula}} object that contains
 the formula necessary for constructing the model matrix.}
+
+\item{data}{}
 }
 \description{
 This function creates a model matrix for use in a probabilistic
 index model. This model matrix can be passed to \code{\link{pim.fit}}
-}
-\section{TO DO}{
-
-
-- Create method for pim object for extracting model matrix
 }
 

@@ -3,6 +3,17 @@
 #' This function is the main function to fit a probabilistic index model
 #' or PIM. 
 #' 
+#' A BIT MORE INFO ON FITTING MODELS IS NEEDED
+#' 
+#' It's possible to store the model matrix and psuedo responses in the
+#' resulting object. By default this is not done 
+#' (\code{keep.data = FALSE}) as this is less burden on the memory and
+#' the \code{\link{pim.formula}} object contains all information to
+#' reconstruct both the model matrix and the pseudo responses. 
+#' If either the model matrix or the pseudo responses are needed for
+#' further calculations, setting \code{keep.data} to \code{TRUE} might
+#' reduce calculation time for these further calculations.
+#' 
 #' @param formula An object of class \code{\link{formula}} (or one that
 #' can be coerced to that class): A symbolic description of the model
 #' to be fitted. The details of model specification are given under 'Details'.
@@ -27,7 +38,8 @@
 #' contains NAs. The default is set by the \code{na.action} setting of
 #' \code{\link{options}}, and is \code{\link{na.fail}} when unset.
 #' 
-#' @param keep.model.matrix
+#' @param keep.data a logical value indicating whether the model
+#' matrix should be saved in the object. Defaults to \code{FALSE}. See Details. 
 #' 
 #' @param ... extra parameters sent to \code{\link{pim.fit}}
 #' 
@@ -38,6 +50,7 @@
 #' object, \code{\link{pim.fit}} for more information on the fitting
 #' itself, and --- INSERT GETTERS ---
 #' 
+#' 
 #' @export
 pim <- function(formula,
                 data,
@@ -47,7 +60,7 @@ pim <- function(formula,
                           "regular","customized"),
                 na.action = getOption("na.action"),
                 weights=NULL,
-                keep.model.matrix = FALSE,
+                keep.data = FALSE,
                 ...
                 ){
   
@@ -99,7 +112,10 @@ pim <- function(formula,
   
   names(res$coef) <- colnames(x)
   
-  if(!keep.model.matrix) x <- matrix(nrow=0,ncol=0)
+  if(!keep.data){
+    x <- matrix(nrow=0,ncol=0)
+    y <- numeric(0)
+  } 
   
   new.pim(
     formula = ff,
@@ -110,5 +126,6 @@ pim <- function(formula,
     link = link,
     estimators=res$estim,
     model.matrix = x,
-    na.action = na.action)
+    na.action = na.action,
+    response = y)
 }

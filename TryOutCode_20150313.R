@@ -56,5 +56,5 @@ MM <- model.matrix(FEVform)
 Y <- response(FEVform)
 
 # Now pim.fit can do what it does
-pim.fit(MM,Y, estim = "estimator.glm", penv=FEVenv)
+res <- pim.fit(MM,Y, estim = "estimator.glm", penv=FEVenv)
 
