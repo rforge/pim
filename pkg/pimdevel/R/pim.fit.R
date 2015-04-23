@@ -17,8 +17,8 @@
 #' @param start A numeric vector with the starting values for the fitting
 #' algorithm, if required. 
 #' @param vcov.estim a function to determine the variance-covariance matrix. 
-#' Possibilities are \code{\link{vcov.sandwich}} and \code{link{vcov.score}}.
-#' Defaults to \code{vcov.sandwich}
+#' Possibilities are \code{\link{sandwich.vcov}} and \code{link{score.vcov}}.
+#' Defaults to \code{sandwich.vcov}
 #' @param penv An environment, \code{\link{pim.environment}} or 
 #' \code{\link{pim.poset}} object containing the poset functions.
 #' Alternatively this can be a list with two objects, containing the
@@ -41,7 +41,7 @@
 pim.fit <- function(x,y,link = "logit",
                     estim = 'estimator.nleqslv',
                     start = rep(0,ncol(x)),
-                    vcov.estim = 'vcov.sandwich',
+                    vcov.estim = 'sandwich.vcov',
                     weights = NULL,
                     penv,
                     ...

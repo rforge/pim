@@ -1,6 +1,6 @@
 #' vcov estimators for pim
 #' 
-#' \code{vcov.sandwich} and \code{vcov.score} are two similar estimators
+#' \code{sandwich.vcov} and \code{score.vcov} are two similar estimators
 #' for the variance-covariance matrix of a probabilistic index model.
 #' These functions are meant to be used within a call to \code{\link{pim}}
 #' as a value for the argument \code{vcov}.
@@ -10,7 +10,7 @@
 #' the exact same arguments. As the function \code{pim.fit} calculates the
 #' fitted values already, there's no need to incorporate the 
 #' 
-#' @note You should only use \code{vcov.score} in combination with an 
+#' @note You should only use \code{score.vcov} in combination with an 
 #' identity link
 #' 
 #' @param fitted The fitted values (calculated as \code{X \%*\% coef} with
@@ -28,11 +28,11 @@
 #' 
 #' @rdname vcov.estimators
 #' @name vcov.estimators
-#' @aliases vcov.sandwich vcov.score
+#' @aliases sandwich.vcov score.vcov
 #' @seealso \code{\link{sandwich.estimator}} for more information on the
 #' actual fitting process.
-#' @export vcov.sandwich
-vcov.sandwich <- function(fitted, X, Y, W, link, poset, ...){
+#' @export sandwich.vcov
+sandwich.vcov <- function(fitted, X, Y, W, link, poset, ...){
   Ulist <- U.sandwich(fitted, X, Y, link, W)
   Ulist$g1 <- poset[[1]] 
   Ulist$g2 <- poset[[2]]
@@ -44,8 +44,8 @@ vcov.sandwich <- function(fitted, X, Y, W, link, poset, ...){
 
 #' @rdname vcov.estimators
 #' @name vcov.estimators
-#' @export vcov.score
-vcov.score <- function(fitted, X, Y, W, link, poset, ...){
+#' @export score.vcov
+score.vcov <- function(fitted, X, Y, W, link, poset, ...){
   Ulist <- U.score(fitted, X, Y, link, W)
   Ulist <- c(Ulist, g1=poset[[1]], g2=poset[[2]])
   fv <- Ulist$fv

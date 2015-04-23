@@ -5,7 +5,7 @@
 \title{Fitter function for a probabilistic index model}
 \usage{
 pim.fit(x, y, link = "logit", estim = "estimator.nleqslv", start = rep(0,
-  ncol(x)), vcov.estim = "vcov.sandwich", weights = NULL, penv, ...)
+  ncol(x)), vcov.estim = "sandwich.vcov", weights = NULL, penv, ...)
 }
 \arguments{
 \item{x}{a model matrix with as many rows as \code{y}.}
@@ -23,8 +23,8 @@ given in the help page on \code{\link{estimators}}.}
 algorithm, if required.}
 
 \item{vcov.estim}{a function to determine the variance-covariance matrix.
-Possibilities are \code{\link{vcov.sandwich}} and \code{link{vcov.score}}.
-Defaults to \code{vcov.sandwich}}
+Possibilities are \code{\link{sandwich.vcov}} and \code{link{score.vcov}}.
+Defaults to \code{sandwich.vcov}}
 
 \item{penv}{An environment, \code{\link{pim.environment}} or
 \code{\link{pim.poset}} object containing the poset functions.
