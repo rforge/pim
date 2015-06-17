@@ -35,14 +35,14 @@ setMethod('has.intercept',
 setMethod('has.intercept',
           signature='formula',
           function(x){
-            has.intercept(terms(x))
+            has.intercept(as.character(x)[3])
           })
 
 #' @rdname has.intercept
 setMethod('has.intercept',
           signature='terms',
           function(x){
-            attr(x,'intercept') == 1
+            has.intercept(as.character(x)[3])
           })
 
 #' @rdname has.intercept

@@ -14,7 +14,10 @@ setClass(
   'pim.summary',
   slots=c(formula='pim.formula',
           coef = 'numeric',
-          vcov = 'matrix')
+          se = 'numeric',
+          zval = 'numeric',
+          pr = 'numeric'
+          )
 )
 
 print.pim.summary <- function(x, digits = max(3L, getOption("digits") - 3L),...){
