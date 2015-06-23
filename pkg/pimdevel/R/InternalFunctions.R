@@ -88,3 +88,13 @@ catch.noninteger.handler <- function(w)
 remove.pars <- function(x){
   gsub("\\w\\(.*\\)","",x)
 }
+
+# checks whether all objects have equal length
+.equal.lengths <- function(...){
+  allObjects <- list(...)
+  allClass <- sapply(allObjects, class)
+  if(length(unique(allClass)) != 1)
+    stop('All objects should be of the same class')
+  allLengths <- sapply(allObjects, length)
+  length(unique(allLengths)) <= 1
+}
