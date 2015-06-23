@@ -28,10 +28,20 @@ setClass(
           se = 'numeric',
           zval = 'numeric',
           pr = 'numeric'
-          )
+          ),
+  validity = function(object){
+    if(!.equal.lengths(
+      length(object@coef),
+      length(object@se),
+      length(object@zval),
+      length(object@pr)
+    )) stop("coef, se, zval and pr should be of equal length")
+     else
+       TRUE
+  }
 )
 
-print.pim.summary <- function(x, digits = max(3L, getOption("digits") - 3L),...){
+print.pim.summary <- function(object, digits = max(3L, getOption("digits") - 3L),...){
   NULL
 }
 

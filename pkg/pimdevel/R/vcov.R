@@ -1,7 +1,7 @@
 #' @include pim-class.R
 
-# There is no help page for coef here, as it behaves as shown on the
-# help page of coef in the stats package
+# There is no help page for vcov here, as it behaves as shown on the
+# help page of \code{\link[stats]{vcov}} in the stats package.
 
 setGeneric('vcov')
 
