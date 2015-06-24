@@ -10,7 +10,9 @@ model.matrix(object, ...)
 \item{object}{a \code{\link{pim.formula}} object that contains
 the formula necessary for constructing the model matrix.}
 
-\item{data}{}
+\item{data}{an optional argument specifying the data frame for which
+the model matrix should be constructed. See also
+\code{\link[stats]{model.matrix})} in the \code{stats} package.}
 }
 \description{
 This function creates a model matrix for use in a probabilistic

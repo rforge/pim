@@ -26,6 +26,10 @@ the starting values for the algorithm}
 \item{link}{a character vector describing the link function. ADD MORE INFO}
 
 \item{...}{extra arguments passed down to the actual solver function. See details.}
+
+\item{control}{a list with extra controlling parameters for
+\code{BBsolve}. See the help page of \code{\link{BBsolve}} for
+more information.}
 }
 \value{
 a list with following elements:

@@ -20,6 +20,9 @@
 #' the starting values for the algorithm
 #' @param link a character vector describing the link function. ADD MORE INFO
 #' @param ... extra arguments passed down to the actual solver function. See details.
+#' @param control a list with extra controlling parameters for 
+#' \code{BBsolve}. See the help page of \code{\link{BBsolve}} for
+#' more information.
 #' 
 #' @return a list with following elements:
 #'  \item{coef}{the estimated coefficients}
@@ -74,7 +77,7 @@ estimator.BB <-
            control=list(NM = c(FALSE,TRUE),
                         method = c(1,2,3)), ...){
     fn <- CreateScoreFun(x,y,link)
-    res <- BBsolve(start,fn, ...)
+    res <- BBsolve(start,fn, control = control, ...)
     
     if(res$convergence != 0 ){
       warning(paste("BBsolve says:", res$message, "\n",

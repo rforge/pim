@@ -41,7 +41,23 @@ setClass(
   }
 )
 
+#' @export
 print.pim.summary <- function(object, digits = max(3L, getOption("digits") - 3L),...){
-  NULL
+  cat("pim.summary of following model : \n\n")
+  print(formula(object@formula), showEnv = FALSE)
+  
+  Tab <- cbind(
+    Estimate = coef(object),
+    "Std. Error" = object@se,
+    "Z value" = object@zval,
+    "Pr(<|z|)" = object@pr
+  )
+  cat("\n")
+  print(Tab)
 }
 
+setMethod("show",
+          "pim.summary",
+          function(object){
+            print.pim.summary(object)
+          })

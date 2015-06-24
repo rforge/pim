@@ -1,5 +1,5 @@
 #' @include pim-class.R pim.summary-class.R
-
+#' @export
 # There is no help page for coef here, as it behaves as shown on the
 # help page of coef in the stats package
 

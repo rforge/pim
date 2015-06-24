@@ -13,7 +13,7 @@
 #' @export
 setGeneric("formula")
 
-#' @export
+
 formula.pim <- function(x, orig=FALSE, ...){
   if(orig) formula(x@formula) else x@formula
 }
@@ -22,7 +22,7 @@ setMethod("formula",
           signature="pim",
           formula.pim)
 
-#' @export
+
 formula.pim.formula <- function(x, ...){
   x@orig
 }

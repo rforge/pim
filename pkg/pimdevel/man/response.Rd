@@ -7,7 +7,7 @@
 response(object)
 }
 \arguments{
-\item{formula}{a \code{\link{pim.formula}} object.}
+\item{object}{a \code{\link{pim.formula}} object.}
 }
 \value{
 The response variable with pseudo-observations for

@@ -5,7 +5,9 @@
 #' 
 #' @param object a \code{\link{pim.formula}} object that contains
 #' the formula necessary for constructing the model matrix. 
-#' @param data 
+#' @param data an optional argument specifying the data frame for which
+#' the model matrix should be constructed. See also 
+#' \code{\link[stats]{model.matrix})} in the \code{stats} package.
 #' 
 #' @export
 #' @include pim.formula-class.R
@@ -17,7 +19,7 @@ setMethod("model.matrix",
             if(object@keep.data){
               return(object@model.matrix)
             } else {
-              model.matrix(object@formula)
+              model.matrix(object@formula, ...)
             }
           })
 

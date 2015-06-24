@@ -3,7 +3,7 @@
 #' This function extracts the response from a 
 #' \code{\link{pim.formula}} for use in \code{\link{pim.fit}}.
 #' #' 
-#' @param formula a \code{\link{pim.formula}} object.
+#' @param object a \code{\link{pim.formula}} object.
 #' 
 #' @return The response variable with pseudo-observations for
 #' a pim. 
