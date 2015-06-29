@@ -14,8 +14,15 @@
 #' @slot estimators a list with the elements \code{coef} and \code{vcov},
 #' containing either a character value with the name of the used estimator,
 #' or the function itself.
-#' @slot model.matrix If indicated while calling \code{\link{pim}} the original model matrix. Otherwise an empty matrix with 0 rows and columns.
-#' @slot response 
+#' @slot model.matrix If \code{keep.data} is set to \code{TRUE} 
+#' while calling \code{\link{pim}} the original model matrix. 
+#' Otherwise an empty matrix with 0 rows and columns.
+#' @slot response If \code{keep.data} is set to \code{TRUE} 
+#' while calling \code{\link{pim}} the original response vector.
+#' Otherwise an empty numeric vector. 
+#' @slot keep.data a logical value indicating whether the original
+#' data is kept in the object. This is set using the argument
+#' \code{keep.data} of the function \code{\link{pim}}.
 #' 
 #' @include pim.formula-class.R pim.environment-class.R
 setClass(
@@ -29,7 +36,8 @@ setClass(
           estimators = 'list',
           model.matrix = 'matrix',
           response = 'numeric',
-          na.action = 'character'),
+          na.action = 'character',
+          keep.data = 'logical'),
   validity=function(object){
     if(any(names(object@estimators) != c('coef','vcov'))){
       "The list of estimators is malformed"

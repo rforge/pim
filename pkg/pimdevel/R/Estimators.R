@@ -74,10 +74,10 @@ estimator.glm <-
 #' @export
 estimator.BB <-
   function(x, y, start= rep(0,ncol(x)), link="logit", 
-           control=list(NM = c(FALSE,TRUE),
-                        method = c(1,2,3)), ...){
+           method = c(1,2,3),
+           control=list(NM = c(FALSE,TRUE)), ...){
     fn <- CreateScoreFun(x,y,link)
-    res <- BBsolve(start,fn, control = control, ...)
+    res <- BBsolve(start,fn, control = control, method = method,...)
     
     if(res$convergence != 0 ){
       warning(paste("BBsolve says:", res$message, "\n",

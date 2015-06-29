@@ -11,8 +11,8 @@ estimator.nleqslv(x, y, start = rep(0, ncol(x)), link = "logit", ...)
 
 estimator.glm(x, y, start = rep(0, ncol(x)), link = "logit", ...)
 
-estimator.BB(x, y, start = rep(0, ncol(x)), link = "logit",
-  control = list(NM = c(FALSE, TRUE), method = c(1, 2, 3)), ...)
+estimator.BB(x, y, start = rep(0, ncol(x)), link = "logit", method = c(1,
+  2, 3), control = list(NM = c(FALSE, TRUE)), ...)
 }
 \arguments{
 \item{x}{a model matrix for the respective pim model. See also

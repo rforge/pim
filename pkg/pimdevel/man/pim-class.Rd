@@ -29,8 +29,16 @@ data used to fit this}
 containing either a character value with the name of the used estimator,
 or the function itself.}
 
-\item{\code{model.matrix}}{If indicated while calling \code{\link{pim}} the original model matrix. Otherwise an empty matrix with 0 rows and columns.}
+\item{\code{model.matrix}}{If \code{keep.data} is set to \code{TRUE}
+while calling \code{\link{pim}} the original model matrix.
+Otherwise an empty matrix with 0 rows and columns.}
 
-\item{\code{response}}{}
+\item{\code{response}}{If \code{keep.data} is set to \code{TRUE}
+while calling \code{\link{pim}} the original response vector.
+Otherwise an empty numeric vector.}
+
+\item{\code{keep.data}}{a logical value indicating whether the original
+data is kept in the object. This is set using the argument
+\code{keep.data} of the function \code{\link{pim}}.}
 }}
 

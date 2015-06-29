@@ -20,7 +20,7 @@ setMethod("response",
 setMethod("response",
           signature = "pim",
           function(object){
-            if(keep.data(object))
+            if(object@keep.data)
               object@response
             else
               response(object@formula)

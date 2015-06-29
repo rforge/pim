@@ -127,5 +127,6 @@ pim <- function(formula,
     estimators=res$estim,
     model.matrix = x,
     na.action = na.action,
-    response = y)
+    response = y,
+    keep.data = keep.data)
 }
