@@ -48,9 +48,6 @@ to get the estimates for the coefficients and the variance-
 covariance matrices. This function currently only spits out
 these components using the sandwich estimators.
 }
-\details{
-NEEDS WORK
-}
 \seealso{
 \code{\link{model.matrix}} for how to construct a valid model matrix
 for a pim, \code{\link{pim}} for the general user interface

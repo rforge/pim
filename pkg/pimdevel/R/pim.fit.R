@@ -5,7 +5,6 @@
 #' covariance matrices. This function currently only spits out 
 #' these components using the sandwich estimators. 
 #' 
-#' NEEDS WORK
 #' 
 #' @param x a model matrix with as many rows as \code{y}.
 #' @param y a vector with the pseudo-responses

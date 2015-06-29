@@ -19,5 +19,8 @@ NULL
 setOldClass("terms")
 setOldClass("formula")
 
+# Generics for multiple places
+setGeneric('print')
+
 
 

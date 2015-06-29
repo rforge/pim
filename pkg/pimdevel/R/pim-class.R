@@ -48,7 +48,7 @@ setClass(
   )
 
 # print method for pim
-setGeneric('print')
+
 
 print.pim <- function(x, digits = max(3L, getOption("digits") - 3L), ...){
   orig <- paste(deparse(x@formula@orig))
