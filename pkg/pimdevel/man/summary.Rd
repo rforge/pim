@@ -6,11 +6,11 @@
 \usage{
 summary(object, ...)
 }
+\arguments{
+\item{object}{an object of the class pim.}
+}
 \description{
 The function \code{\link[base]{summary}} is a generic function. We provide
 a method for objects of the \code{\link{pim-class}}.
-}
-\details{
-TO BE TESTED
 }
 

@@ -3,12 +3,12 @@
 #' The function \code{\link[base]{summary}} is a generic function. We provide
 #' a method for objects of the \code{\link{pim-class}}. 
 #' 
-#' TO BE TESTED
+#' @param object an object of the class pim.
 #' 
 #' @export
 setGeneric('summary')
 
-summary.pim <- function(object, ...){
+summary.pim <- function(object){
   coefs <- coef(object)
   se <- diag(vcov(object))
   zval <- coefs / se

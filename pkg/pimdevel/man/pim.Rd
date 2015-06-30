@@ -34,6 +34,8 @@ this parameter is set automatically to "customized"}
 contains NAs. The default is set by the \code{na.action} setting of
 \code{\link{options}}, and is \code{\link{na.fail}} when unset.}
 
+\item{weights}{Currently not implemented.}
+
 \item{keep.data}{a logical value indicating whether the model
 matrix should be saved in the object. Defaults to \code{FALSE}. See Details.}
 

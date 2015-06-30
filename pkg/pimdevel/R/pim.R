@@ -41,6 +41,8 @@
 #' @param keep.data a logical value indicating whether the model
 #' matrix should be saved in the object. Defaults to \code{FALSE}. See Details. 
 #' 
+#' @param weights Currently not implemented.
+#' 
 #' @param ... extra parameters sent to \code{\link{pim.fit}}
 #' 
 #' @return An object of class \code{pim}. See \code{\link{pim-class}}

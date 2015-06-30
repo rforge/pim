@@ -23,6 +23,10 @@
 #' Alternatively this can be a list with two objects, containing the
 #' poset indices for the left and right side of the pim.
 #' 
+#' @param weights currently not implemented
+#' @param ... Further arguments that need to be passed to 
+#' the estimation function.
+#' 
 #' @return A list with the following elements
 #' \describe{
 #'  \item{coefficients}{a numeric vector with the coefficients}

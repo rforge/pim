@@ -15,5 +15,5 @@ keep.data <- function(x){
   if(!inherits(x,"pim"))
     stop("Object is not a pim object")
   else
-    object@keep.data
+    x@keep.data
 }

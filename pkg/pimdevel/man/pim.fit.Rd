@@ -26,15 +26,20 @@ algorithm, if required.}
 Possibilities are \code{\link{sandwich.vcov}} and \code{link{score.vcov}}.
 Defaults to \code{sandwich.vcov}}
 
+\item{weights}{currently not implemented}
+
 \item{penv}{An environment, \code{\link{pim.environment}} or
 \code{\link{pim.poset}} object containing the poset functions.
 Alternatively this can be a list with two objects, containing the
 poset indices for the left and right side of the pim.}
+
+\item{...}{Further arguments that need to be passed to
+the estimation function.}
 }
 \value{
 A list with the following elements
 \describe{
- \item{coef}{a numeric vector with the coefficients}
+ \item{coefficients}{a numeric vector with the coefficients}
  \item{vcov}{a numeric matrix with the variance-covarianc matrix for
  the coefficients}
  \item{fitted}{a numeric vector with the raw fitted values}

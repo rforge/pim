@@ -1,3 +1,13 @@
+#' Methods for vcov
+#' 
+#' This package defines an S4 generic for \code{\link[stats]{vcov}} and methods for list and pim classes.
+#' 
+#' @param object any object. 
+#' 
+#' @return the variance-covariance matrix
+#' 
+#' @seealso \code{\link[stats]{vcov}} in the stats package.
+#' @docType methods
 #' @include pim-class.R 
 #' @export
 
@@ -10,6 +20,7 @@ vcov.pim <- function(object,...){
   object@vcov
 }
 
+#' @rdname vcov
 setMethod('vcov',
           'pim',
           vcov.pim)
@@ -18,6 +29,7 @@ vcov.list <- function(object,...){
   object$vcov
 }
 
+#' @rdname vcov
 setMethod('vcov',
           'list',
           vcov.list)

@@ -15,7 +15,9 @@ setGeneric("model.matrix")
 
 setMethod("model.matrix",
           signature="pim",
-          function(object, ...){
+          function(object, data, ...){
+            if(!missing(data))
+              warning("data argument ignored. specifying it when using model.matrix() on a pim object doesn't really make any sense.")
             if(object@keep.data){
               return(object@model.matrix)
             } else {
@@ -25,7 +27,6 @@ setMethod("model.matrix",
 
 # The actual (S3) method to keep functionality flowing even when
 # model.matrix is called in other packages.
-#' @export
 model.matrix.pim.formula <-
   function(object, data, ...){
     if(missing(data)) data <- object@penv
