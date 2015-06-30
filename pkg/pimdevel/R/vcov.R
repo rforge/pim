@@ -13,3 +13,11 @@ vcov.pim <- function(object,...){
 setMethod('vcov',
           'pim',
           vcov.pim)
+
+vcov.list <- function(object,...){
+  object$vcov
+}
+
+setMethod('vcov',
+          'list',
+          vcov.list)

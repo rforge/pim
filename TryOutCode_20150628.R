@@ -15,6 +15,12 @@ FEV <- within(FEVData,{
 Model <- pim(FEV~ Age + Smoke*Sex , data=FEV)
 
 summary(Model)
+coef(Model)
+vcov(Model)
+
+# More advanced
+formula(Model)
+formula(formula(Model))
 
 Model2 <- pim(FEV ~ Age +1, data=FEV,
               compare="all")
@@ -36,10 +42,6 @@ Model4 <- pim(P(L(out) != R(out)) ~ I(L(SNP_XRCC1__77) != R(SNP_XRCC1__77))*
           compare="all")
 # This is probably too weird, but it works anyway.
 
-#THIS DOESN'T WORK:
-Model2 <- pim(FEV ~ I(L(Age)-R(Age)) + Smoke, data=FEV,
-              compare="all")
-# Should it work?
 
 #################
 # Manual construction
@@ -63,4 +65,5 @@ Y <- response(FEVform)
 
 # Now pim.fit can do what it does
 res <- pim.fit(MM,Y, estim = "estimator.glm", penv=FEVenv)
+
 

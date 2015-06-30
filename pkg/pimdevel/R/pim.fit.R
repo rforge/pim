@@ -25,7 +25,7 @@
 #' 
 #' @return A list with the following elements
 #' \describe{
-#'  \item{coef}{a numeric vector with the coefficients}
+#'  \item{coefficients}{a numeric vector with the coefficients}
 #'  \item{vcov}{a numeric matrix with the variance-covarianc matrix for
 #'  the coefficients}
 #'  \item{fitted}{a numeric vector with the raw fitted values}
@@ -46,18 +46,18 @@ pim.fit <- function(x,y,link = "logit",
                     ...
                     )
 {
-  estim <- match.fun(estim)
-  vcov.estim <- match.fun(vcov.estim)
-  res <- estim(x, y, link = link, start=start, ...)
+  estimF <- match.fun(estim)
+  vcov.estimF <- match.fun(vcov.estim)
+  res <- estimF(x, y, link = link, start=start, ...)
   
   fits <- x %*% res$coef
   dim(fits) <- NULL
 
   if(!is.list(penv)) penv <- poset(penv, as.list=TRUE)
   
-  vc <- vcov.estim(fits, x, y, weights, link, penv)
+  vc <- vcov.estimF(fits, x, y, weights, link, penv)
   
-  return(list(coef = res$coef,vcov = vc, fitted=fits,
+  return(list(coefficients = res$coef,vcov = vc, fitted=fits,
               estim = list(coef = estim, vcov = vcov.estim)))
   
 }
