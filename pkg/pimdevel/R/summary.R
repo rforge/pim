@@ -5,6 +5,8 @@
 #' 
 #' @param object an object of the class pim.
 #' 
+#' @rdname summary.pim
+#' @aliases summary
 #' @export
 setGeneric('summary')
 
@@ -23,6 +25,7 @@ summary.pim <- function(object){
   )
 }
 
+#' @rdname summary.pim
 setMethod('summary',
           signature='pim',
           summary.pim)

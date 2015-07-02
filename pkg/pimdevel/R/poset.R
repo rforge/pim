@@ -87,7 +87,7 @@ setMethod('poset',
 setMethod('poset',
           signature = 'pim',
           function(x, ...){
-            poset(pim@penv, ...)  
+            poset(x@penv, ...)  
           })
 
 #' @describeIn poset

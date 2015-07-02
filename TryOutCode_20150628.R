@@ -12,7 +12,7 @@ FEV <- within(FEVData,{
 
 #Some models
 
-Model <- pim(FEV~ Age + Smoke*Sex , data=FEV)
+Model <- pim(FEV~ Age + Smoke*Sex , data=FEVData)
 
 summary(Model)
 coef(Model)
@@ -45,15 +45,15 @@ Model4 <- pim(P(L(out) != R(out)) ~ I(L(SNP_XRCC1__77) != R(SNP_XRCC1__77))*
 
 #################
 # Manual construction
-
+data("FEVData")
 # Create the "model frame"
-FEVenv <- new.pim.env(FEV, compare="all")
+FEVenv <- new.pim.env(FEVData, compare="unique")
 # This includes the poset
 pos <- poset(FEVenv, as.list=TRUE)
 
 # create the formula and bind it to the pim.environment.
 FEVform <- new.pim.formula(
-  as.formula( Age ~ I(L(Height) - R(Height)) ) ,
+  Age ~ I(L(Height) - R(Height))  ,
   FEVenv
   )
 

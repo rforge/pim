@@ -68,7 +68,7 @@ pim <- function(formula,
   
   # Check the arguments
   model <- match.arg(model)
-  compare <- match.arg(compare)
+  if(is.character(compare)) compare <- match.arg(compare)
   nodata <- missing(data)
   #vcov <- match.fun(vcov)
   link <- match.arg(link)

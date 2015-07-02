@@ -7,6 +7,7 @@
 #' 
 #' @include pim.formula-class.R
 #' @rdname has.specials
+#' @aliases lhs, terms, penv
 #' @export
 #' @return \code{has.specials()}: a single \code{TRUE} or \code{FALSE}
 #' value indicating whether the formula right-hand side contains any
@@ -14,6 +15,7 @@
 setGeneric("has.specials",
            function(x)standardGeneric("has.specials"))
 
+#' @rdname has.specials
 setMethod("has.specials",
           signature= "pim.formula",
           function(x) x@has.specials)
@@ -30,6 +32,7 @@ setMethod("terms",
 setGeneric("lhs",
            function(x)standardGeneric("lhs"))
 
+#' @rdname has.specials
 setMethod("lhs",
           signature= "pim.formula",
           function(x) x@lhs)
@@ -39,6 +42,7 @@ setMethod("lhs",
 setGeneric("penv",
            function(x) standardGeneric("penv"))
 
+#' @rdname has.specials
 setMethod("penv",
           signature = "pim.formula",
           function(x) x@penv)

@@ -15,7 +15,7 @@
 setGeneric("new.pim.formula",
            function(formula, data, ...) standardGeneric("new.pim.formula"))
 
-#' @export
+#' @rdname new.pim.formula
 setMethod("new.pim.formula",
           signature=c("formula","pim.environment"),
           function(formula, data){
@@ -58,6 +58,7 @@ setMethod("new.pim.formula",
             out
           })
 
+#' @rdname new.pim.formula
 setMethod("new.pim.formula",
           signature=c("formula","ANY"),
           function(formula,data, ...){

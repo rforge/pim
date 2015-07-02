@@ -1,7 +1,7 @@
 #' Create a model matrix for a probabilistic index model
 #' 
 #' This function creates a model matrix for use in a probabilistic
-#' index model. This model matrix can be passed to \code{\link{pim.fit}}
+#' index model. This model matrix can be passed to \code{\link{pim.fit}}.
 #' 
 #' @param object a \code{\link{pim.formula}} object that contains
 #' the formula necessary for constructing the model matrix. 
@@ -9,10 +9,38 @@
 #' the model matrix should be constructed. See also 
 #' \code{\link[stats]{model.matrix})} in the \code{stats} package.
 #' 
+#' @return a design matrix for a pim model
+#' 
+#' @examples 
+#' 
+#' data("FEVData")
+#' # Create the "model frame"
+#' FEVenv <- new.pim.env(FEVData, compare="unique")
+#' # This includes the poset
+#' pos <- poset(FEVenv, as.list=TRUE)
+#' 
+#' # create the formula and bind it to the pim.environment.
+#' FEVform <- new.pim.formula(
+#'   Age ~ I(L(Height) - R(Height))  ,
+#'   FEVenv
+#' )
+#' 
+#' # Use this formula object to construct the model matrix
+#' MM <- model.matrix(FEVform)
+#' 
+#' # Use this formula object to construct the pseudo response
+#' Y <- response(FEVform)
+#' 
+#' # Now pim.fit can do what it does
+#' res <- pim.fit(MM,Y, estim = "estimator.glm", penv=FEVenv)
+#' 
+#' @rdname model.matrix.pim
+#' @aliases model.matrix, model.matrix.pim.formula
 #' @export
 #' @include pim.formula-class.R
 setGeneric("model.matrix")
 
+#' @rdname model.matrix.pim
 setMethod("model.matrix",
           signature="pim",
           function(object, data, ...){
@@ -62,6 +90,7 @@ model.matrix.pim.formula <-
     mm
   }
 
+#' @rdname model.matrix.pim
 setMethod("model.matrix",
           signature="pim.formula",
           model.matrix.pim.formula

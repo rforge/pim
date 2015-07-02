@@ -9,6 +9,7 @@
 #' (\code{TRUE}) or the \code{pim.formula} object (\code{FALSE}) should
 #' be returned. Defaults to \code{FALSE}
 #' 
+#' @rdname formula
 #' @include pim-class.R 
 #' @export
 setGeneric("formula")
@@ -18,6 +19,7 @@ formula.pim <- function(x, orig=FALSE, ...){
   if(orig) formula(x@formula) else x@formula
 }
 
+#' @rdname formula
 setMethod("formula",
           signature="pim",
           formula.pim)
@@ -27,6 +29,7 @@ formula.pim.formula <- function(x, ...){
   x@orig
 }
 
+#' @rdname formula
 setMethod("formula",
           signature="pim.formula",
           formula.pim.formula)
