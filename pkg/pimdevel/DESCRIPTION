@@ -1,14 +1,15 @@
 Package: pimdevel
 Type: Package
 Title: Probabilistic Index Models
-Version: 1.9.1.8
-Date: 2015-06-24
+Version: 1.9.1.9
+Date: 2015-07-02
 Author: Joris Meys, Nick Sabbe, Jan De Neve
 Maintainer: Joris Meys <Joris.Meys@Ugent.be>
 Description: Fit a probabilistic index model. This package is the latest
-    version of the pim package, and will end up being pim 2.0. It's an alpha
-    currently under development, and for the moment there's no complete fitting
-    engine. For pim fitting, use the pim package.
+    version of the pim package, and will end up being pim 2.0. It's a beta
+    currently under development. There's a pim fitting engine with
+    rudimentary functionality, but don't expect any back-compatibility
+    with the previous versions of pim.
 Depends:
     R (>= 3.0)
 Imports:

@@ -15,6 +15,8 @@ coef(object, ...)
 }
 \arguments{
 \item{object}{a \code{pim} or \code{pim.summary} object}
+
+\item{...}{currently ignored.}
 }
 \value{
 a named vector with the coefficients.
@@ -22,5 +24,12 @@ a named vector with the coefficients.
 \description{
 This function works like \code{\link[stats]{coef}} from the \code{stats}
 package. It extracts the coefficients from the objects.
+}
+\examples{
+data("FEVData")
+Model <- pim(FEV~ Age + Smoke*Sex , data=FEVData)
+coef(Model)
+summ <- summary(Model)
+coef(summ)
 }
 
