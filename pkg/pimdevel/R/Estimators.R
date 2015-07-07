@@ -19,6 +19,10 @@
 #' @param start a vector as long as there are columns in \code{x}, containing
 #' the starting values for the algorithm
 #' @param link a character vector describing the link function. ADD MORE INFO
+#' @param method A vector of integers specifying which 
+#' Barzilai-Borwein steplengths should be used in a consecutive
+#' manner. The methods will be used in the order specified.
+#' More information on the help page of \code{\link{BBsolve}}. 
 #' @param ... extra arguments passed down to the actual solver function. See details.
 #' @param control a list with extra controlling parameters for 
 #' \code{BBsolve}. See the help page of \code{\link{BBsolve}} for

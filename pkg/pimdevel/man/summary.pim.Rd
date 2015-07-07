@@ -12,9 +12,16 @@ summary(object, ...)
 }
 \arguments{
 \item{object}{an object of the class pim.}
+
+\item{...}{arguments passed to other methods. Currently ignored.}
 }
 \description{
 The function \code{\link[base]{summary}} is a generic function. We provide
 a method for objects of the \code{\link{pim-class}}.
+}
+\examples{
+data(FEVData)
+Model <- pim(FEV~ Age + Smoke*Sex , data=FEVData)
+summary(Model)
 }
 

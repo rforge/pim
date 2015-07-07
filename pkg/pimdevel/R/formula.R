@@ -8,6 +8,7 @@
 #' @param orig a locigal value indicating whether the original formula
 #' (\code{TRUE}) or the \code{pim.formula} object (\code{FALSE}) should
 #' be returned. Defaults to \code{FALSE}
+#' @param ... arguments passed to other methods 
 #' 
 #' @rdname formula
 #' @include pim-class.R 

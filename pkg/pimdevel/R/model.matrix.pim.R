@@ -9,10 +9,13 @@
 #' the model matrix should be constructed. See also 
 #' \code{\link[stats]{model.matrix})} in the \code{stats} package.
 #' 
+#' @param ... extra arguments passed to or from other methods.
+#' This is currently only implemented in concordance with
+#' the generic \code{\link[stats]{model.matrix}} function.
+#' 
 #' @return a design matrix for a pim model
 #' 
 #' @examples 
-#' 
 #' data("FEVData")
 #' # Create the "model frame"
 #' FEVenv <- new.pim.env(FEVData, compare="unique")

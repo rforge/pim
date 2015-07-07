@@ -19,6 +19,7 @@ Imports:
     BB
 License: GPL (>= 2)
 URL: NA
+VignetteBuilder: knitr
 Collate:
     'CreateScoreFun.R'
     'DysData.R'
@@ -65,4 +66,5 @@ Collate:
     'vcov.estimators.R'
     'vcov.internal.R'
 Suggests:
-    testthat
+    testthat,
+    knitr

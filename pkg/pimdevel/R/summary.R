@@ -4,6 +4,12 @@
 #' a method for objects of the \code{\link{pim-class}}. 
 #' 
 #' @param object an object of the class pim.
+#' @param ... arguments passed to other methods. Currently ignored.
+#' 
+#' @examples 
+#' data(FEVData)
+#' Model <- pim(FEV~ Age + Smoke*Sex , data=FEVData)
+#' summary(Model)
 #' 
 #' @rdname summary.pim
 #' @aliases summary

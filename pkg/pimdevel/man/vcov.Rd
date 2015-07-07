@@ -15,12 +15,19 @@ vcov(object, ...)
 }
 \arguments{
 \item{object}{any object.}
+
+\item{...}{arguments passed to other methods. Currently ignored}
 }
 \value{
 the variance-covariance matrix
 }
 \description{
 This package defines an S4 generic for \code{\link[stats]{vcov}} and methods for list and pim classes.
+}
+\examples{
+data(FEVData)
+Model <- pim(FEV~ Age + Smoke*Sex , data=FEVData)
+vcov(Model)
 }
 \seealso{
 \code{\link[stats]{vcov}} in the stats package.

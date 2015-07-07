@@ -11,6 +11,7 @@
 \alias{penv,pim.formula-method}
 \alias{terms}
 \alias{terms,}
+\alias{terms,pim.formula-method}
 \title{Extract information from a pim.formula object}
 \usage{
 has.specials(x)
@@ -18,6 +19,8 @@ has.specials(x)
 \S4method{has.specials}{pim.formula}(x)
 
 terms(x, ...)
+
+\S4method{terms}{pim.formula}(x)
 
 lhs(x)
 
@@ -27,15 +30,51 @@ penv(x)
 
 \S4method{penv}{pim.formula}(x)
 }
+\arguments{
+\item{x}{an object of the class pim.formula}
+
+\item{...}{arguments passed to other methods}
+}
 \value{
 \code{has.specials()}: a single \code{TRUE} or \code{FALSE}
 value indicating whether the formula right-hand side contains any
 special functions.
+
+\code{terms()}: the \code{\link[stats]{terms}} object
+of the \code{pim.formula} object
+
+\code{lhs()}: an object of class \code{call} containing
+the left hand side of the formula as used in the pim.
 }
 \description{
 This group of functions provides an easy way to extract the
 extra information saved in a \code{\link{pim.formula}} object.
 Take a look at the help page of \code{\link{pim.formula}} for
 more information.
+}
+\examples{
+data("FEVData")
+# Create the "model frame"
+FEVenv <- new.pim.env(FEVData, compare="unique")
+
+# create the formula and bind it to the pim.environment.
+FEVform <- new.pim.formula(
+  Age ~ I(L(Height) - R(Height))  ,
+  FEVenv
+)
+lhs(FEVform)
+has.specials(FEVform)
+penv(FEVform)
+
+FEVform2 <- new.pim.formula(
+  FEV ~ Height*Sex,
+  FEVenv
+)
+
+has.specials(FEVform2)
+terms(FEVform2)
+}
+\seealso{
+the class \code{\link{pim.formula-class}}
 }
 

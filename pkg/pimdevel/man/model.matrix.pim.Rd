@@ -19,6 +19,10 @@ model.matrix(object, ...)
 \item{object}{a \code{\link{pim.formula}} object that contains
 the formula necessary for constructing the model matrix.}
 
+\item{...}{extra arguments passed to or from other methods.
+This is currently only implemented in concordance with
+the generic \code{\link[stats]{model.matrix}} function.}
+
 \item{data}{an optional argument specifying the data frame for which
 the model matrix should be constructed. See also
 \code{\link[stats]{model.matrix})} in the \code{stats} package.}

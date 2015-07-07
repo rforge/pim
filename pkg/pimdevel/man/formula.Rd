@@ -16,6 +16,8 @@ formula(x, ...)
 \arguments{
 \item{x}{a \code{pim} or \code{pim.formula} object}
 
+\item{...}{arguments passed to other methods}
+
 \item{orig}{a locigal value indicating whether the original formula
 (\code{TRUE}) or the \code{pim.formula} object (\code{FALSE}) should
 be returned. Defaults to \code{FALSE}}
