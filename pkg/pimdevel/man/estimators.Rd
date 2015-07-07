@@ -8,13 +8,13 @@
 \title{Estimator functions for probabilistic index models}
 \usage{
 estimator.nleqslv(x, y, start = rep(0, ncol(x)), link = "logit",
-  construct = CreateScoreFun, ...)
+  construct = NULL, ...)
 
 estimator.glm(x, y, start = rep(0, ncol(x)), link = "logit", ...)
 
 estimator.BB(x, y, start = rep(0, ncol(x)), link = "logit",
-  construct = CreateScoreFun, method = c(1, 2, 3), control = list(NM =
-  c(FALSE, TRUE)), ...)
+  construct = NULL, method = c(1, 2, 3), control = list(NM = c(FALSE,
+  TRUE)), ...)
 }
 \arguments{
 \item{x}{a model matrix for the respective pim model. See also

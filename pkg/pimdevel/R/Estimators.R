@@ -58,8 +58,9 @@
 #' @export
 estimator.nleqslv <-
   function(x,y,start=rep(0,ncol(x)), link="logit", 
-           construct = CreateScoreFun, ...){
-    
+           construct = NULL, ...){
+    construct <- if(is.null(construct)) CreateScoreFun else
+                    match.fun(construct)
     fn <- construct(x,y,link)
     
     res <- nleqslv(start,fn, ...)
@@ -98,11 +99,12 @@ estimator.glm <-
 #' @export
 estimator.BB <-
   function(x, y, start= rep(0,ncol(x)), link="logit", 
-           construct = CreateScoreFun,
+           construct = NULL,
            method = c(1,2,3),
            control=list(NM = c(FALSE,TRUE)), ...){
     
-    construct <- match.fun(construct)
+    construct <- if(is.null(construct)) CreateScoreFun else
+      match.fun(construct)
     fn <- construct(x,y,link)
     res <- BBsolve(start,fn, control = control, method = method,...)
     
