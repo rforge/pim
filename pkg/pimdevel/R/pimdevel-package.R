@@ -6,9 +6,6 @@
 #' rudimentary functionality, but don't expect any back-compatibility
 #' with the previous versions of pim.
 #' 
-#' \tabular{ll}{ Package: \tab pimdevel\cr Type: \tab Package\cr Version: \tab
-#' 1.9.1.9\cr Date: \tab 2015-07-02\cr License: \tab GPL (>= 2)\cr
-#' LazyLoad: \tab yes\cr Depends: R (>= 3.0)} 
 #' @name pimdevel-package
 #' @aliases pimdevel-package
 #' @docType package

@@ -1,6 +1,8 @@
 #' Getters for slots of a pim object
 #' 
 #' @param x a pim object
+#' @param object a pim object
+#' @param ... arguments passed to other methods. Currently ignored.
 #' 
 #' @rdname pim-getters
 #' @aliases keep.data
@@ -17,3 +19,18 @@ keep.data <- function(x){
   else
     x@keep.data
 }
+
+#' @rdname pim-getters
+#' @export
+setGeneric("fitted")
+
+fitted.pim <- function(object, ...){
+  object@fitted
+}
+#' @rdname pim-getters
+#' @return \code{fitted()}: a numeric vector with the fitted
+#' values for the pseudo-observations. 
+
+setMethod("fitted",
+          signature = "pim",
+          fitted.pim)

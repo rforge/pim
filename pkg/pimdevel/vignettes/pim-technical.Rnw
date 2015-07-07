@@ -1,12 +1,18 @@
 \documentclass{article}
+
 %\VignetteEngine{knitr::knitr}
 %\VignetteIndexEntry{pim-technical}
+%\VignettePackage{pimdevel}
 
 \title{Technical notes on the PIM package}
 \author{Joris FA Meys}
 
 \begin{document}
-let's see what this does.
+\maketitle
+
+\section{Overall structure of the package}
+blabla
+
 
 
 
