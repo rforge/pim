@@ -24,6 +24,9 @@ fitted(object, ...)
 \code{keep.data()}: a single logical value indicating whether
 the model matrix and pseudo responses were stored in the
 \code{\link{pim}} object.
+
+\code{fitted()}: a numeric vector with the fitted
+values for the pseudo-observations.
 }
 \description{
 Getters for slots of a pim object

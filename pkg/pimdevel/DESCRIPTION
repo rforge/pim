@@ -1,7 +1,7 @@
 Package: pimdevel
 Type: Package
 Title: Probabilistic Index Models
-Version: 1.9.1.10
+Version: 1.9.1.11
 Date: 2015-07-07
 Author: Joris Meys, Nick Sabbe, Jan De Neve
 Maintainer: Joris Meys <Joris.Meys@Ugent.be>

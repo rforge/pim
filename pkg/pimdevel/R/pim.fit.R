@@ -25,7 +25,9 @@
 #' 
 #' @param weights currently not implemented
 #' @param ... Further arguments that need to be passed to 
-#' the estimation function.
+#' the estimation function. The most relevant is \code{construct},
+#' allowing you to write your own score function for 
+#' the numerical optimization. See also 
 #' 
 #' @return A list with the following elements
 #' \describe{

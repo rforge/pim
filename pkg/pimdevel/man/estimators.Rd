@@ -7,12 +7,14 @@
 \alias{estimators}
 \title{Estimator functions for probabilistic index models}
 \usage{
-estimator.nleqslv(x, y, start = rep(0, ncol(x)), link = "logit", ...)
+estimator.nleqslv(x, y, start = rep(0, ncol(x)), link = "logit",
+  construct = CreateScoreFun, ...)
 
 estimator.glm(x, y, start = rep(0, ncol(x)), link = "logit", ...)
 
-estimator.BB(x, y, start = rep(0, ncol(x)), link = "logit", method = c(1,
-  2, 3), control = list(NM = c(FALSE, TRUE)), ...)
+estimator.BB(x, y, start = rep(0, ncol(x)), link = "logit",
+  construct = CreateScoreFun, method = c(1, 2, 3), control = list(NM =
+  c(FALSE, TRUE)), ...)
 }
 \arguments{
 \item{x}{a model matrix for the respective pim model. See also
@@ -24,6 +26,12 @@ estimator.BB(x, y, start = rep(0, ncol(x)), link = "logit", method = c(1,
 the starting values for the algorithm}
 
 \item{link}{a character vector describing the link function. ADD MORE INFO}
+
+\item{construct}{a function that creates the score function
+used by either \code{\link{nleqslv}} or
+\code{\link{BBsolve}} for numerical optimization. See Details.
+The estimator \code{estimator.glm} doesn't allow f
+or specification of your own score function.}
 
 \item{...}{extra arguments passed down to the actual solver function. See details.}
 
@@ -39,8 +47,6 @@ more information.}
 \value{
 a list with following elements:
  \item{coef}{the estimated coefficients}
- \item{conv}{information on the convergence. This isn't
- implemented yet.}
 }
 \description{
 This page documents different possibilities for solving the score function
@@ -51,6 +57,20 @@ All functions share the same three arguments, being the design matrix \code{x},
 the response vector \code{y} and the start values for the estimating function.
 If you follow the same principles, you can write your own wrapper function
 for any solver function of your choice.
+
+The solvers \code{estimator.nleqslv} and \code{estimator.BBsolve}
+allow for specification of your own score function as well. For
+this, you have to construct a function that takes three arguments
+\describe{
+\item{x}{The model matrix}
+\item{y}{the vector with pseudo-observations}
+\item{link}{a character vector specifying the link}
+}
+The function should return a function that can be used in
+either \code{\link[nleqslv]{nleqslv}} or
+\code{\link[BB]{BBsolve}}. If you don't specify, the package
+contains the function \code{\link{CreateScoreFun}} to do
+this for you.
 }
 \seealso{
 \code{\link[nleqslv]{nleqslv}}, \code{\link[stats]{glm.fit}},

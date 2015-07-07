@@ -8,6 +8,21 @@
 #' If you follow the same principles, you can write your own wrapper function 
 #' for any solver function of your choice.
 #' 
+#' The solvers \code{estimator.nleqslv} and \code{estimator.BBsolve}
+#' allow for specification of your own score function as well. For
+#' this, you have to construct a function that takes three arguments
+#' \describe{
+#' \item{x}{The model matrix}
+#' \item{y}{the vector with pseudo-observations}
+#' \item{link}{a character vector specifying the link}
+#' }
+#' The function should return a function that can be used in
+#' either \code{\link[nleqslv]{nleqslv}} or 
+#' \code{\link[BB]{BBsolve}}. If you don't specify, the package
+#' contains the function \code{\link{CreateScoreFun}} to do
+#' this for you.
+#' 
+#' 
 #' @seealso \code{\link[nleqslv]{nleqslv}}, \code{\link[stats]{glm.fit}},
 #' \code{\link[BB]{BBsolve}} for more information on the fitting
 #' algorithms.
@@ -23,6 +38,11 @@
 #' Barzilai-Borwein steplengths should be used in a consecutive
 #' manner. The methods will be used in the order specified.
 #' More information on the help page of \code{\link{BBsolve}}. 
+#' @param construct a function that creates the score function
+#' used by either \code{\link{nleqslv}} or
+#' \code{\link{BBsolve}} for numerical optimization. See Details. 
+#' The estimator \code{estimator.glm} doesn't allow f
+#' or specification of your own score function. 
 #' @param ... extra arguments passed down to the actual solver function. See details.
 #' @param control a list with extra controlling parameters for 
 #' \code{BBsolve}. See the help page of \code{\link{BBsolve}} for
@@ -30,8 +50,6 @@
 #' 
 #' @return a list with following elements:
 #'  \item{coef}{the estimated coefficients}
-#'  \item{conv}{information on the convergence. This isn't 
-#'  implemented yet.}
 #' 
 #' @import nleqslv
 #' @name estimators
@@ -39,9 +57,11 @@
 #' @rdname estimators
 #' @export
 estimator.nleqslv <-
-  function(x,y,start=rep(0,ncol(x)), link="logit", ...){
+  function(x,y,start=rep(0,ncol(x)), link="logit", 
+           construct = CreateScoreFun, ...){
     
-    fn <- CreateScoreFun(x,y,link)
+    fn <- construct(x,y,link)
+    
     res <- nleqslv(start,fn, ...)
     
     if(res$termcd != 1){
@@ -78,9 +98,12 @@ estimator.glm <-
 #' @export
 estimator.BB <-
   function(x, y, start= rep(0,ncol(x)), link="logit", 
+           construct = CreateScoreFun,
            method = c(1,2,3),
            control=list(NM = c(FALSE,TRUE)), ...){
-    fn <- CreateScoreFun(x,y,link)
+    
+    construct <- match.fun(construct)
+    fn <- construct(x,y,link)
     res <- BBsolve(start,fn, control = control, method = method,...)
     
     if(res$convergence != 0 ){

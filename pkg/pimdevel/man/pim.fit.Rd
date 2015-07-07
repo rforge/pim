@@ -34,7 +34,9 @@ Alternatively this can be a list with two objects, containing the
 poset indices for the left and right side of the pim.}
 
 \item{...}{Further arguments that need to be passed to
-the estimation function.}
+the estimation function. The most relevant is \code{construct},
+allowing you to write your own score function for
+the numerical optimization. See also}
 }
 \value{
 A list with the following elements
