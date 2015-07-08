@@ -7,8 +7,6 @@
 \alias{lhs}
 \alias{lhs,}
 \alias{lhs,pim.formula-method}
-\alias{penv}
-\alias{penv,pim.formula-method}
 \alias{terms}
 \alias{terms,}
 \alias{terms,pim.formula-method}
@@ -25,10 +23,6 @@ terms(x, ...)
 lhs(x)
 
 \S4method{lhs}{pim.formula}(x)
-
-penv(x)
-
-\S4method{penv}{pim.formula}(x)
 }
 \arguments{
 \item{x}{an object of the class pim.formula}
@@ -76,5 +70,11 @@ terms(FEVform2)
 }
 \seealso{
 the class \code{\link{pim.formula-class}}
+
+\code{\link{response}} for extracting the pseudoresponse
+variable, \code{\link{model.matrix}} for extracting the design
+matrix of pseudo-observations, \code{\link{formula}} for
+extracting the \code{pim.formula} and \code{\link{penv}} for
+extracting the pim environment.
 }
 

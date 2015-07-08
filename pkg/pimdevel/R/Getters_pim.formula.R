@@ -33,8 +33,13 @@
 #' terms(FEVform2)
 #' 
 #' @include pim.formula-class.R
-#' @rdname has.specials
-#' @aliases lhs, terms, penv
+#' @rdname getters-pim.formula
+#' @aliases lhs, terms, has.specials
+#' @seealso \code{\link{response}} for extracting the pseudoresponse
+#' variable, \code{\link{model.matrix}} for extracting the design
+#' matrix of pseudo-observations, \code{\link{formula}} for
+#' extracting the \code{pim.formula} and \code{\link{penv}} for 
+#' extracting the pim environment.
 #' @export
 #' @return \code{has.specials()}: a single \code{TRUE} or \code{FALSE}
 #' value indicating whether the formula right-hand side contains any
@@ -42,40 +47,30 @@
 setGeneric("has.specials",
            function(x)standardGeneric("has.specials"))
 
-#' @rdname has.specials
+#' @rdname getters-pim.formula
 setMethod("has.specials",
           signature= "pim.formula",
           function(x) x@has.specials)
 
-#' @rdname has.specials
+#' @rdname getters-pim.formula
 #' @return \code{terms()}: the \code{\link[stats]{terms}} object
 #' of the \code{pim.formula} object
 #' @export
 setGeneric("terms")
 
-#' @rdname has.specials
+#' @rdname getters-pim.formula
 setMethod("terms",
           signature= "pim.formula",
           function(x) x@terms)
 
-#' @rdname has.specials
+#' @rdname getters-pim.formula
 #' @export
 #' @return \code{lhs()}: an object of class \code{call} containing 
 #' the left hand side of the formula as used in the pim. 
 setGeneric("lhs",
            function(x)standardGeneric("lhs"))
 
-#' @rdname has.specials
+#' @rdname getters-pim.formula
 setMethod("lhs",
           signature= "pim.formula",
           function(x) x@lhs)
-
-#' @rdname has.specials
-#' @export
-setGeneric("penv",
-           function(x) standardGeneric("penv"))
-
-#' @rdname has.specials
-setMethod("penv",
-          signature = "pim.formula",
-          function(x) x@penv)

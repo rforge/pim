@@ -10,8 +10,14 @@
 \begin{document}
 \maketitle
 
+This document gives you further insight in how the 2.0 version of the pim package is implemented. We discuss the overall structure of the package and the available tools for controlling the fitting process. This should allow researchers to not only fit probabilistic index models easily, but also develop new methods based on the PIM framework. 
+
 \section{Overall structure of the package}
-blabla
+The 2.0 version of the pim package has a completely rebuilt interface that allows you to take full control over almost the complete fitting engine. In order to keep the footprint in the memory as low as possible, we also implemented a different way of dealing with the data. 
+
+\subsection{How \texttt{pim} works with data }
+
+
 
 
 
