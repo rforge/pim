@@ -71,4 +71,3 @@ Y <- response(FEVform)
 # Now pim.fit can do what it does
 res <- pim.fit(MM,Y, estim = "estimator.glm", penv=FEVenv)
 
-

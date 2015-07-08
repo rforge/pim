@@ -77,4 +77,28 @@ Y <- response(FEVform)
 # Now pim.fit can do what it does
 res <- pim.fit(MM,Y, estim = "estimator.glm", penv=FEVenv)
 
+# How to change the score function:
+# Obviously this doesn't make any sense, but it's just an illustration.
+myscore <- function(x,y,link){
+  scorefun <- function(beta){
+    Zbeta <- y - x %*% beta
+    colSums(Zbeta)
+  }
+}
+
+# For a bit more guidance, take a look at 
+?sandwich.vcov # info on the arguments and output any vcov estimator should 
+               # use.
+?CreateScoreFun
+?estimators
+
+res <- pim.fit(MM,Y,construct = myscore,
+               estim = 'estimator.nleqslv',
+               vcov.estim="sandwich.vcov",
+               penv = FEVenv)
+
+str(res)
+coef(res)
+vcov(res)
+fitted(res)
 
