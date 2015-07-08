@@ -130,7 +130,6 @@ setMethod("new.pim.poset",
             out@compare <- comp.value
             out@nobs <- as.integer(nobs)
             
-            
             eval(quote({
               L <- .make.posfun(compare[['L']])
               R <- .make.posfun(compare[['R']])

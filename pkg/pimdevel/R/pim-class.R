@@ -47,34 +47,3 @@ setClass(
   }
   )
 
-# print method for pim
-
-
-print.pim <- function(x, digits = max(3L, getOption("digits") - 3L), ...){
-  orig <- paste(deparse(x@formula@orig))
-  coefs <- coef(x)
-  vc <- vcov(x)
-  cat('\nProbabilistic Index Model:\n',orig,"\n\n")
-  
-  if (length(coefs)) {
-    cat("Coefficients:\n")
-    print.default(format(coefs, digits = digits), print.gap = 2L, 
-                  quote = FALSE)
-  }
-  else cat("No coefficients\n")
-  cat("\n")
-  
-  cat("VCOV matrix:\n")
-  print.default(format(vc, digits = digits), print.gap = 2L,
-                quote=FALSE)
-}
-
-# show method for pim
-setMethod('show',
-          'pim',
-          function(object){print(object)})
-
-# print method for pim
-setMethod('print',
-          'pim',
-          print.pim)

@@ -28,7 +28,7 @@
 In case the function is called on a \code{pim.environment}
 or a \code{pim.poset} object,
 an integer with the number of (foreseen) observations. If the
-pim.environment is empty, it returns \code{NA}.
+pim.environment is empty, it returns \code{0}.
 
 In all other cases, it returns the output of either \code{\link{nrow}}
 or \code{\link{length}}.
