@@ -21,10 +21,16 @@ fitted(Model)
 response(Model)
 model.matrix(Model)
 has.intercept(Model)
+poset(Model)
 
 # More advanced
-formula(Model)
-formula(formula(Model))
+formula(Model) # gives the pim formula
+formula(formula(Model)) # gives a standard formula
+
+PimEnv <- penv(Model) # The pim environment of the model
+PimEnv
+nobs(PimEnv)
+poset(PimEnv)
 
 
 Model2 <- pim(FEV ~ Age +1, data=FEV,

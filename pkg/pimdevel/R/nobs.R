@@ -19,10 +19,9 @@
 #' or \code{\link{length}}. 
 #' 
 #' @include pim.environment-class.R
-
-
-#' @describeIn nobs
 #' @export
+
+#' @rdname  nobs
 setMethod("nobs",
           signature="pim.environment",
           function(object){
@@ -33,34 +32,24 @@ setMethod("nobs",
             }
           })
 
-#' @describeIn nobs
-#' @export
+#' @rdname nobs
 setMethod("nobs",
           signature="pim.poset",
           function(object){
             object@nobs
           })
 
-#' @describeIn nobs
-#' @export
+#' @rdname nobs
 setMethod("nobs",
           signature="matrix",
           function(object){
             nrow(object)
           })
 
-#' @describeIn nobs
-#' @export
+#' @rdname nobs
 setMethod("nobs",
           signature="data.frame",
           function(object){
             nrow(object)
           })
 
-#' @describeIn nobs
-#' @export
-setMethod("nobs",
-          signature="ANY",
-          function(object){
-            length(object)
-          })

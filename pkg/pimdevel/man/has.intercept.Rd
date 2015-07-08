@@ -5,6 +5,7 @@
 \alias{has.intercept}
 \alias{has.intercept,character-method}
 \alias{has.intercept,formula-method}
+\alias{has.intercept,pim-method}
 \alias{has.intercept,pim.formula-method}
 \alias{has.intercept,terms-method}
 \title{Check whether formula has an explicit intercept}
@@ -18,6 +19,8 @@ has.intercept(x)
 \S4method{has.intercept}{terms}(x)
 
 \S4method{has.intercept}{pim.formula}(x)
+
+\S4method{has.intercept}{pim}(x)
 }
 \arguments{
 \item{x}{either a \code{formula}, \code{pim.formula}, \code{terms.object}

@@ -51,3 +51,10 @@ setMethod('has.intercept',
           function(x){
             x@has.intercept
           })
+
+#' @rdname has.intercept
+setMethod('has.intercept',
+          signature='pim',
+          function(x){
+            has.intercept(formula(x))
+          })
