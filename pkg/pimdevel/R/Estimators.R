@@ -22,6 +22,10 @@
 #' contains the function \code{\link{CreateScoreFun}} to do
 #' this for you.
 #' 
+#' @section WARNING: If you specify your own score function 
+#' without changing the estimators for the variance-covariance
+#' matrix, this vcov matrix will be blatantly wrong!!!!!
+#' 
 #' 
 #' @seealso \code{\link[nleqslv]{nleqslv}}, \code{\link[stats]{glm.fit}},
 #' \code{\link[BB]{BBsolve}} for more information on the fitting

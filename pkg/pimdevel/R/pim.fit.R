@@ -27,7 +27,7 @@
 #' @param ... Further arguments that need to be passed to 
 #' the estimation function. The most relevant is \code{construct},
 #' allowing you to write your own score function for 
-#' the numerical optimization. See also 
+#' the numerical optimization. See also \code{\link{estimators}}
 #' 
 #' @return A list with the following elements
 #' \describe{

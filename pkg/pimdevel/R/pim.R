@@ -98,9 +98,11 @@ pim <- function(formula,
   # Create the pim environment (similar to model frame)
   
   penv <- if(nodata) 
-    new.pim.env(parent.frame(),compare = compare, vars=vars)
+    new.pim.env(parent.frame(),compare = compare, vars=vars,
+                env=parent.frame())
   else
-    new.pim.env(data, compare = compare, vars=vars)
+    new.pim.env(data, compare = compare, vars=vars,
+                env=parent.frame())
   
   ff <- new.pim.formula(formula, penv)
   
