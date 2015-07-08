@@ -58,7 +58,7 @@
 
 .equal.nobs <- function(envir){
   all.lengths <- sapply(ls(envir), function(i){
-    nobs(get(i,envir=envir,inherits=FALSE))
+    NROW(get(i,envir=envir,inherits=FALSE))
   })
   length(unique(all.lengths)) <= 1
 }
