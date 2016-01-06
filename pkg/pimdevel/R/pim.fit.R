@@ -20,7 +20,7 @@
 #' Defaults to \code{sandwich.vcov}
 #' @param penv An environment, \code{\link{pim.environment}} or 
 #' \code{\link{pim.poset}} object containing the poset functions.
-#' Alternatively this can be a list with two objects, containing the
+#' Alternatively this can be a list of two numeric vectors, containing the
 #' poset indices for the left and right side of the pim.
 #' 
 #' @param weights currently not implemented
