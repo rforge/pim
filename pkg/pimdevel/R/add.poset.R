@@ -27,7 +27,7 @@
 #' @export 
 setGeneric('add.poset',function(x,...) standardGeneric('add.poset'))
 
-#' @describeIn add.poset
+#' @rdname add.poset
 setMethod('add.poset',
           signature=c('pim.environment'),
           function(x,overwrite=FALSE,...){

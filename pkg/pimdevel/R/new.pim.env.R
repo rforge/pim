@@ -58,7 +58,7 @@ setGeneric("new.pim.env",
            function(data, ...){
              standardGeneric("new.pim.env")
            })
-#' @describeIn new.pim.env
+#' @rdname new.pim.env
 setMethod("new.pim.env",
           signature=c(data="missing"),
           function(data, ...){
@@ -68,7 +68,7 @@ setMethod("new.pim.env",
             new("pim.environment")
           })
 
-#' @describeIn new.pim.env
+#' @rdname new.pim.env
 setMethod("new.pim.env",
           signature=c(data="environment"),
           function(data, compare = "unique",
@@ -107,7 +107,7 @@ setMethod("new.pim.env",
             out
           })
 
-#' @describeIn new.pim.env
+#' @rdname new.pim.env
 setMethod("new.pim.env",
           signature=c(data="list"),
           function(data,compare = "unique",vars=NULL,...){
@@ -134,7 +134,7 @@ setMethod("new.pim.env",
                          ...)
           })
 
-#' @describeIn new.pim.env
+#' @rdname new.pim.env
 setMethod("new.pim.env",
           signature=c(data="data.frame"),
           function(data,compare = "unique",vars=NULL,...){
@@ -150,6 +150,16 @@ setMethod("new.pim.env",
                          data.names=vars,
                          nobs=nrow(data),
                          ...)
+          })
+#' @rdname new.pim.env
+setMethod('new.pim.env',
+          signature = c(data = 'ANY'),
+          function(data, ...){
+            data <- tryCatch({
+              as.data.frame(data)
+            }, error = function(e) "Cannot convert data to a data frame.")
+            
+            new.pim.env(data, ...)
           })
 
 # The function .new.pim.env : the actual workhorse.

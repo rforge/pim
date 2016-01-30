@@ -11,7 +11,7 @@
 #' the environment itself. 
 #' See the help page \code{pim.formula-class}.
 #' 
-#'  @export
+#' @export
 setGeneric("penv",
            function(x) standardGeneric("penv"))
 

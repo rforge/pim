@@ -34,7 +34,7 @@
 #' @export
 setGeneric('poset', function(x,...) standardGeneric('poset'))
 
-#' @describeIn poset
+#' @rdname poset
 #' @export
 setMethod('poset',
           signature='pim.environment',
@@ -47,7 +47,7 @@ setMethod('poset',
             }
           })
 
-#' @describeIn poset
+#' @rdname poset
 #' @export
 setMethod('poset',
           signature='pim.poset',
@@ -68,7 +68,7 @@ setMethod('poset',
               }
             }
           })
-#' @describeIn poset
+#' @rdname poset
 setMethod('poset',
           signature='environment',
           function(x,as.list=FALSE){
@@ -83,14 +83,14 @@ setMethod('poset',
             }
           })
 
-#' @describeIn poset
+#' @rdname poset
 setMethod('poset',
           signature = 'pim',
           function(x, ...){
             poset(x@penv, ...)  
           })
 
-#' @describeIn poset
+#' @rdname poset
 setMethod('poset',
           signature = "pim.formula",
           function(x, ...){

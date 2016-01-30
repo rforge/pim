@@ -81,7 +81,7 @@ setGeneric("new.pim.poset",
              standardGeneric("new.pim.poset")
            })
 
-#' @describeIn new.pim.poset
+#' @rdname new.pim.poset
 setMethod("new.pim.poset",
           signature=c(compare="character",
                       nobs="numeric"),
@@ -93,7 +93,7 @@ setMethod("new.pim.poset",
           }
           )
 
-#' @describeIn new.pim.poset
+#' @rdname new.pim.poset
 setMethod("new.pim.poset",
           signature=c(compare="matrix",
                       nobs="numeric"),
@@ -109,7 +109,7 @@ setMethod("new.pim.poset",
             new.pim.poset(poset,nobs,parent,...)
           })
 
-#' @describeIn new.pim.poset
+#' @rdname new.pim.poset
 setMethod("new.pim.poset",
           signature=c(compare="list",
                       nobs="numeric"),
@@ -138,7 +138,7 @@ setMethod("new.pim.poset",
             out
           })
 
-#' @describeIn new.pim.poset
+#' @rdname new.pim.poset
 setMethod("new.pim.poset",
           signature=c(compare="matrix",
                       nobs="missing"),
@@ -147,7 +147,7 @@ setMethod("new.pim.poset",
             new.pim.poset(compare,nobs,parent,...)
           })
 
-#' @describeIn new.pim.poset
+#' @rdname new.pim.poset
 setMethod("new.pim.poset",
           signature=c(compare="list",
                       nobs="missing"),
@@ -156,7 +156,7 @@ setMethod("new.pim.poset",
             new.pim.poset(compare,nobs,parent,...)
           })
 
-#' @describeIn new.pim.poset
+#' @rdname new.pim.poset
 setMethod('new.pim.poset',
           signature=c(compare='missing',
                       nobs='numeric'),
