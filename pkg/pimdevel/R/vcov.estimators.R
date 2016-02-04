@@ -47,7 +47,8 @@ sandwich.vcov <- function(fitted, X, Y, W, link, poset, ...){
 #' @export score.vcov
 score.vcov <- function(fitted, X, Y, W, link, poset, ...){
   Ulist <- U.score(fitted, X, Y, link, W)
-  Ulist <- c(Ulist, g1=poset[[1]], g2=poset[[2]])
+  Ulist$g1 <- poset[[1]]
+  Ulist$g2 <- poset[[2]]
   fv <- Ulist$fv
   Ulist$fv <- NULL
   do.call(sandwich.estimator, Ulist) 
