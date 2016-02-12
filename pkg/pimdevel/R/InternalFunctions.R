@@ -64,6 +64,7 @@
 }
 
 valid.classes <- function(x){
+  if(is.list(x)) x <- sapply(x,`[`,1)
   all(match(x,.valids.pim,0L) > 0)
 }
 

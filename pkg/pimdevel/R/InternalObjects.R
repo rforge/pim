@@ -6,7 +6,8 @@
 # function, which classes are accepted as valid for a pim-related
 # object and so forth.
 # 
-.valids.pim <- c("character","factor","numeric","integer","logical")
+.valids.pim <- c("character","factor","numeric","integer",
+                 "logical", "ordered")
 
 .specials.pim.lhs <- c("P","PO")
 .specials.pim.rhs <- c("L","R")
