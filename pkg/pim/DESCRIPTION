@@ -11,7 +11,8 @@ Description: Fit a probabilistic index model. This package is the latest
     publications on probabilistic index models. If you want to try out the
     original code, please install the package pimold from R-Forge.
 Depends:
-    R (>= 3.0)
+    R (>= 3.0),
+    utils
 Imports:
     methods,
     stats4,

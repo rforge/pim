@@ -1,4 +1,4 @@
-library(pimdevel)
+library(pim)
 context("pim environment")
 
 test_that("Empty environment is created", {

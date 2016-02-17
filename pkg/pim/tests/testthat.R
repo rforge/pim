@@ -1,4 +1,4 @@
 library(testthat)
-library(pimdevel)
+library(pim)
 
-test_check("pimdevel")
+test_check("pim")

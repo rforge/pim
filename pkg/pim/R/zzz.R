@@ -2,7 +2,7 @@
 
 .onAttach <- function(libname, pkgname){
    themessage <- paste0(
-     "Loading pim version ", packageVersion(pkgname),".\n",
+     "Loading pim version ", utils::packageVersion(pkgname),".\n",
      "  If you want to try out the code from the original publications\n",
      "  on probabilistic index models, please install the package 'pimold'\n",
      "  from R-Forge. You can use following command:\n",

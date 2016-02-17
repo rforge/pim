@@ -1,8 +1,8 @@
 % -*- mode: noweb; noweb-default-code-mode: R-mode; -*-
 %\VignetteIndexEntry{An R package for fitting probabilistic index models}
 %\VignetteKeyword{probabilistic index model, regression}
-%\VignetteDepends{pim}
-%\VignettePackage{pim}
+%\VignetteDepends{pimold}
+%\VignettePackage{pimold}
 %documentclass[12pt, a4paper]{article}
 \documentclass[12pt]{article}
 
@@ -36,15 +36,23 @@
 
 \maketitle
 \tableofcontents
+
+\section{IMPORTANT}
+
+The package \texttt{pimold} is a legacy version of the \texttt{pim} package only maintained as
+an illustration for the publications referenced in this document. For real analysis, we strongly
+advise to install the new \texttt{pim} package (version 1.9 and higher). That one contains
+a completely new formula interface that works more intuitively and R-like.
+
 \section{Introduction}\label{S_intro}
 
-This document explains and illustrates how the \pim{pim}-package can be employed to fit a Probabilistic Index Model (PIM). We refer to \cite{Thas2012} for a detailed overview on PIMs. If $(Y,X)$ and $(Y',X')$ are i.i.d. then a PIM is defined as
+This document explains and illustrates how the \pim{pimold}-package can be employed to fit a Probabilistic Index Model (PIM). We refer to \cite{Thas2012} for a detailed overview on PIMs. If $(Y,X)$ and $(Y',X')$ are i.i.d. then a PIM is defined as
 \begin{equation}\label{pim}
 \prob{Y \leqs Y' | X, X'} = m(X,X';\beta) = g^{-1}(Z^T \beta) \quad \text{for} \quad (X,X') \in \mathcal{X},
 \end{equation}
 with $\prob{Y \leqs Y'} \equiv  \prob{Y < Y'} + \frac{1}{2} \prob{Y = Y'}$. Here $g(\cdot)$ denotes a link function, $Z$ is a covariate vector that depends on the predictors $X$ and $X'$ and $\mathcal{X}$ is the set of predictors for which the model is defined. 
 
-The \pim{pim}-package allows fitting a nearly unlimited range of PIMs through extensive customisations.
+The \pim{pimold}-package allows fitting a nearly unlimited range of PIMs through extensive customisations.
 \begin{enumerate}
 \item One can manually provide the set of pairs of observation indices for the pseudo-observations (the "poset"), one can use any of the provided functions (\pim{onewayposet} which includes all unique oneway combinations ($(1,2)$, $(1,3)$ and $(2,3)$), \pim{lexiposet} which does the same after ordering the data based on the predictors in the model (the lexicographical order restriction) or the default \pim{fullposet} which simply contains all combinations), and one can even write a custom function for it.
 
@@ -152,13 +160,13 @@ For the childhood respiratory disease study we consider the PIM with interaction
 \end{eqnarray*}
 Because this PIM corresponds to a covariate vector $Z$ of the form $Z = X' -X$, with $X^T = (AGE, SMOKE, AGE*SMOKE)$, the formula statement of \texttt{pim()} is similar to the formula statement of \texttt{lm()} and \texttt{glm()}. We first read in the data
 <<>>=
-library(pim)
+library(pimold)
 data("FEVData")
 head(FEVData)
 @
 Here \verb|FEV| stands for the forced expiratory volume ($FEV$), \verb|Age| for the age of the child ($AGE$) and \verb|Smoke| whether a child smokes or not ($SMOKE$). We fit the PIM:
 <<>>=
-library('pim')
+library('pimold')
 pim.fit1 <- pim(FEV ~ Age*Smoke-1, data = FEVData, link="logit", 
   poset=lexiposet, estimator=estimator.nleqslv(), 
   keep.data=TRUE, interpretation="regular")
@@ -312,7 +320,7 @@ Note that PIMs are semiparametric, thus the normality assumption is not required
 \section{Conclusions and remarks}\label{S_conclusion}
 
 
-The \texttt{pim}-package is illustrated on several examples and allows fitting a broad class of PIMs. PIMs which are embedded by a linear model as well as less restrictive PIMs are allowed. For categorical predictors however, only PIMs which are based on a linear model can be constructed.
+The \texttt{pimold}-package is illustrated on several examples and allows fitting a broad class of PIMs. PIMs which are embedded by a linear model as well as less restrictive PIMs are allowed. For categorical predictors however, only PIMs which are based on a linear model can be constructed.
 
 
 Note that for a sample size of $n$ 	a total $n(n-1)/2$ pseudo-observations are created. Consequently for large sample sizes the function goes quite slow.  

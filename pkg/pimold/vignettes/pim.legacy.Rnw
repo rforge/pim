@@ -1,8 +1,8 @@
 % -*- mode: noweb; noweb-default-code-mode: R-mode; -*-
 %\VignetteIndexEntry{PIMs as classical distribution free tests}
 %\VignetteKeyword{probabilistic index model, distribution, legacy}
-%\VignetteDepends{pim}
-%\VignettePackage{pim}
+%\VignetteDepends{pimold}
+%\VignettePackage{pimold}
 %documentclass[12pt, a4paper]{article}
 \documentclass[12pt]{article}
 
@@ -34,6 +34,13 @@
 
 \maketitle
 \tableofcontents
+\section{IMPORTANT}
+
+The package \texttt{pimold} is a legacy version of the \texttt{pim} package only maintained as
+an illustration for the publications referenced in this document. For real analysis, we strongly
+advise to install the new \texttt{pim} package (version 1.9 and higher). That one contains
+a completely new formula interface that works more intuitively and R-like.
+
 \section{Introduction}
 
 While \cite{Thas2012} introduces PIMs, they were shown to be extensions of the known distribution free tests, like Wilcoxon in TODO:rankpaperref.
@@ -52,7 +59,7 @@ null hypotheses.
 
 Code to check the equivalence (note this includes a legacy implementation):
 <<>>=
-	library(pim)
+	library(pimold)
 	set.seed(1)
 	wmw1<-demo.WilcoxonMannWhitney()
 	wmw1$pim2<-pim(y~F(x)-1, data=wmw1$dta, link="identity", poset=lexiposet, 

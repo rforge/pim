@@ -611,9 +611,9 @@
 	return(rv)
 }
 
-.onLoad<-function(libname, pkgname)
+.onAttach<-function(libname, pkgname)
 {
-  version <- packageVersion("pimold")
+  version <- utils::packageVersion("pimold")
 	packageStartupMessage(paste("Loading pim version",version,
 	                            "\nThis version only exists for reference to earlier publications.",
 	                            "\nPlease use the new pim package for analysis."))
