@@ -1,6 +1,11 @@
 #' Probabilistic Index Models
 #' 
-#' Fit a probabilistic index model. Note that we're currently reworking the package, including the interface. When 2.0 comes out, we can't guarantee back-compatibility.
+#' Fit a probabilistic index model. This package is the original
+#' one described in the dissertation of prof. dr. Jan De Neve and the paper
+#' by De Neve and Thas (2015): "A regression framework for rank tests based on the 
+#' probabilistic index model", JASA 511, 1276-1283. Note that the complete pim
+#' package is reworked to have a more intuitive formula interface. This old
+#' version exists only for reference to those papers. 
 #' 
 #' \tabular{ll}{ Package: \tab pim\cr Type: \tab Package\cr Version: \tab
 #' 1.1.5.6\cr Date: \tab 2014-10-16\cr License: \tab GPL (>= 2)\cr
