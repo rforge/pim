@@ -1,0 +1,143 @@
+#' Print methods for the different object types
+#' 
+#' Printing \code{pim}, \code{pim.environment}, \code{pim.formula} and
+#' \code{pim.poset} objects. 
+#' 
+#' @param x the object
+#' @param digits an integer that defines the number of digits printed
+#' @param n number of observations shown by \code{print}
+#' @param ... arguments passed to other methods. Currently ignored
+#' 
+#' @return invisible NULL
+#' @include pim-class.R pim.environment-class.R pim.formula-class.R pim.poset-class.R
+#' 
+#' @export
+setGeneric('print')
+
+#------------------------
+# print method for pim
+#------------------------
+
+print.pim <- function(x, digits = max(3L, getOption("digits") - 3L), ...){
+  orig <- paste(deparse(x@formula@orig))
+  coefs <- coef(x)
+  vc <- vcov(x)
+  cat('\nProbabilistic Index Model:\n',orig,"\n\n")
+  
+  if (length(coefs)) {
+    cat("Coefficients:\n")
+    print.default(format(coefs, digits = digits), print.gap = 2L, 
+                  quote = FALSE)
+  }
+  else cat("No coefficients\n")
+  cat("\n")
+  
+  cat("VCOV matrix:\n")
+  print.default(format(vc, digits = digits), print.gap = 2L,
+                quote=FALSE)
+  invisible(NULL)
+}
+
+# show method for pim
+setMethod('show',
+          'pim',
+          function(object){print(object)})
+
+#' @rdname print
+# print method for pim
+setMethod('print',
+          'pim',
+          print.pim)
+
+#------------------------
+# print method for pim.environment
+#------------------------
+
+print.pim.environment <- function(x, digits = max(3L, getOption("digits") - 3L), n = 6L, ...){
+  no <- nobs(x)
+  nc <- length(classes(x))
+  
+  complete <- is.complete(x)
+  ww <- if(complete) "with" else "without"
+  cat('\nPIM environment with',no,
+      'observations of',nc,'variables.\n\n')
+  
+  print(head(as.data.frame(x), n = n))
+  
+  if(n<no) cat("(Only first",n,"observations shown.)\n")
+  
+  cat("\n",ww,"poset\n")
+  if(complete)
+    print(t(poset(x))[,seq_len(n)])
+  
+  if(n<no) cat("(Only first",n,"columns shown.)\n")
+  
+  invisible(NULL)
+  
+}
+
+# show method for pim.environment
+setMethod('show',
+          'pim.environment',
+          function(object){print(object)})
+
+#' @rdname print
+# print method for pim.environment
+setMethod('print',
+          'pim.environment',
+          print.pim.environment)
+
+#------------------------
+# print method for pim.poset
+#------------------------
+
+print.pim.poset <- function(x, digits = max(3L, getOption("digits") - 3L), n = 6L, ...){
+  no <- nobs(x)
+  
+  cat('\nPIM poset for',no,
+      'observations.\n','comparison:',compare(x),'\n\n')
+  
+  print(t(poset(x))[,seq_len(n)])
+  
+  if(n<no) cat("(Only first",n,"columns shown.)\n")
+    
+  invisible(NULL)
+  
+}
+
+# show method for pim.poset
+setMethod('show',
+          'pim.poset',
+          function(object){print(object)})
+
+#' @rdname print
+# print method for pim.poset
+setMethod('print',
+          'pim.poset',
+          print.pim.poset)
+
+#------------------------
+# print method for pim.formula
+#------------------------
+
+print.pim.formula <- function(x, digits = max(3L, getOption("digits") - 3L), ...){
+  
+  intercept <- has.intercept(x)
+  ww <- if(intercept) 'with' else 'without'
+  cat('\nPIM formula',ww,'intercept:\n')
+  print(x@orig)
+  cat('\nLeft hand side:',deparse(lhs(x)))
+  
+  
+}
+
+# show method for pim.formula
+setMethod('show',
+          'pim.formula',
+          function(object){print(object)})
+
+#' @rdname print
+# print method for pim.formula
+setMethod('print',
+          'pim.formula',
+          print.pim.formula)

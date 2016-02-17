@@ -6,11 +6,11 @@ Date: 2014-10-16
 Author: Nick Sabbe, Jan De Neve
 Maintainer: Nick Sabbe <Nick.Sabbe@Ugent.be>
 Description: Fit a probabilistic index model. This package is the original
-one described in the dissertation of prof. dr. Jan De Neve and the paper
-by De Neve and Thas (2015): "A regression framework for rank tests based on the 
-probabilistic index model", JASA 511, 1276-1283. Note that the complete pim
-package is reworked to have a more intuitive formula interface. This old
-version exists only for reference to those papers. 
+    one described in the dissertation of prof. dr. Jan De Neve and the paper by
+    De Neve and Thas (2015): A regression framework for rank tests based on the
+    probabilistic index model, JASA 511, 1276-1283. Note that the complete pim
+    package is reworked to have a more intuitive formula interface. This old version
+    exists only for reference to those papers.
 Depends:
     R (>= 2.12),
     Matrix,
@@ -24,3 +24,4 @@ Suggests:
     lqa
 License: GPL (>= 2)
 URL: http://pim.r-forge.r-project.org/
+RoxygenNote: 5.0.1

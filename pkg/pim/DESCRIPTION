@@ -1,0 +1,73 @@
+Package: pimdevel
+Type: Package
+Title: Probabilistic Index Models
+Version: 1.9.1.17
+Date: 2016-02-12
+Author: Joris Meys, Nick Sabbe, Jan De Neve
+Maintainer: Joris Meys <Joris.Meys@Ugent.be>
+Description: Fit a probabilistic index model. This package is the latest
+    version of the pim package, and will end up being pim 2.0. It's a beta
+    currently under development. There's a pim fitting engine with
+    rudimentary functionality, but don't expect any back-compatibility
+    with the previous versions of pim.
+Depends:
+    R (>= 3.0)
+Imports:
+    methods,
+    stats4,
+    nleqslv,
+    BB
+License: GPL (>= 2)
+URL: NA
+VignetteBuilder: knitr
+Collate:
+    'CreateScoreFun.R'
+    'DysData.R'
+    'Engeldata.R'
+    'Estimators.R'
+    'FEVData.R'
+    'pim.poset-class.R'
+    'pim.environment-class.R'
+    'Getters.R'
+    'pimdevel-package.R'
+    'pim.formula-class.R'
+    'pim-class.R'
+    'Getters_pim.R'
+    'Getters_pim.formula.R'
+    'InternalFunctions.R'
+    'InternalObjects.R'
+    'LR.R'
+    'MHData.R'
+    'P.R'
+    'SUData.R'
+    'add.poset.R'
+    'as.data.frame.pim.environment.R'
+    'pim.summary-class.R'
+    'coef.R'
+    'create.poset.R'
+    'formula.R'
+    'has.intercept.R'
+    'is.complete.R'
+    'make.posfun.R'
+    'model.matrix.pim.R'
+    'new.pim.R'
+    'new.pim.env.R'
+    'new.pim.formula.R'
+    'new.pim.poset.R'
+    'nobs.R'
+    'penv.R'
+    'pim.R'
+    'pim.fit.R'
+    'pimdata.R'
+    'poset.R'
+    'print.R'
+    'response.R'
+    'sandwich.estimator.R'
+    'summary.R'
+    'vcov.R'
+    'vcov.estimators.R'
+    'vcov.internal.R'
+Suggests:
+    testthat,
+    knitr
+RoxygenNote: 5.0.1

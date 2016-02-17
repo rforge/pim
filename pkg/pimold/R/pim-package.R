@@ -7,11 +7,11 @@
 #' package is reworked to have a more intuitive formula interface. This old
 #' version exists only for reference to those papers. 
 #' 
-#' \tabular{ll}{ Package: \tab pim\cr Type: \tab Package\cr Version: \tab
+#' \tabular{ll}{ Package: \tab pimold\cr Type: \tab Package\cr Version: \tab
 #' 1.1.5.6\cr Date: \tab 2014-10-16\cr License: \tab GPL (>= 2)\cr
 #' LazyLoad: \tab yes\cr Depends: R (>= 2.12), Matrix, nleqslv, MASS\cr Suggests: glmnet (>= 1.9-3), BB, lqa} 
-#' @name pim-package
-#' @aliases pim-package
+#' @name pimold-package
+#' @aliases pimold-package
 #' @docType package
 #' @author Nick Sabbe \email{Nick.Sabbe@@UGent.be} Jan De Neve \email{JanR.DeNeve@@UGent.be} Joris Meys \email{Joris.Meys@@UGent.be}
 #' @references [PENDING]
