@@ -1,15 +1,15 @@
-Package: pimdevel
+Package: pim
 Type: Package
 Title: Probabilistic Index Models
-Version: 1.9.1.17
-Date: 2016-02-12
+Version: 1.9.2.00
+Date: 2016-02-17
 Author: Joris Meys, Nick Sabbe, Jan De Neve
 Maintainer: Joris Meys <Joris.Meys@Ugent.be>
 Description: Fit a probabilistic index model. This package is the latest
-    version of the pim package, and will end up being pim 2.0. It's a beta
-    currently under development. There's a pim fitting engine with
-    rudimentary functionality, but don't expect any back-compatibility
-    with the previous versions of pim.
+    version of the pim package, and will end up being pim 2.0. Note that this
+    version is NOT compatible with the previous version used in the original
+    publications on probabilistic index models. If you want to try out the
+    original code, please install the package pimold from R-Forge.
 Depends:
     R (>= 3.0)
 Imports:
@@ -29,7 +29,7 @@ Collate:
     'pim.poset-class.R'
     'pim.environment-class.R'
     'Getters.R'
-    'pimdevel-package.R'
+    'pim-package.R'
     'pim.formula-class.R'
     'pim-class.R'
     'Getters_pim.R'
@@ -67,6 +67,7 @@ Collate:
     'vcov.R'
     'vcov.estimators.R'
     'vcov.internal.R'
+    'zzz.R'
 Suggests:
     testthat,
     knitr

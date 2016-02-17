@@ -61,7 +61,7 @@
 #' internal use in the pim package only.
 #'
 #' @aliases pim.formula
-#' @include pimdevel-package.R
+#' @include pim-package.R
 #' @include pim.environment-class.R
 setClass(
   "pim.formula",
