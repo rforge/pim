@@ -21,7 +21,7 @@ setGeneric('print')
 #------------------------
 
 print.pim <- function(x, digits = max(3L, getOption("digits") - 3L),
-                      show.vcov = TRUE, ...){
+                      show.vcov = FALSE, ...){
   orig <- paste(deparse(x@formula@orig))
   coefs <- coef(x)
   vc <- vcov(x)

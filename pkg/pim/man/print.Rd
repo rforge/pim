@@ -12,7 +12,7 @@
 print(x, ...)
 
 \S4method{print}{pim}(x, digits = max(3L, getOption("digits") - 3L),
-  show.vcov = TRUE, ...)
+  show.vcov = FALSE, ...)
 
 \S4method{print}{pim.environment}(x, digits = max(3L, getOption("digits") -
   3L), n = 6L, ...)
