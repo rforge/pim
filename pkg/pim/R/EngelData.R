@@ -1,6 +1,6 @@
 #' This is the engel data
 #'
-#' @name Engeldata
+#' @name EngelData
 #' @docType data
 #' @details These are the columns and their meanings
 #' \itemize{

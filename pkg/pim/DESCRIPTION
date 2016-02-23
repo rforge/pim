@@ -1,8 +1,8 @@
 Package: pim
 Type: Package
 Title: Probabilistic Index Models
-Version: 1.9.2.00
-Date: 2016-02-17
+Version: 1.9.2.1
+Date: 2016-02-23
 Author: Joris Meys, Nick Sabbe, Jan De Neve
 Maintainer: Joris Meys <Joris.Meys@Ugent.be>
 Description: Fit a probabilistic index model. This package is the latest
@@ -24,7 +24,7 @@ VignetteBuilder: knitr
 Collate:
     'CreateScoreFun.R'
     'DysData.R'
-    'Engeldata.R'
+    'EngelData.R'
     'Estimators.R'
     'FEVData.R'
     'pim.poset-class.R'

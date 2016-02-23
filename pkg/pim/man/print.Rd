@@ -11,7 +11,8 @@
 \usage{
 print(x, ...)
 
-\S4method{print}{pim}(x, digits = max(3L, getOption("digits") - 3L), ...)
+\S4method{print}{pim}(x, digits = max(3L, getOption("digits") - 3L),
+  show.vcov = TRUE, ...)
 
 \S4method{print}{pim.environment}(x, digits = max(3L, getOption("digits") -
   3L), n = 6L, ...)
@@ -28,6 +29,9 @@ print(x, ...)
 \item{...}{arguments passed to other methods. Currently ignored}
 
 \item{digits}{an integer that defines the number of digits printed}
+
+\item{show.vcov}{a logical value indicating whether the variance-
+covariance matrix should be shown or not. Defaults to \code{FALSE}}
 
 \item{n}{number of observations shown by \code{print}}
 }

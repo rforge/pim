@@ -18,7 +18,7 @@ setGeneric('summary')
 
 summary.pim <- function(object){
   coefs <- coef(object)
-  se <- diag(vcov(object))
+  se <- sqrt(diag(vcov(object)))
   zval <- coefs / se
   pr <- 2*pnorm(-abs(zval))
   

@@ -6,6 +6,8 @@
 #' @param x the object
 #' @param digits an integer that defines the number of digits printed
 #' @param n number of observations shown by \code{print}
+#' @param show.vcov a logical value indicating whether the variance-
+#' covariance matrix should be shown or not. Defaults to \code{FALSE}
 #' @param ... arguments passed to other methods. Currently ignored
 #' 
 #' @return invisible NULL
@@ -18,7 +20,8 @@ setGeneric('print')
 # print method for pim
 #------------------------
 
-print.pim <- function(x, digits = max(3L, getOption("digits") - 3L), ...){
+print.pim <- function(x, digits = max(3L, getOption("digits") - 3L),
+                      show.vcov = TRUE, ...){
   orig <- paste(deparse(x@formula@orig))
   coefs <- coef(x)
   vc <- vcov(x)
@@ -31,17 +34,18 @@ print.pim <- function(x, digits = max(3L, getOption("digits") - 3L), ...){
   }
   else cat("No coefficients\n")
   cat("\n")
-  
-  cat("VCOV matrix:\n")
-  print.default(format(vc, digits = digits), print.gap = 2L,
-                quote=FALSE)
+  if(show.vcov){
+    cat("VCOV matrix:\n")
+    print.default(format(vc, digits = digits), print.gap = 2L,
+                  quote=FALSE)
+  }
   invisible(NULL)
 }
 
 # show method for pim
 setMethod('show',
           'pim',
-          function(object){print(object)})
+          function(object){print(object, show.vcov = FALSE)})
 
 #' @rdname print
 # print method for pim

@@ -5,12 +5,12 @@
 \alias{pimdata}
 \title{The data contained in the pim package}
 \description{
-The pim package contains different datasets for use in examples and tests. Currently, you find the datasets \code{\link{DysData}}, \code{\link{Engeldata}} and \code{\link{FEVData}}. More information can be found on the respective help pages.
+The pim package contains different datasets for use in examples and tests. Currently, you find the datasets \code{\link{DysData}}, \code{\link{EngelData}} and \code{\link{FEVData}}. More information can be found on the respective help pages.
 }
 \details{
 The data contained in the package has following structures
 \itemize{
-  \item{\code{\link{Engeldata}}}: A single numeric predictor variable and a response
+  \item{\code{\link{EngelData}}}: A single numeric predictor variable and a response
   \item{\code{\link{FEVData}}}: 
 	\item{\code{\link{DysData}}}: A dataframe with 3 factors and a numeric variable as predictors. The outcome is a factor with 4 levels.
 	\item{\code{SNP_XRCC1__77}} Genotype of this SNP. A factor with three levels: "TT", "TC" and "CC"
@@ -19,7 +19,7 @@ The data contained in the package has following structures
 }
 }
 \keyword{DysData}
-\keyword{Engeldata}
+\keyword{EngelData}
 \keyword{FEVData}
 \keyword{data}
 \keyword{pim}
