@@ -46,12 +46,10 @@ An object of class \code{pim}. See \code{\link{pim-class}}
 for more information.
 }
 \description{
-This function is the main function to fit a probabilistic index model
-or PIM.
+This function fits a probabilistic index model,
+also known as PIM.
 }
 \details{
-A BIT MORE INFO ON FITTING MODELS IS NEEDED
-
 It's possible to store the model matrix and psuedo responses in the
 resulting object. By default this is not done 
 (\code{keep.data = FALSE}) as this is less burden on the memory and

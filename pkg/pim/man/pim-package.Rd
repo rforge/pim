@@ -15,7 +15,7 @@ original code, please install the package pimold from R-Forge.
 Joris Meys \email{Joris.Meys@UGent.be} Nick Sabbe \email{Nick.Sabbe@UGent.be} Jan De Neve \email{JanR.DeNeve@UGent.be}
 }
 \references{
-[PENDING]
+\url{http://r-forge.r-project.org/projects/pim/}
 }
 \keyword{package}
 

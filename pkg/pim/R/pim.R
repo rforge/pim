@@ -1,9 +1,9 @@
 #' Fitting a Probabilistic Index Model
 #' 
-#' This function is the main function to fit a probabilistic index model
-#' or PIM. 
+#' This function fits a probabilistic index model,
+#' also known as PIM. 
 #' 
-#' A BIT MORE INFO ON FITTING MODELS IS NEEDED
+
 #' 
 #' It's possible to store the model matrix and psuedo responses in the
 #' resulting object. By default this is not done 

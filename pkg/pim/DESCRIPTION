@@ -1,8 +1,8 @@
 Package: pim
 Type: Package
-Title: Probabilistic Index Models
-Version: 1.9.2.2
-Date: 2016-02-23
+Title: an R package to fit Probabilistic Index Models
+Version: 1.9.2.3
+Date: 2016-02-25
 Author: Joris Meys, Nick Sabbe, Jan De Neve
 Maintainer: Joris Meys <Joris.Meys@Ugent.be>
 Description: Fit a probabilistic index model. This package is the latest
@@ -19,7 +19,7 @@ Imports:
     nleqslv,
     BB
 License: GPL (>= 2)
-URL: NA
+URL: http://r-forge.r-project.org/projects/pim/
 VignetteBuilder: knitr
 Collate:
     'CreateScoreFun.R'
