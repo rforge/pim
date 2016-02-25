@@ -49,8 +49,8 @@ print.pim.summary <- function(x, digits = max(3L, getOption("digits") - 3L),...)
   Tab <- cbind(
     Estimate = coef(x),
     "Std. Error" = x@se,
-    "Z value" = x@zval,
-    "Pr(<|z|)" = x@pr
+    "z value" = x@zval,
+    "Pr(>|z|)" = x@pr
   )
   cat("\n")
   print(Tab)
