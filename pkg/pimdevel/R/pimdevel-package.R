@@ -1,10 +1,8 @@
 #' Probabilistic Index Models
 #' 
-#' Fit a probabilistic index model. This package is the latest
-#' version of the pim package, and will end up being pim 2.0. It's a beta
-#' currently under development. There's a pim fitting engine with
-#' rudimentary functionality, but don't expect any back-compatibility
-#' with the previous versions of pim.
+#' Fit a probabilistic index model. The most recent pim version is
+#' the pim package. this pimdevel beta is deprecated and will be removed from
+#' the R-Forge repo after the next major update to the pim package. 
 #' 
 #' @name pimdevel-package
 #' @aliases pimdevel-package
