@@ -1,10 +1,19 @@
 #' Fitting a Probabilistic Index Model
 #' 
 #' This function fits a probabilistic index model,
-#' also known as PIM. 
+#' also known as PIM. It can be used to fit standard PIMs, as well as
+#' many different flavours of models that can be reformulated as a pim.
+#' The most general models are implemented, but the flexible formula
+#' interface allows you to specify a wide variety of different models.
 #' 
-
+#' PIMs are based on a set of pseudo-observations constructed from the
+#' comparison between a range of possible combinations of 2 observations. 
+#' We call the set of pseudo observations \texttt{poset} in the context
+#' of this package.
 #' 
+#' By default, 
+#' 
+#'   
 #' It's possible to store the model matrix and psuedo responses in the
 #' resulting object. By default this is not done 
 #' (\code{keep.data = FALSE}) as this is less burden on the memory and
@@ -27,7 +36,10 @@
 #' The default is "logit".
 #' 
 #' @param compare a character vector with a single value that describes how the 
-#' model compares observations. It can take the values "unique" or "all". Alternatively you can pass a matrix with two columns. Each row represents the rownumbers in the original data frame that should be compared to eachother. See Details.
+#' model compares observations. It can take the values "unique" or "all". 
+#' Alternatively you can pass a matrix with two columns. 
+#' Each row represents the rownumbers in the original data frame that 
+#' should be compared to eachother. See Details.
 #' 
 #' @param model a single character value with possible values "difference" 
 #' (the default), "marginal", "regular" or "customized". If the formula indicates
