@@ -79,7 +79,8 @@ or a list with 2 elements as value for the argument \code{compare}.
 Columns of the matrix or elements of the list should either be named
 "L" and "R", or be unnamed. When unnamed, the function takes the first
 column/element as the left poset, and the second column/element as
-the right poset.
+the right poset. If the (col)names are anything else but "L" and "R",
+these names are ignored and the first column is seen as "L".
 }
 \section{Note}{
 

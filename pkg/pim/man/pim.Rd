@@ -23,7 +23,10 @@ used link function. Possible values are "logit", "probit" and "identity".
 The default is "logit".}
 
 \item{compare}{a character vector with a single value that describes how the 
-model compares observations. It can take the values "unique" or "all". Alternatively you can pass a matrix with two columns. Each row represents the rownumbers in the original data frame that should be compared to eachother. See Details.}
+model compares observations. It can take the values "unique" or "all". 
+Alternatively you can pass a matrix with two columns. 
+Each row represents the rownumbers in the original data frame that 
+should be compared to eachother. See Details.}
 
 \item{model}{a single character value with possible values "difference" 
 (the default), "marginal", "regular" or "customized". If the formula indicates
@@ -47,9 +50,26 @@ for more information.
 }
 \description{
 This function fits a probabilistic index model,
-also known as PIM.
+also known as PIM. It can be used to fit standard PIMs, as well as
+many different flavours of models that can be reformulated as a pim.
+The most general models are implemented, but the flexible formula
+interface allows you to specify a wide variety of different models.
 }
 \details{
+PIMs are based on a set of pseudo-observations constructed from the
+comparison between a range of possible combinations of 2 observations. 
+We call the set of pseudo observations \emph{poset} in the context
+of this package.
+
+By default, this poset takes every unique combination of 2 observations
+(\code{compare = "unique"}). You can either use a character value, or
+use a matrix or list to identify the set of observation pairs that have to be
+used as pseudo-observations. Note that the matrix and list should
+be either nameless, or have the (col)names 'L' and 'R'. If any other 
+names are used, these are ignored and the first column/element
+is considered to be 'L'. See also
+\code{\link{new.pim.poset}}.
+  
 It's possible to store the model matrix and psuedo responses in the
 resulting object. By default this is not done 
 (\code{keep.data = FALSE}) as this is less burden on the memory and
@@ -58,6 +78,21 @@ reconstruct both the model matrix and the pseudo responses.
 If either the model matrix or the pseudo responses are needed for
 further calculations, setting \code{keep.data} to \code{TRUE} might
 reduce calculation time for these further calculations.
+}
+\section{The enhanced formula interface}{
+
+In case you want to fit a standard PIM, you can specify the model in
+mostly the same way as for \code{\link[stats]{lm}}. There's one important
+difference: a PIM has by default no intercept. To add an intercept, use
+\code{+ 1} in the formula.
+
+Next to this, you can use the functions \code{\link{L}} and \code{\link{R}}
+in a formula to indicate which part of the poset you refer to. Remember a 
+poset is essentially a matrix-like object with indices refering to the 
+pseudo-observations. Using \code{L()} and \code{R()} you can define
+exactly how the pseudo-observations fit in the model. Keep in mind that
+any calculation done with these functions, has to be wrapped in a call
+to \code{I()}, just like you would do in any other formula interface.
 }
 \seealso{
 \code{\link{pim-class}} for more information on the returned

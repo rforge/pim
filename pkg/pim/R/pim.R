@@ -8,11 +8,17 @@
 #' 
 #' PIMs are based on a set of pseudo-observations constructed from the
 #' comparison between a range of possible combinations of 2 observations. 
-#' We call the set of pseudo observations \texttt{poset} in the context
+#' We call the set of pseudo observations \emph{poset} in the context
 #' of this package.
 #' 
-#' By default, 
-#' 
+#' By default, this poset takes every unique combination of 2 observations
+#' (\code{compare = "unique"}). You can either use a character value, or
+#' use a matrix or list to identify the set of observation pairs that have to be
+#' used as pseudo-observations. Note that the matrix and list should
+#' be either nameless, or have the (col)names 'L' and 'R'. If any other 
+#' names are used, these are ignored and the first column/element
+#' is considered to be 'L'. See also
+#' \code{\link{new.pim.poset}}.
 #'   
 #' It's possible to store the model matrix and psuedo responses in the
 #' resulting object. By default this is not done 
@@ -22,6 +28,21 @@
 #' If either the model matrix or the pseudo responses are needed for
 #' further calculations, setting \code{keep.data} to \code{TRUE} might
 #' reduce calculation time for these further calculations.
+#' 
+#' @section The enhanced formula interface:
+#' In case you want to fit a standard PIM, you can specify the model in
+#' mostly the same way as for \code{\link[stats]{lm}}. There's one important
+#' difference: a PIM has by default no intercept. To add an intercept, use
+#' \code{+ 1} in the formula.
+#' 
+#' Next to this, you can use the functions \code{\link{L}} and \code{\link{R}}
+#' in a formula to indicate which part of the poset you refer to. Remember a 
+#' poset is essentially a matrix-like object with indices refering to the 
+#' pseudo-observations. Using \code{L()} and \code{R()} you can define
+#' exactly how the pseudo-observations fit in the model. Keep in mind that
+#' any calculation done with these functions, has to be wrapped in a call
+#' to \code{I()}, just like you would do in any other formula interface.
+#' 
 #' 
 #' @param formula An object of class \code{\link{formula}} (or one that
 #' can be coerced to that class): A symbolic description of the model

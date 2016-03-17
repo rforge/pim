@@ -23,7 +23,8 @@
 #' Columns of the matrix or elements of the list should either be named
 #' "L" and "R", or be unnamed. When unnamed, the function takes the first
 #' column/element as the left poset, and the second column/element as
-#' the right poset.
+#' the right poset. If the (col)names are anything else but "L" and "R",
+#' these names are ignored and the first column is seen as "L".
 #' 
 #' @section Note:
 #' You can omit the argument \code{compare} if you supply a value for
@@ -121,7 +122,7 @@ setMethod("new.pim.poset",
             if(is.null(names)){
               names(compare) <- c("L","R")
             } else if(!all(match(c("L","R"),names,0L) > 0)){
-              stop("Names don't match L and R")
+              names(compare) <- c("L","R")
             }
             out <- new("pim.poset")
             parent.env(out) <- environment()
