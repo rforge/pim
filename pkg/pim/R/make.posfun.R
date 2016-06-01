@@ -9,6 +9,7 @@
 #' returns the vector with the poset vector applied to it.
 #' 
 #' 
+#' 
 #' @rdname make.posfun
 #' @name .make.posfun
 .make.posfun <- function(poset){
@@ -21,10 +22,11 @@
   
   poset <- as.integer(poset)
   
-  if(!is.null(class)){
+  # return. This whole function is redundant actually...
+  # Should be tackled
     function(x){
       x[poset]
     }  
-  }
+  
   
 }

@@ -9,7 +9,7 @@
 #' @name pim-package
 #' @aliases pim-package
 #' @docType package
-#' @author Joris Meys \email{Joris.Meys@@UGent.be} Nick Sabbe \email{Nick.Sabbe@@UGent.be} Jan De Neve \email{JanR.DeNeve@@UGent.be} 
+#' @author Joris Meys \email{Joris.Meys@@UGent.be} Jan De Neve \email{Jan.DeNeve@@UGent.be} original package and engine code by Nick Sabbe. 
 #' @references \url{http://r-forge.r-project.org/projects/pim/}
 #' @keywords package
 #' @importFrom stats4 nobs

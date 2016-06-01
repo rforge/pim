@@ -117,7 +117,9 @@ setMethod("new.pim.env",
             }
             
             data.names <- names(data)
-            classes <- sapply(data,class, simplify=FALSE)
+            classes <- sapply(data, function(i){
+              inherits(i,.valids.pim)
+            })
             
             if(!valid.classes(classes)){
               stop("Some list elements are of a wrong class.")

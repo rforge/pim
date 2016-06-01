@@ -17,6 +17,13 @@
 #' function \code{\link[base]{as.data.frame}} from the base package.
 #' 
 #' @return a data frame.
+#' 
+#' @examples 
+#' # Create a pim environment
+#' data("DysData")
+#' Dys <- new.pim.env(DysData)
+#' str(as.data.frame(Dys))
+#' 
 #' @include pim.environment-class.R
 #' @export
 setGeneric("as.data.frame")

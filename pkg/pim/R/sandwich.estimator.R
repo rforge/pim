@@ -15,7 +15,7 @@
 #' @param self.factor Factor by which all \code{UijUij} or 
 #' \code{-UijUji} will be multiplied
 #' 
-#' @return Some matrix. CHECK HERE!
+#' @return The matrix of the sandwich estimator
 #' @aliases score.estimator
 sandwich.estimator<-function(U, U.diff, 
                              g1, g2, 
