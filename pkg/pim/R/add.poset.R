@@ -9,9 +9,10 @@
 #' \code{FALSE} to avoid problems.
 #' @param ... further parameters passed to \code{\link{new.pim.poset}}.
 #' 
-#' @section Warning: Although it might be tempting to set the argument
-#' \code{nobs}, you shouldn't. The necessary information is taken
-#' from the respective slot in the \code{pim.environment} object.
+#' @section Warning: Although it might be tempting to pass the argument
+#' \code{nobs} to \code{\link{new.pim.poset}}, you shouldn't. 
+#' The necessary information is taken from the respective slot 
+#' in the \code{pim.environment} object.
 #' 
 #' If you provide a matrix or a list as value for the argument \code{compare},
 #' note that you can easily create a poset that doesn't use all the 
@@ -22,6 +23,14 @@
 #' @return The object with a (new) poset attached.
 #' @seealso \code{\link{new.pim.poset}} for the possible values of the
 #' arguments \code{compare} and \code{nobs}.
+#' 
+#' @examples
+#' 
+#' data(DysData)
+#' Dysenv <- new.pim.env(DysData)
+#' Dysenv
+#' 
+#' 
 #' 
 #' @include pim.environment-class.R
 #' @export 

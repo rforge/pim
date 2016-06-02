@@ -6,7 +6,7 @@
 #' to use the relevant arguments of the \code{\link{pim}} function. 
 #' That way more safety checks are carried out.
 #' 
-#' @details A poset (or partially ordered set) in the context of 
+#' @details A poset (or pseudo observation set) in the context of 
 #' probabilistic index models is a set of indices that determines
 #' which observations are compared with one another. It is used to
 #' construct the pseudo-observations on which the model is fitted.
