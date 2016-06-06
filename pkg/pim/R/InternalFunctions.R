@@ -99,3 +99,13 @@ remove.pars <- function(x){
   allLengths <- sapply(allObjects, length)
   length(unique(allLengths)) <= 1
 }
+
+# This one is copied from the stats package to make confint work
+format.perc <- function (probs, digits) {
+  paste(format(100 * probs, 
+               trim = TRUE, 
+               scientific = FALSE, 
+               digits = digits), 
+        "%")
+}
+  
