@@ -2,6 +2,7 @@
 % Please edit documentation in R/pim.summary-class.R
 \docType{class}
 \name{pim.summary-class}
+\alias{pim.summary}
 \alias{pim.summary-class}
 \title{Class pim.summary}
 \description{

@@ -27,7 +27,7 @@ holds the partial derivatives of \code{U}.}
 \code{-UijUji} will be multiplied}
 }
 \value{
-Some matrix. CHECK HERE!
+The matrix of the sandwich estimator
 }
 \description{
 The functions described here all implement an estimator for

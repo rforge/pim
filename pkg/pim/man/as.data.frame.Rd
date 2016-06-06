@@ -36,4 +36,11 @@ frame, not the one with pseudo observations.
 \details{
 TO DO: Insert link to how to get pseudo observations out.
 }
+\examples{
+# Create a pim environment
+data("DysData")
+Dys <- new.pim.env(DysData)
+str(as.data.frame(Dys))
+
+}
 

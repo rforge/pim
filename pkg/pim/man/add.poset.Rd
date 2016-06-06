@@ -27,15 +27,25 @@ This function adds a poset to a \code{\link{pim.environment}}
 object.
 }
 \section{Warning}{
- Although it might be tempting to set the argument
-\code{nobs}, you shouldn't. The necessary information is taken
-from the respective slot in the \code{pim.environment} object.
+ Although it might be tempting to pass the argument
+\code{nobs} to \code{\link{new.pim.poset}}, you shouldn't. 
+The necessary information is taken from the respective slot 
+in the \code{pim.environment} object.
 
 If you provide a matrix or a list as value for the argument \code{compare},
 note that you can easily create a poset that doesn't use all the 
 observations. This might or might not be your intention. If the poset
 you try to create contains indices that go beyond the number of
 observations, you will get errors.
+}
+\examples{
+
+data(DysData)
+Dysenv <- new.pim.env(DysData)
+Dysenv
+
+
+
 }
 \seealso{
 \code{\link{new.pim.poset}} for the possible values of the

@@ -12,7 +12,7 @@ publications on probabilistic index models. If you want to try out the
 original code, please install the package pimold from R-Forge.
 }
 \author{
-Joris Meys \email{Joris.Meys@UGent.be} Nick Sabbe \email{Nick.Sabbe@UGent.be} Jan De Neve \email{JanR.DeNeve@UGent.be}
+Joris Meys \email{Joris.Meys@UGent.be} Jan De Neve \email{Jan.DeNeve@UGent.be} original package and engine code by Nick Sabbe.
 }
 \references{
 \url{http://r-forge.r-project.org/projects/pim/}

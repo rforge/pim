@@ -20,6 +20,7 @@
 #' @seealso \code{\link{pim}} for more info on how to construct the model
 #' 
 #' @include pim-class.R
+#' @aliases pim.summary
 #' 
 setClass(
   'pim.summary',
