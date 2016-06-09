@@ -5,7 +5,7 @@
 \alias{Extract.pim.summary}
 \title{Extract method for pim.summary objects}
 \usage{
-\S4method{[}{pim.summary}(x, i, j, ..., drop = TRUE)
+\S4method{[}{pim.summary}(x, i, j, drop = TRUE)
 }
 \arguments{
 \item{x}{
