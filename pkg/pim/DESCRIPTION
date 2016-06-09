@@ -1,7 +1,7 @@
 Package: pim
 Type: Package
 Title: an R package to fit Probabilistic Index Models
-Version: 1.9.2.9
+Version: 1.9.2.10
 Date: 2016-06-09
 Author: Joris Meys, Nick Sabbe, Jan De Neve
 Maintainer: Joris Meys <Joris.Meys@Ugent.be>
@@ -26,13 +26,15 @@ Collate:
     'DysData.R'
     'EngelData.R'
     'Estimators.R'
-    'FEVData.R'
     'pim.poset-class.R'
     'pim.environment-class.R'
-    'Getters.R'
     'pim-package.R'
     'pim.formula-class.R'
     'pim-class.R'
+    'pim.summary-class.R'
+    'Extract.pim.summary.R'
+    'FEVData.R'
+    'Getters.R'
     'Getters_pim.R'
     'Getters_pim.formula.R'
     'InternalFunctions.R'
@@ -43,7 +45,6 @@ Collate:
     'SUData.R'
     'add.poset.R'
     'as.data.frame.pim.environment.R'
-    'pim.summary-class.R'
     'as.matrix.pim.summary.R'
     'coef.R'
     'confint.pim.R'

@@ -16,7 +16,11 @@ Model <- pim(FEV~ Age + Sex*Smoke , data=FEVData)
 
 thesummary <- summary(Model)
 
+thesummary[,2:3]
 
+thesummary["Sex"]
+
+thesummary[,2,drop = FALSE]
 
 coef(Model)
 
