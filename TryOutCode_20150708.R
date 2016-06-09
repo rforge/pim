@@ -12,7 +12,7 @@ FEV <- within(FEVData,{
 
 #Some models
 
-Model <- pim(FEV~ Age + Smoke*Sex , data=FEVData)
+Model <- pim(FEV~ 1 , data=FEVData)
 
 summary(Model)
 coef(Model)

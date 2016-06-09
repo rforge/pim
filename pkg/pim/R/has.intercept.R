@@ -28,7 +28,8 @@ setGeneric('has.intercept', function(x) standardGeneric('has.intercept'))
 setMethod('has.intercept',
           signature = 'character',
           function(x){
-            grepl("\\+\\s*1\\s*(\\+|$)", remove.pars(x))
+            grepl("(\\+|^)\\s*1\\s*(\\+|$)", remove.pars(x))
+            
           })
 
 #' @rdname has.intercept

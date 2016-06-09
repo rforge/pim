@@ -89,7 +89,7 @@ model.matrix.pim.formula <-
         mm <- mm[,-id, drop=FALSE]
       }
     }
-    
+    browser()
     mm
   }
 
