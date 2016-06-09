@@ -12,10 +12,19 @@ FEV <- within(FEVData,{
 
 #Some models
 
-Model <- pim(FEV~ 1 , data=FEVData)
+Model <- pim(FEV~ Age + Sex*Smoke , data=FEVData)
 
-summary(Model)
+thesummary <- summary(Model)
+
+
+
 coef(Model)
+
+confint(Model)
+confint(thesummary,
+        parm = c("Sex", "Smoke"),
+        level = 0.9)
+
 vcov(Model)
 fitted(Model)
 response(Model)

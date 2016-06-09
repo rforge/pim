@@ -1,7 +1,7 @@
 Package: pim
 Type: Package
 Title: an R package to fit Probabilistic Index Models
-Version: 1.9.2.7
+Version: 1.9.2.9
 Date: 2016-06-09
 Author: Joris Meys, Nick Sabbe, Jan De Neve
 Maintainer: Joris Meys <Joris.Meys@Ugent.be>
@@ -44,6 +44,7 @@ Collate:
     'add.poset.R'
     'as.data.frame.pim.environment.R'
     'pim.summary-class.R'
+    'as.matrix.pim.summary.R'
     'coef.R'
     'confint.pim.R'
     'create.poset.R'
