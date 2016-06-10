@@ -11,7 +11,7 @@
 #' 
 #' @rdname confint.pim
 #' @name confint.pim
-#' @aliases confint.pim.summary
+#' @aliases confint.pim.summary confint
 #' @export
 #' 
 setGeneric("confint")

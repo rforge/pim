@@ -20,7 +20,6 @@ Imports:
     BB
 License: GPL (>= 2)
 URL: http://r-forge.r-project.org/projects/pim/
-VignetteBuilder: knitr
 Collate:
     'CreateScoreFun.R'
     'DysData.R'
@@ -74,5 +73,6 @@ Collate:
     'zzz.R'
 Suggests:
     testthat,
-    knitr
+    knitr,
+    MASS
 RoxygenNote: 5.0.1

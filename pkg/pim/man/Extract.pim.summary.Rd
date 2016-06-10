@@ -3,6 +3,7 @@
 \docType{methods}
 \name{Extract.pim.summary}
 \alias{Extract.pim.summary}
+\alias{[,pim.summary-method}
 \title{Extract method for pim.summary objects}
 \usage{
 \S4method{[}{pim.summary}(x, i, j, drop = TRUE)
@@ -34,6 +35,8 @@
 
     An index value of \code{NULL} is treated as if it were \code{integer(0)}.
   }
+
+\item{j}{see i}
 
 \item{drop}{For matrices and arrays.  If \code{TRUE} the result is
     coerced to the lowest possible dimension (see the examples).  This

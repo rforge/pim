@@ -13,6 +13,7 @@
 #' @include pim.summary-class.R
 #' @rdname as.matrix.pim.summary
 #' @name as.matrix.pim.summary
+#' @aliases as.matrix
 #' @export
 setGeneric("as.matrix")
 

@@ -2,6 +2,7 @@
 % Please edit documentation in R/as.matrix.pim.summary.R
 \docType{methods}
 \name{as.matrix.pim.summary}
+\alias{as.matrix}
 \alias{as.matrix,pim-method}
 \alias{as.matrix,pim.summary-method}
 \alias{as.matrix.pim.summary}

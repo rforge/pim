@@ -2,6 +2,7 @@
 % Please edit documentation in R/confint.pim.R
 \docType{methods}
 \name{confint.pim}
+\alias{confint}
 \alias{confint,pim-method}
 \alias{confint,pim.summary-method}
 \alias{confint.pim}
