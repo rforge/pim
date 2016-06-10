@@ -13,13 +13,13 @@
 #' @references \url{http://r-forge.r-project.org/projects/pim/}
 #' @keywords package
 #' @importFrom stats4 nobs
+#' @importFrom stats dnorm glm.fit plogis pnorm printCoefmat qnorm
+#' @importFrom utils head
 #' @import methods
 NULL
 
 # All things needed for S4 definitions.
 setOldClass("terms")
 setOldClass("formula")
-
-
 
 
