@@ -31,7 +31,8 @@ should be compared to eachother. See Details.}
 \item{model}{a single character value with possible values "difference" 
 (the default), "marginal", "regular" or "customized". If the formula indicates
 a customized model (by the use of \code{\link{L}()} or \code{\link{R}()}),
-this parameter is set automatically to "customized"}
+this parameter is set automatically to "customized". Currently, only the
+options "difference" and "marginal" are implemented.}
 
 \item{na.action}{the name of a function which indicates what should happen when the data
 contains NAs. The default is set by the \code{na.action} setting of
@@ -97,6 +98,9 @@ to \code{I()}, just like you would do in any other formula interface.
 \seealso{
 \code{\link{pim-class}} for more information on the returned
 object, \code{\link{pim.fit}} for more information on the fitting
-itself, and --- INSERT GETTERS ---
+itself,  \code{\link{pim-getters}}, \code{\link{coef}}, \code{\link{confint}},
+\code{\link{vcov}} etc  for how to extract information like coefficients, 
+variance-covariance matrix, ...,
+\code{\link{summary}} for some tests on the coefficients.
 }
 
