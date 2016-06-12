@@ -5,7 +5,8 @@
 #' @param ... arguments passed to other methods. Currently ignored.
 #' 
 #' @rdname pim-getters
-#' @aliases keep.data
+#' @name pim-getters
+#' @aliases keep.data getters-pim
 #' 
 #' @return \code{keep.data()}: a single logical value indicating whether
 #' the model matrix and pseudo responses were stored in the 

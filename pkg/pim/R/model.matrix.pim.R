@@ -75,7 +75,7 @@ model.matrix.pim.formula <-
     
     if(!specials){
       pos <- poset(data, as.list=TRUE)
-      mm <- mm[pos$R,] - mm[pos$L,]
+      mm <- mm[pos$R,,drop = FALSE] - mm[pos$L,,drop=FALSE]
     }
     
     if(has.intercept(object)){
