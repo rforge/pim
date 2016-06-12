@@ -18,7 +18,7 @@ setGeneric("new.pim.formula",
 #' @rdname new.pim.formula
 setMethod("new.pim.formula",
           signature=c("formula","pim.environment"),
-          function(formula, data){
+          function(formula, data, ...){
             environment(formula) <- data
             orig <- formula
             ft <- terms(formula, simplify=TRUE)

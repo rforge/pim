@@ -1,6 +1,5 @@
 \documentclass{article}
 
-%\VignetteEngine{knitr::knitr}
 %\VignetteIndexEntry{pim-technical}
 %\VignettePackage{pimdevel}
 

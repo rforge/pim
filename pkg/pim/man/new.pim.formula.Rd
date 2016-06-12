@@ -9,7 +9,7 @@
 \usage{
 new.pim.formula(formula, data, ...)
 
-\S4method{new.pim.formula}{formula,pim.environment}(formula, data)
+\S4method{new.pim.formula}{formula,pim.environment}(formula, data, ...)
 
 \S4method{new.pim.formula}{formula,ANY}(formula, data, ...)
 }
