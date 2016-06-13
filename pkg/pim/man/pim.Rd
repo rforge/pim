@@ -32,7 +32,7 @@ should be compared to eachother. See Details.}
 (the default), "marginal", "regular" or "customized". If the formula indicates
 a customized model (by the use of \code{\link{L}()} or \code{\link{R}()}),
 this parameter is set automatically to "customized". Currently, only the
-options "difference" and "marginal" are implemented.}
+options "difference", "marginal" and "customized" are implemented.}
 
 \item{na.action}{the name of a function which indicates what should happen when the data
 contains NAs. The default is set by the \code{na.action} setting of

@@ -8,7 +8,9 @@
 #' @param data an optional argument specifying the data frame for which
 #' the model matrix should be constructed. See also 
 #' \code{\link[stats]{model.matrix})} in the \code{stats} package.
-#' 
+#' @param model a single character value with possible values "difference" 
+#' (the default), "marginal", "regular" or "customized". See also
+#' \code{\link{pim}}.
 #' @param ... extra arguments passed to or from other methods.
 #' This is currently only implemented in concordance with
 #' the generic \code{\link[stats]{model.matrix}} function.
@@ -38,7 +40,8 @@
 #' res <- pim.fit(MM,Y, estim = "estimator.glm", penv=FEVenv)
 #' 
 #' @rdname model.matrix.pim
-#' @aliases model.matrix, model.matrix.pim.formula
+#' @name model.matrix.pim
+#' @aliases model.matrix model.matrix.pim.formula
 #' @export
 #' @include pim.formula-class.R
 setGeneric("model.matrix")
@@ -46,26 +49,38 @@ setGeneric("model.matrix")
 #' @rdname model.matrix.pim
 setMethod("model.matrix",
           signature="pim",
-          function(object, data, ...){
+          function(object, data, model, ...){
             if(!missing(data))
               warning("data argument ignored. specifying it when using model.matrix() on a pim object doesn't really make any sense.")
             if(object@keep.data){
               return(object@model.matrix)
             } else {
-              model.matrix(object@formula, ...)
+              if(missing(model))
+                stop("Data wasn't kept. You need to specify 'model'to recaculate the model matrix. See also ?model.matrix.pim")
+              model.matrix(object@formula, model = model,...)
             }
           })
 
 # The actual (S3) method to keep functionality flowing even when
 # model.matrix is called in other packages.
 model.matrix.pim.formula <-
-  function(object, data, ...){
+  function(object, data, 
+           model = c("difference","marginal",
+                     "regular","customized"), 
+           ...){
+    
+    model <- match.arg(model)
     if(missing(data)) data <- object@penv
+    
     
     tt <- terms(object)
     specials <- has.specials(object)
     
     if(specials){
+      
+      if(model != "customized") model <- "customized"
+      warning("Argument model is changed to 'customized'")
+      
       tt[[2]] <- object@lhs
       tt <- terms(formula(tt, env=data))
       
@@ -75,7 +90,13 @@ model.matrix.pim.formula <-
     
     if(!specials){
       pos <- poset(data, as.list=TRUE)
-      mm <- mm[pos$R,,drop = FALSE] - mm[pos$L,,drop=FALSE]
+      
+      if(model == "difference"){
+        mm <- mm[pos$R,,drop = FALSE] - mm[pos$L,,drop=FALSE]
+      } else if(model == "marginal"){
+        mm <- mm[pos$R,,drop = FALSE]
+      }
+      
     }
     
     if(has.intercept(object)){

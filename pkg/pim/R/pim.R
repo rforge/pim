@@ -66,7 +66,7 @@
 #' (the default), "marginal", "regular" or "customized". If the formula indicates
 #' a customized model (by the use of \code{\link{L}()} or \code{\link{R}()}),
 #' this parameter is set automatically to "customized". Currently, only the
-#' options "difference" and "marginal" are implemented.
+#' options "difference", "marginal" and "customized" are implemented.
 #' 
 #' @param na.action the name of a function which indicates what should happen when the data
 #' contains NAs. The default is set by the \code{na.action} setting of
@@ -141,10 +141,10 @@ pim <- function(formula,
     new.pim.env(data, compare = compare, vars=vars,
                 env=parent.frame())
   
-  ff <- new.pim.formula(formula, penv,
-                        model = model)
+  ff <- new.pim.formula(formula, penv)
   
-  x <- model.matrix(ff, na.action = na.action)
+  x <- model.matrix(ff, na.action = na.action,
+                    model = model)
   y <- eval(lhs(ff), envir=penv)
   
   res <- pim.fit(x, y, link, weights = weights, 
