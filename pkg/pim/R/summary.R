@@ -4,6 +4,8 @@
 #' a method for objects of the \code{\link{pim-class}}. 
 #' 
 #' @param object an object of the class pim.
+#' @param h0 a numeric value or a vector as long as the number of coefficients
+#' with the value that defines the null hypothesis to test against
 #' @param ... arguments passed to other methods. Currently ignored.
 #' 
 #' @examples 
@@ -16,19 +18,23 @@
 #' @export
 setGeneric('summary')
 
-summary.pim <- function(object){
+summary.pim <- function(object, h0 = 0,
+                        ...){
   coefs <- coef(object)
+  
   se <- sqrt(diag(vcov(object)))
-  zval <- coefs / se
+  zval <- (coefs - h0) / se
   pr <- 2*pnorm(-abs(zval))
   
   new("pim.summary",
       formula=formula(object),
       model = model(object),
+      link = link(object),
       coef = coefs,
       se = se,
       zval = zval,
-      pr = pr
+      pr = pr,
+      h0 = h0
   )
 }
 

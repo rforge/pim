@@ -11,7 +11,7 @@
 \usage{
 model.matrix(object, ...)
 
-\S4method{model.matrix}{pim}(object, data, model, ...)
+\S4method{model.matrix}{pim}(object, data, ...)
 
 \S4method{model.matrix}{pim.formula}(object, data, model = c("difference",
   "marginal", "regular", "customized"), ...)
@@ -53,6 +53,7 @@ FEVform <- new.pim.formula(
 )
 
 # Use this formula object to construct the model matrix
+# use the default model ( difference )
 MM <- model.matrix(FEVform)
 
 # Use this formula object to construct the pseudo response

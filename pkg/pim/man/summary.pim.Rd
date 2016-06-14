@@ -8,12 +8,15 @@
 \usage{
 summary(object, ...)
 
-\S4method{summary}{pim}(object)
+\S4method{summary}{pim}(object, h0 = 0, ...)
 }
 \arguments{
 \item{object}{an object of the class pim.}
 
 \item{...}{arguments passed to other methods. Currently ignored.}
+
+\item{h0}{a numeric value or a vector as long as the number of coefficients
+with the value that defines the null hypothesis to test against}
 }
 \description{
 The function \code{\link[base]{summary}} is a generic function. We provide

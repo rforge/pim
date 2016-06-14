@@ -1,7 +1,7 @@
 Package: pim
 Type: Package
 Title: Fit Probabilistic Index Models
-Version: 1.9.2.16
+Version: 1.9.2.17
 Date: 2016-06-14
 Author: Joris Meys, Nick Sabbe, Jan De Neve
 Maintainer: Joris Meys <Joris.Meys@Ugent.be>

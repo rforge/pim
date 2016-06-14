@@ -5,13 +5,15 @@
 \alias{classes}
 \alias{classes,pim.environment-method}
 \alias{compare}
-\alias{compare,}
 \alias{compare,pim.environment-method}
 \alias{compare,pim.poset-method}
+\alias{link}
+\alias{link,pim-method}
+\alias{link,pim.summary-method}
 \alias{model}
 \alias{model,pim-method}
 \alias{model,pim.summary-method}
-\alias{names,}
+\alias{names}
 \alias{names,pim.environment-method}
 \alias{names,pim.poset-method}
 \title{Extract information from pim.environment and pim.poset objects}
@@ -35,6 +37,12 @@ model(object, ...)
 \S4method{model}{pim}(object)
 
 \S4method{model}{pim.summary}(object)
+
+link(object, ...)
+
+\S4method{link}{pim}(object)
+
+\S4method{link}{pim.summary}(object)
 }
 \arguments{
 \item{x}{an object of class \code{pim.environment} or \code{pim.poset}}
@@ -53,6 +61,9 @@ a \code{pim.environment} object respectively.
 
 \code{model()}: a character value that displays
 the type of model (difference, marginal, regular or customized)
+
+\code{link()}: a character value that displays
+the type of link (difference, marginal, regular or customized)
 }
 \description{
 These functions serve to extract the information contained

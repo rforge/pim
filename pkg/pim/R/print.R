@@ -25,8 +25,9 @@ print.pim <- function(x, digits = max(3L, getOption("digits") - 3L),
   orig <- paste(deparse(x@formula@orig))
   coefs <- coef(x)
   vc <- vcov(x)
-  cat('\nProbabilistic Index Model:\n',orig,
+  cat('\nProbabilistic Index Model:\nFormula: ',orig,
       "\nType: ", x@model,
+      "\nLink: ", x@link,
       "\n\n")
   
   if (length(coefs)) {
@@ -154,9 +155,12 @@ setMethod('print',
 
 
 print.pim.summary <- function(x, digits = max(3L, getOption("digits") - 3L),...){
-  cat("pim.summary of following model : \n\n")
-  print(formula(x@formula), showEnv = FALSE)
-  cat("Type: ", model(x),"\n\n")
+  orig <- paste(deparse(formula(x@formula)))
+  cat("pim.summary of following model : \n", orig)
+  
+  
+  cat("\nType: ", model(x),
+      "\nLink: ", link(x),"\n\n")
   
   Tab <- cbind(
     Estimate = coef(x), 
@@ -166,6 +170,18 @@ print.pim.summary <- function(x, digits = max(3L, getOption("digits") - 3L),...)
   )
   cat("\n")
   printCoefmat(Tab, digits = digits)
+  
+  if(length(x@h0) == 1){
+    cat("\nNull hypothesis: b =",x@h0,"\n")
+  } else {
+    thenames <- rownames(Tab)
+    cat("\nNull hypotheses:\n")
+    for(i in seq_along(x@h0)){
+      cat(" b_",thenames[i]," = ",x@h0[i],"\n", sep="")
+    }
+    cat("\n")
+  }
+  
 }
 
 setMethod("show",

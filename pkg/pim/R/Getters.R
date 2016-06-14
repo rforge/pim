@@ -18,7 +18,7 @@
 #' names(DysPimEnv)
 #' compare(DysPimEnv)
 #' 
-#' @aliases names, compare, model
+#' @aliases names compare model link
 #' @include pim.environment-class.R
 #' @export
 setGeneric('classes', function(x) standardGeneric('classes'))
@@ -96,3 +96,20 @@ setMethod('model',
 setMethod('model',
           'pim.summary',
           function(object){object@model})
+
+#' @return \code{link()}: a character value that displays
+#' the type of link (difference, marginal, regular or customized)
+#' @rdname classes
+#' @export
+setGeneric('link', function(object, ...){
+  standardGeneric('link')})
+
+#' @rdname classes
+setMethod('link',
+          'pim',
+          function(object){object@link})
+
+#' @rdname classes
+setMethod('link',
+          'pim.summary',
+          function(object){object@link})
