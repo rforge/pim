@@ -5,8 +5,12 @@
 \alias{classes}
 \alias{classes,pim.environment-method}
 \alias{compare}
+\alias{compare,}
 \alias{compare,pim.environment-method}
 \alias{compare,pim.poset-method}
+\alias{model}
+\alias{model,pim-method}
+\alias{model,pim.summary-method}
 \alias{names,}
 \alias{names,pim.environment-method}
 \alias{names,pim.poset-method}
@@ -25,6 +29,12 @@ compare(x)
 \S4method{compare}{pim.environment}(x)
 
 \S4method{compare}{pim.poset}(x)
+
+model(object, ...)
+
+\S4method{model}{pim}(object)
+
+\S4method{model}{pim.summary}(object)
 }
 \arguments{
 \item{x}{an object of class \code{pim.environment} or \code{pim.poset}}
@@ -40,6 +50,9 @@ the name of the poset functions inside the environment
 \code{compare()}: A character value indicating how the comparison
 is defined in a \code{pim.poset} object, or the poset-slot of 
 a \code{pim.environment} object respectively.
+
+\code{model()}: a character value that displays
+the type of model (difference, marginal, regular or customized)
 }
 \description{
 These functions serve to extract the information contained

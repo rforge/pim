@@ -20,6 +20,8 @@ the coefficients, standard errors, Z values and/or p values.
 \item{\code{formula}}{contains an object of the class \code{\link{pim.formula}}
 containing the model fitted.}
 
+\item{\code{model}}{a character vector describing the type of model. See also the argument \code{model} of the function \code{\link{pim}}}
+
 \item{\code{coef}}{a numeric vector with the coefficients}
 
 \item{\code{se}}{a numeric vector with the standard errors for the coefficients}

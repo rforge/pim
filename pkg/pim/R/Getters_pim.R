@@ -35,3 +35,5 @@ fitted.pim <- function(object, ...){
 setMethod("fitted",
           signature = "pim",
           fitted.pim)
+
+

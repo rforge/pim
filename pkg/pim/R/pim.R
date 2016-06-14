@@ -110,6 +110,9 @@ pim <- function(formula,
   #vcov <- match.fun(vcov)
   link <- match.arg(link)
   
+  if(model == "marginal" && compare == "unique")
+    compare <- "all"
+  
   if(is.null(na.action)) na.action <- "na.fail"
   if(!is.character(na.action)) 
     na.action <- deparse(substitute(na.action))
@@ -170,5 +173,6 @@ pim <- function(formula,
     model.matrix = x,
     na.action = na.action,
     response = y,
-    keep.data = keep.data)
+    keep.data = keep.data,
+    model = model)
 }

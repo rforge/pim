@@ -23,7 +23,9 @@
 #' @slot keep.data a logical value indicating whether the original
 #' data is kept in the object. This is set using the argument
 #' \code{keep.data} of the function \code{\link{pim}}.
-#' 
+#' \code{model} a character value with the value "difference",
+#' "marginal", "regular" or "customized", indicating which
+#' type of pim model has been fitted.
 #' @include pim.formula-class.R pim.environment-class.R
 setClass(
   'pim',
@@ -37,10 +39,16 @@ setClass(
           model.matrix = 'matrix',
           response = 'numeric',
           na.action = 'character',
-          keep.data = 'logical'),
+          keep.data = 'logical',
+          model = 'character'),
   validity=function(object){
     if(any(names(object@estimators) != c('coef','vcov'))){
       "The list of estimators is malformed"
+    } else if(!length(object@model)){
+      "The slot model can't be empty"
+    } else if(!object@model %in% c("difference","marginal",
+                            "regular","customized")){
+      "The value of model is not valid"
     } else {
       TRUE
     }

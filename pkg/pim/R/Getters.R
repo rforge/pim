@@ -18,7 +18,7 @@
 #' names(DysPimEnv)
 #' compare(DysPimEnv)
 #' 
-#' @aliases names, compare
+#' @aliases names, compare, model
 #' @include pim.environment-class.R
 #' @export
 setGeneric('classes', function(x) standardGeneric('classes'))
@@ -79,3 +79,20 @@ setMethod('compare',
           function(x){
             x@compare
           })
+
+#' @return \code{model()}: a character value that displays
+#' the type of model (difference, marginal, regular or customized)
+#' @rdname classes
+#' @export
+setGeneric('model', function(object, ...){
+  standardGeneric('model')})
+
+#' @rdname classes
+setMethod('model',
+          'pim',
+          function(object){object@model})
+
+#' @rdname classes
+setMethod('model',
+          'pim.summary',
+          function(object){object@model})

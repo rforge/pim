@@ -31,6 +31,7 @@
 #' )
 #' 
 #' # Use this formula object to construct the model matrix
+#' # use the default model ( difference )
 #' MM <- model.matrix(FEVform)
 #' 
 #' # Use this formula object to construct the pseudo response
@@ -49,16 +50,12 @@ setGeneric("model.matrix")
 #' @rdname model.matrix.pim
 setMethod("model.matrix",
           signature="pim",
-          function(object, data, model, ...){
+          function(object, data, ...){
             if(!missing(data))
               warning("data argument ignored. specifying it when using model.matrix() on a pim object doesn't really make any sense.")
-            if(object@keep.data){
-              return(object@model.matrix)
-            } else {
-              if(missing(model))
-                stop("Data wasn't kept. You need to specify 'model'to recaculate the model matrix. See also ?model.matrix.pim")
-              model.matrix(object@formula, model = model,...)
-            }
+            
+            model.matrix(object@formula, model = object@model,...)
+            
           })
 
 # The actual (S3) method to keep functionality flowing even when
@@ -84,7 +81,10 @@ model.matrix.pim.formula <-
       tt[[2]] <- object@lhs
       tt <- terms(formula(tt, env=data))
       
+    } else if(model == "marginal"){
+      tt <- terms(update(tt, ~ . - 1))
     }
+    
     mm <- model.matrix(tt,
                        data, ...)
     

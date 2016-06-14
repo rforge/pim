@@ -24,6 +24,7 @@ summary.pim <- function(object){
   
   new("pim.summary",
       formula=formula(object),
+      model = model(object),
       coef = coefs,
       se = se,
       zval = zval,

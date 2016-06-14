@@ -39,6 +39,9 @@ Otherwise an empty numeric vector.}
 
 \item{\code{keep.data}}{a logical value indicating whether the original
 data is kept in the object. This is set using the argument
-\code{keep.data} of the function \code{\link{pim}}.}
+\code{keep.data} of the function \code{\link{pim}}.
+\code{model} a character value with the value "difference",
+"marginal", "regular" or "customized", indicating which
+type of pim model has been fitted.}
 }}
 

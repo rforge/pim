@@ -25,7 +25,9 @@ print.pim <- function(x, digits = max(3L, getOption("digits") - 3L),
   orig <- paste(deparse(x@formula@orig))
   coefs <- coef(x)
   vc <- vcov(x)
-  cat('\nProbabilistic Index Model:\n',orig,"\n\n")
+  cat('\nProbabilistic Index Model:\n',orig,
+      "\nType: ", x@model,
+      "\n\n")
   
   if (length(coefs)) {
     cat("Coefficients:\n")
@@ -154,6 +156,7 @@ setMethod('print',
 print.pim.summary <- function(x, digits = max(3L, getOption("digits") - 3L),...){
   cat("pim.summary of following model : \n\n")
   print(formula(x@formula), showEnv = FALSE)
+  cat("Type: ", model(x),"\n\n")
   
   Tab <- cbind(
     Estimate = coef(x), 

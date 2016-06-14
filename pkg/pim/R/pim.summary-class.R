@@ -9,7 +9,7 @@
 #' 
 #' @slot formula contains an object of the class \code{\link{pim.formula}}
 #' containing the model fitted.
-#' 
+#' @slot model a character vector describing the type of model. See also the argument \code{model} of the function \code{\link{pim}}
 #' @slot coef a numeric vector with the coefficients
 #' @slot se a numeric vector with the standard errors for the coefficients
 #' @slot zval a numeric vector containing the Z values for the coefficients,
@@ -25,6 +25,7 @@
 setClass(
   'pim.summary',
   slots=c(formula='pim.formula',
+          model = 'character',
           coef = 'numeric',
           se = 'numeric',
           zval = 'numeric',
