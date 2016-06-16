@@ -44,6 +44,7 @@
 #' @name model.matrix.pim
 #' @aliases model.matrix model.matrix.pim.formula
 #' @export
+#' @importFrom stats update
 #' @include pim.formula-class.R
 setGeneric("model.matrix")
 

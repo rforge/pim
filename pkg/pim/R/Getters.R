@@ -5,11 +5,15 @@
 #' \code{\link{pim.poset}}. 
 #' 
 #' @param x an object of class \code{pim.environment} or \code{pim.poset}
+#' @param object an object of class \code{pim} or \code{pim.summary}
+#' @param ... arguments passed to and from other methods.
 #' 
 #' @return \code{classes()}: A named vector with the classes of the data 
 #' contained in the \code{pim.environment}
 #' 
-#' @seealso \code{\link{nobs}}, \code{\link{poset}}, \code{\link{is.complete}}
+#' @seealso \code{\link{nobs}}, \code{\link{poset}}, \code{\link{is.complete}},
+#' \code{\link{pim.environment-class}}, \code{\link{pim.poset-class}}, 
+#' \code{\link{pim-class}}, \code{\link{pim.summary-class}}
 #' 
 #' @examples
 #' data(DysData)

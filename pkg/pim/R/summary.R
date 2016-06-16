@@ -14,6 +14,7 @@
 #' summary(Model)
 #' 
 #' @rdname summary.pim
+#' @name summary.pim
 #' @aliases summary
 #' @export
 setGeneric('summary')

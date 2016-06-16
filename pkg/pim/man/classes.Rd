@@ -46,6 +46,10 @@ link(object, ...)
 }
 \arguments{
 \item{x}{an object of class \code{pim.environment} or \code{pim.poset}}
+
+\item{object}{an object of class \code{pim} or \code{pim.summary}}
+
+\item{...}{arguments passed to and from other methods.}
 }
 \value{
 \code{classes()}: A named vector with the classes of the data 
@@ -79,6 +83,8 @@ compare(DysPimEnv)
 
 }
 \seealso{
-\code{\link{nobs}}, \code{\link{poset}}, \code{\link{is.complete}}
+\code{\link{nobs}}, \code{\link{poset}}, \code{\link{is.complete}},
+\code{\link{pim.environment-class}}, \code{\link{pim.poset-class}}, 
+\code{\link{pim-class}}, \code{\link{pim.summary-class}}
 }
 
