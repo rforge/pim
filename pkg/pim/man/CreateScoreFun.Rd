@@ -14,7 +14,7 @@ CreateScoreFun(Z, Y, link = c("probit", "logit", "identity"), W = NULL)
 \item{link}{a character vector indicating the link function 
 to be used.}
 
-\item{W}{a vector with weights. Currently ignored.}
+\item{W}{a vector with weights.}
 }
 \value{
 a function used for estimating the coefficients by

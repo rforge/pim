@@ -7,7 +7,7 @@
 #' @param Y a vector with the response of the pseudo-observations
 #' @param link a character vector indicating the link function 
 #' to be used.
-#' @param W a vector with weights. Currently ignored.
+#' @param W a vector with weights. 
 #' 
 #' @return a function used for estimating the coefficients by
 #' the estimator functions. 

@@ -10,7 +10,7 @@
 #' 
 #' The solvers \code{estimator.nleqslv} and \code{estimator.BBsolve}
 #' allow for specification of your own score function as well. For
-#' this, you have to construct a function that takes three arguments
+#' this, you have the possibility to construct a function that takes three arguments
 #' \describe{
 #' \item{x}{The model matrix}
 #' \item{y}{the vector with pseudo-observations}
@@ -18,7 +18,7 @@
 #' }
 #' The function should return a function that can be used in
 #' either \code{\link[nleqslv]{nleqslv}} or 
-#' \code{\link[BB]{BBsolve}}. If you don't specify, the package
+#' \code{\link[BB]{BBsolve}}. If you don't specify this construct function, the package
 #' contains the function \code{\link{CreateScoreFun}} to do
 #' this for you.
 #' 
@@ -37,7 +37,9 @@
 #' @param y a vector with the response for the respective pim model.
 #' @param start a vector as long as there are columns in \code{x}, containing
 #' the starting values for the algorithm
-#' @param link a character vector describing the link function. ADD MORE INFO
+#' @param link a character vector describing the link function. This
+#' link function is used to adapt the calculation depending on the 
+#' link used in the fitting process.
 #' @param method A vector of integers specifying which 
 #' Barzilai-Borwein steplengths should be used in a consecutive
 #' manner. The methods will be used in the order specified.
@@ -54,7 +56,31 @@
 #' 
 #' @return a list with following elements:
 #'  \item{coef}{the estimated coefficients}
+#'  
+#' @seealso \code{\link{vcov.estimators}}, \code{\link{pim.fit}} and
+#' \code{\link{pim}} for more information on the fitting process
+#' @examples 
+#' # This is a reimplementation of the identity link
+#' myconstruct <- function(x,y,link){
+#'   # this function is returned
+#'  function(beta){
+#'    xb <- as.vector(x %*% beta)
+#'    colSums(x * (y - xb))
+#'   }
+#' }
 #' 
+#' data(ChickWeight)
+#' themodel <- pim(weight ~ Diet, data = ChickWeight,
+#' construct = myconstruct)
+#' 
+#' # compare coefficients to 
+#' themodel2 <- pim(weight ~ Diet, data = ChickWeight,
+#'                 link = "identity")
+#' coef(themodel)
+#' coef(themodel2)
+#' 
+#' # Note that this example uses a wrong estimate for the variance-covariance matrix
+#' # You have to specify the correct vcov estimator as well
 #' @import nleqslv
 #' @name estimators
 #' @aliases estimator.nleqslv estimator.glm

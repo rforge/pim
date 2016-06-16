@@ -29,7 +29,7 @@ U.sandwich <- function(Zbeta, Z, Y, link, W=NULL)
   {
     fv <- pnorm(Zbeta)
     var.PI <- fv*(1-fv)
-    var.PI <- ifelse(var.PI==0,0.01,var.PI) #correction, not mentioned in the article, low impact
+    var.PI[var.PI == 0] <- 0.01 #correction, not mentioned in the article, low impact
     m.d <- dnorm(Zbeta)
     m.dd <- -m.d*Zbeta 
     res <- Y-fv
