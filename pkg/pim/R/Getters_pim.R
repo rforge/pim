@@ -12,6 +12,12 @@
 #' the model matrix and pseudo responses were stored in the 
 #' \code{\link{pim}} object.
 #' 
+#' @examples
+#' data('FEVData')
+#' themodel <- pim(FEV ~ Age + Height, data = FEVData)
+#' keep.data(themodel)
+#' fitted(themodel)
+#' 
 #' @include pim-class.R
 #' @export
 keep.data <- function(x){

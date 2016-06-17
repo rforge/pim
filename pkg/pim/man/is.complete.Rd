@@ -22,4 +22,14 @@ you use the function \code{is.complete}
 This function is not written as an S4 method. Might be rewritten
 to S4 later on.
 }
+\examples{
+# the constructor returns an empty environment without poset 
+is.complete(new.pim.env())
+
+# Constructing a pim environment with a poset
+data("FEVData")
+FEVenv <- new.pim.env(FEVData, compare="unique")
+is.complete(FEVenv)
+
+}
 

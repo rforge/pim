@@ -33,4 +33,11 @@ values for the pseudo-observations.
 \description{
 Getters for slots of a pim object
 }
+\examples{
+data('FEVData')
+themodel <- pim(FEV ~ Age + Height, data = FEVData)
+keep.data(themodel)
+fitted(themodel)
+
+}
 

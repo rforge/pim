@@ -12,6 +12,15 @@
 #' 
 #' @return a single value TRUE or FALSE
 #' 
+#' @examples
+#' # the constructor returns an empty environment without poset 
+#' is.complete(new.pim.env())
+#' 
+#' # Constructing a pim environment with a poset
+#' data("FEVData")
+#' FEVenv <- new.pim.env(FEVData, compare="unique")
+#' is.complete(FEVenv)
+#' 
 #' @export
 is.complete <- function(x){
   if(inherits(x,'pim.environment')){

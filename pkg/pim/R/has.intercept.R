@@ -14,10 +14,28 @@
 #' call. Although the function should work for standard formulas as well,
 #' correct results are not guaranteed when used outside a pim context.
 #' 
+#' @section WARNING: This function will return \code{FALSE} for a standard formula
+#' that is used in the context of a marginal model. Keep in mind that when
+#' specifying \code{model = 'marginal'} in a call to \code{pim}, the model
+#' will contain an intercept regardless of the outcome of \code{has.intercept}
+#' 
 #' @param x either a \code{formula}, \code{pim.formula}, \code{terms.object}
 #' or a character vector representing a formula.
 #' 
 #' @return a single logical value
+#' 
+#' @examples 
+#' data("FEVData")
+#' # Create the "model frame"
+#' FEVenv <- new.pim.env(FEVData, compare="unique")
+#' # create the formula and bind it to the pim.environment.
+#' FEVform <- new.pim.formula(
+#'   Age ~ I(L(Height) - R(Height))  ,
+#'   FEVenv
+#' )
+#' has.intercept(FEVform)
+#' FEVform2 <- new.pim.formula(Age ~ Height + 1, FEVData)
+#' has.intercept(FEVform2)
 #' 
 #' @include pim.formula-class.R
 #' @rdname has.intercept

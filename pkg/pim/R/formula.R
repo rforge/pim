@@ -17,7 +17,7 @@
 #' be returned. Defaults to \code{FALSE}
 #' @param ... arguments passed to other methods 
 #' 
-#' @return a \code{\link{pimformula}} if \code{x} is a \code{pim}
+#' @return a \code{\link{pim.formula}} if \code{x} is a \code{pim}
 #' object and \code{orig = TRUE}. Otherwise a \code{\link[stats]{formula}} object.
 #' 
 #' @seealso \code{\link{pim.formula-class}} and \code{\link{pim-class}} for 

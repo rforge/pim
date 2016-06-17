@@ -81,6 +81,11 @@ classes(DysPimEnv)
 names(DysPimEnv)
 compare(DysPimEnv)
 
+themodel <- pim(SPC_D2 ~ Chemo, data = DysData, model = 'difference')
+model(themodel)
+thesummary <- summary(themodel)
+model(thesummary)
+
 }
 \seealso{
 \code{\link{nobs}}, \code{\link{poset}}, \code{\link{is.complete}},

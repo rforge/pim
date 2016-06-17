@@ -22,6 +22,11 @@
 #' names(DysPimEnv)
 #' compare(DysPimEnv)
 #' 
+#' themodel <- pim(SPC_D2 ~ Chemo, data = DysData, model = 'difference')
+#' model(themodel)
+#' thesummary <- summary(themodel)
+#' model(thesummary)
+#' 
 #' @aliases names compare model link
 #' @include pim.environment-class.R
 #' @export

@@ -23,7 +23,7 @@ formula(x, ...)
 be returned. Defaults to \code{FALSE}}
 }
 \value{
-a \code{\link{pimformula}} if \code{x} is a \code{pim}
+a \code{\link{pim.formula}} if \code{x} is a \code{pim}
 object and \code{orig = TRUE}. Otherwise a \code{\link[stats]{formula}} object.
 }
 \description{
