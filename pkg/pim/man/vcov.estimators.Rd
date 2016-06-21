@@ -41,7 +41,8 @@ as a value for the argument \code{vcov}.
 You can create your own estimating functions for the variance-covariance
 matrix. To do so, you have to make sure that your function allows for
 the exact same arguments. As the function \code{pim.fit} calculates the
-fitted values already, there's no need to incorporate the
+fitted values already, there's no need to incorporate the calculation of
+these inside the function.
 }
 \note{
 You should only use \code{score.vcov} in combination with an 
