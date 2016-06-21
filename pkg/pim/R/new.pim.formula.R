@@ -2,7 +2,13 @@
 #' 
 #' This function reworks a formula to a pim.formula for use
 #' in a probabilistic index model. This function is only meant
-#' to be used internally, so it's not exported.
+#' to be used internally, but is exported. It should be used only
+#' in concordance with \code{\link{model.matrix.pim}}
+#' 
+#' It is the constructor to be used for a \code{\link{pim.formula}}
+#' object, and should only be used in conjunction with 
+#' \code{\link{model.matrix.pim}} and \code{\link{pim.fit}} as shown
+#' in the examples. 
 #' 
 #' @param formula a formula object
 #' @param data either a \code{\link{pim.environment}} object containing the
@@ -11,6 +17,33 @@
 #' @param ... extra arguments to \code{\link{new.pim.env}}
 #' 
 #' @return a \code{\link{pim.formula}} object.
+#' 
+#' @seealso \code{\link{pim.formula-class}} for more information on the 
+#' class itself. \code{\link{PO}}, \code{\link{L}} and \code{R} for some
+#' functions that can be used in a \code{pim.formula}
+#' 
+#' #' @examples 
+#' data("FEVData")
+#' # Create the "model frame"
+#' FEVenv <- new.pim.env(FEVData, compare="unique")
+#' # This includes the poset
+#' pos <- poset(FEVenv, as.list=TRUE)
+#' 
+#' # create the formula and bind it to the pim.environment.
+#' FEVform <- new.pim.formula(
+#'   Age ~ I(L(Height) - R(Height))  ,
+#'   FEVenv
+#' )
+#' 
+#' # Use this formula object to construct the model matrix
+#' # use the default model ( difference )
+#' MM <- model.matrix(FEVform)
+#' 
+#' # Use this formula object to construct the pseudo response
+#' Y <- response(FEVform)
+#' 
+#' # Now pim.fit can do what it does
+#' res <- pim.fit(MM,Y, estim = "estimator.glm", penv=FEVenv)
 #' @export
 setGeneric("new.pim.formula",
            function(formula, data, ...) standardGeneric("new.pim.formula"))

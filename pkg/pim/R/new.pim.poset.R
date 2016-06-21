@@ -59,6 +59,12 @@
 #' 
 #' @param ... arguments passed to other methods.
 #' 
+#' @return an \code{\link{pim.poset}} object that can be used to
+#' replace the poset in a pim environment. 
+#' 
+#' @seealso \code{\link{add.poset}} for more information on how to
+#' adapt the poset of a \code{pim.environment} object.
+#' 
 #' @section Warning:
 #' Changing the value of \code{comp.value} by hand might result in 
 #' errors or a wrongly fitted model. The argument exists for internal

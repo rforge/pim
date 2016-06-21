@@ -16,7 +16,8 @@
 #' is the case when \code{PO} is used in the context of a probabilistic
 #' index model fitted with \code{\link{pim}}.
 #' 
-#' @return either 0 or 1
+#' @return A numeric value of 0, 0.5 or 1. 1 if x < y, 0.5 if x == y 
+#' and 0 if x > y
 #' 
 #' @examples
 #' # Check in pim

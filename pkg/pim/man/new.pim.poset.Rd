@@ -54,6 +54,10 @@ compare slot of the object. Defaults to 'custom' and
 should be left at the default without
 a very good reason to change it.}
 }
+\value{
+an \code{\link{pim.poset}} object that can be used to
+replace the poset in a pim environment.
+}
 \description{
 This function allows you to create a \code{\link{pim.poset}} environment 
 that can be added to a \code{\link{pim.environment}} object. You can
@@ -110,5 +114,9 @@ ls(mypos)
 mypos$L(1:10)
 mypos$R(1:10)
 
+}
+\seealso{
+\code{\link{add.poset}} for more information on how to
+adapt the poset of a \code{pim.environment} object.
 }
 
