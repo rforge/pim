@@ -53,7 +53,7 @@ object. It's exactly the same as extracting from \code{as.matrix(thesummary)}.
 }
 \examples{
 data(FEVData)
-Model <- pim(FEV~ Smoke*Sex , data=FEVData, compare = "all")
+Model <- pim(FEV~ Smoke*Sex , data=FEVData)
 
 thesummary <- summary(Model)
 thesummary[,2:3]

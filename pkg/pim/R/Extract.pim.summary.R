@@ -10,7 +10,7 @@
 #' 
 #' @examples 
 #' data(FEVData)
-#' Model <- pim(FEV~ Smoke*Sex , data=FEVData, compare = "all")
+#' Model <- pim(FEV~ Smoke*Sex , data=FEVData)
 #' 
 #' thesummary <- summary(Model)
 #' thesummary[,2:3]
