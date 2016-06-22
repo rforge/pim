@@ -4,9 +4,9 @@
 \alias{pim}
 \title{Fitting a Probabilistic Index Model}
 \usage{
-pim(formula, data, link = c("logit", "probit", "identity"),
-  compare = c("unique", "all"), model = c("difference", "marginal",
-  "regular", "customized"), na.action = getOption("na.action"),
+pim(formula, data, link = c("logit", "probit", "identity"), compare = if
+  (model == "marginal") "all" else "unique", model = c("difference",
+  "marginal", "regular", "customized"), na.action = getOption("na.action"),
   weights = NULL, keep.data = FALSE, ...)
 }
 \arguments{
@@ -94,6 +94,68 @@ pseudo-observations. Using \code{L()} and \code{R()} you can define
 exactly how the pseudo-observations fit in the model. Keep in mind that
 any calculation done with these functions, has to be wrapped in a call
 to \code{I()}, just like you would do in any other formula interface.
+
+You don't have to specify the model though. If you choose the option
+\code{model = 'difference'}, every variable in the formula will be 
+interpreted as \code{I(R(x) - L(x))}. If you use the option
+\code{model = 'marginal'}, every variable will be interpreted as
+\code{R(X)}. 
+
+If you don't specify any special function (i.e. \code{\link{L}}, 
+\code{\link{R}}, \code{\link{P}} or \code{\link{PO}}),
+the lefthand side of the formula is defined as \code{PO(y)}. The function
+\code{\link{PO}} calculates pseudo observations; it is 1 
+if the value of the dependent variable for the observation
+from the L-poset is smaller than, 0 if it is larger than and 0.5 if
+it is equal to the value for value from the R-poset (see also \code{\link{PO}})
+}
+\examples{
+data('FEVData')
+# The most basic way to use the function
+Model <- pim(FEV~ Smoke*Sex , data=FEVData)
+
+# A model with intercept
+Model2 <- pim(FEV ~ Age +1, data=FEVData,
+   compare="all")
+
+# A marginal model
+# It makes sense to use the identity link in combination with the 
+# score estimator for the variance-covariance matrix
+data('DysData')
+Model3 <- pim(SPC_D2 ~ out, data = DysData,
+  model = 'marginal', link = 'identity',
+  vcov.estim = score.vcov)
+
+# How a model looks like internally
+Model3 <- pim(PO(L(Height),R(Height)) ~ I(R(Age) - L(Age)) + I(R(Sex) - L(Sex)),
+data=FEVData, 
+estim = "estimator.BB")
+# is the same as
+Model4 <- pim(Height ~ Age + Sex, data = FEVData, estim = "estimator.BB")
+summary(Model3)
+summary(Model4)
+
+# A Model using logical comparisons, this is also possible!
+# Model the chance that both observations have a different
+# outcome in function of whether they had a different Chemo treatment
+Model4 <- pim(P(L(out) != R(out)) ~ I(L(Chemo) != R(Chemo)),
+   data=DysData,
+   compare="all")
+
+# Implementation of the friedman test in the context of a pim
+# warpbreaks data where we consider tension as a block
+data(warpbreaks)
+wb <- aggregate(warpbreaks$breaks,
+                by = list(w = warpbreaks$wool,
+                          t = warpbreaks$tension),
+                FUN = mean)
+comp <- expand.grid(1:nrow(wb), 1:nrow(wb))
+comp <- comp[wb$t[comp[,1]] == wb$t[comp[,2]],] # only compare within blocks
+m <- pim(x ~ w, data = wb, compare = comp, link = "identity",  vcov.estim = score.vcov)
+summary(m)
+friedman.test(x ~ w | t, data = wb)
+
+
 }
 \seealso{
 \code{\link{pim-class}} for more information on the returned

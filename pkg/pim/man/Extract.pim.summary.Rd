@@ -51,4 +51,13 @@ the selected matrix
 This method allows to extract data directly from a \code{\link{pim.summary}}
 object. It's exactly the same as extracting from \code{as.matrix(thesummary)}.
 }
+\examples{
+data(FEVData)
+Model <- pim(FEV~ Smoke*Sex , data=FEVData, compare = "all")
+
+thesummary <- summary(Model)
+thesummary[,2:3]
+thesummary["Sex"]
+
+}
 

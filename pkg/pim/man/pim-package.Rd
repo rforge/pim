@@ -6,7 +6,7 @@
 \title{Probabilistic Index Models}
 \description{
 Fit a probabilistic index model. This package is the latest
-version of the pim package, and will end up being pim 2.0. Note that this
+version of the pim package. Note that this
 version is NOT compatible with the previous version used in the original
 publications on probabilistic index models. If you want to try out the
 original code, please install the package pimold from R-Forge.

@@ -29,7 +29,10 @@
 #' data(DysData)
 #' Dysenv <- new.pim.env(DysData)
 #' Dysenv
-#' 
+#' DysenvAll <- add.poset(Dysenv, overwrite = TRUE, 
+#'                        compare = 'all', nobs = nobs(DysData))
+#' compare(Dysenv)
+#' compare(DysenvAll)                       
 #' 
 #' 
 #' @include pim.environment-class.R

@@ -50,6 +50,7 @@ identity link
 }
 \seealso{
 \code{\link{sandwich.estimator}} for more information on the
-actual fitting process.
+actual fitting process. \code{\link{pim}} for a few examples in how
+these are used
 }
 

@@ -19,6 +19,8 @@
 #' @return A numeric value of 0, 0.5 or 1. 1 if x < y, 0.5 if x == y 
 #' and 0 if x > y
 #' 
+#' @seealso \code{\link{pim}} and \code{\link{pim.formula}} for more information
+#' on how this is used inside a pim context.
 #' @examples
 #' # Check in pim
 #' 

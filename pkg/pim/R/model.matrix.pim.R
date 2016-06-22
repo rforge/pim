@@ -77,7 +77,7 @@ model.matrix.pim.formula <-
     if(specials){
       
       if(model != "customized") model <- "customized"
-      warning("Argument model is changed to 'customized'")
+      #warning("Argument model is changed to 'customized'")
       
       tt[[2]] <- object@lhs
       tt <- terms(formula(tt, env=data))

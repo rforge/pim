@@ -27,7 +27,8 @@ or a \code{pim.poset} object,
 an integer with the number of (foreseen) observations. If the
 pim.environment is empty, it returns \code{0}. 
 
-In all other cases, it returns the output of either \code{\link{nrow}}
+In all other cases, it returns the output of either \code{\link{nrow}} (for
+matrices and data.frames)
 or \code{\link{length}}.
 }
 \description{
@@ -37,5 +38,9 @@ for which a \code{\link{pim.poset}} is constructed. If applied to
 a matrix or data.frame, it returns the number of rows. 
 For any other object it 
 does the same as \code{\link{length}}.
+}
+\details{
+This package imports the generic \code{\link[stats]{nobs}} from the package
+\code{stats4}.
 }
 

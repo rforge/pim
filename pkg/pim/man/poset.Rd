@@ -53,7 +53,7 @@ The poset can be extracted as a matrix or a list.
 }
 \examples{
 data(DysData)
-DysPimEnv <- new.pim.env(DysData, poset=TRUE)
+DysPimEnv <- new.pim.env(DysData)
 poset(DysPimEnv)
 
 }

@@ -8,6 +8,8 @@
 #' with the value that defines the null hypothesis to test against
 #' @param ... arguments passed to other methods. Currently ignored.
 #' 
+#' @return a \code{\link{pim.summary}} object
+#' 
 #' @examples 
 #' data(FEVData)
 #' Model <- pim(FEV~ Age + Smoke*Sex , data=FEVData)

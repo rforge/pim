@@ -28,7 +28,7 @@
 #' 
 #' @examples
 #' data(DysData)
-#' DysPimEnv <- new.pim.env(DysData, poset=TRUE)
+#' DysPimEnv <- new.pim.env(DysData)
 #' poset(DysPimEnv)
 #' 
 #' @export

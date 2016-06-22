@@ -43,6 +43,19 @@
 #' any calculation done with these functions, has to be wrapped in a call
 #' to \code{I()}, just like you would do in any other formula interface.
 #' 
+#' You don't have to specify the model though. If you choose the option
+#' \code{model = 'difference'}, every variable in the formula will be 
+#' interpreted as \code{I(R(x) - L(x))}. If you use the option
+#' \code{model = 'marginal'}, every variable will be interpreted as
+#' \code{R(X)}. 
+#' 
+#' If you don't specify any special function (i.e. \code{\link{L}}, 
+#' \code{\link{R}}, \code{\link{P}} or \code{\link{PO}}),
+#' the lefthand side of the formula is defined as \code{PO(y)}. The function
+#' \code{\link{PO}} calculates pseudo observations; it is 1 
+#' if the value of the dependent variable for the observation
+#' from the L-poset is smaller than, 0 if it is larger than and 0.5 if
+#' it is equal to the value for value from the R-poset (see also \code{\link{PO}})
 #' 
 #' @param formula An object of class \code{\link{formula}} (or one that
 #' can be coerced to that class): A symbolic description of the model
@@ -89,12 +102,58 @@
 #' variance-covariance matrix, ...,
 #' \code{\link{summary}} for some tests on the coefficients.
 #' 
+#' @examples 
+#' data('FEVData')
+#' # The most basic way to use the function
+#' Model <- pim(FEV~ Smoke*Sex , data=FEVData)
+#' 
+#' # A model with intercept
+#' Model2 <- pim(FEV ~ Age +1, data=FEVData,
+#'    compare="all")
+#' 
+#' # A marginal model
+#' # It makes sense to use the identity link in combination with the 
+#' # score estimator for the variance-covariance matrix
+#' data('DysData')
+#' Model3 <- pim(SPC_D2 ~ out, data = DysData,
+#'   model = 'marginal', link = 'identity',
+#'   vcov.estim = score.vcov)
+#' 
+#' # How a model looks like internally
+#' Model3 <- pim(PO(L(Height),R(Height)) ~ I(R(Age) - L(Age)) + I(R(Sex) - L(Sex)),
+#' data=FEVData, 
+#' estim = "estimator.BB")
+#' # is the same as
+#' Model4 <- pim(Height ~ Age + Sex, data = FEVData, estim = "estimator.BB")
+#' summary(Model3)
+#' summary(Model4)
+#' 
+#' # A Model using logical comparisons, this is also possible!
+#' # Model the chance that both observations have a different
+#' # outcome in function of whether they had a different Chemo treatment
+#' Model4 <- pim(P(L(out) != R(out)) ~ I(L(Chemo) != R(Chemo)),
+#'    data=DysData,
+#'    compare="all")
+#' 
+#' # Implementation of the friedman test in the context of a pim
+#' # warpbreaks data where we consider tension as a block
+#' data(warpbreaks)
+#' wb <- aggregate(warpbreaks$breaks,
+#'                 by = list(w = warpbreaks$wool,
+#'                           t = warpbreaks$tension),
+#'                 FUN = mean)
+#' comp <- expand.grid(1:nrow(wb), 1:nrow(wb))
+#' comp <- comp[wb$t[comp[,1]] == wb$t[comp[,2]],] # only compare within blocks
+#' m <- pim(x ~ w, data = wb, compare = comp, link = "identity",  vcov.estim = score.vcov)
+#' summary(m)
+#' friedman.test(x ~ w | t, data = wb)
+#' 
 #' 
 #' @export
 pim <- function(formula,
                 data,
                 link = c("logit","probit","identity"),
-                compare = c("unique","all"),
+                compare = if(model =='marginal') "all" else "unique",
                 model = c("difference","marginal",
                           "regular","customized"),
                 na.action = getOption("na.action"),
@@ -105,13 +164,13 @@ pim <- function(formula,
   
   # Check the arguments
   model <- match.arg(model)
-  if(is.character(compare)) compare <- match.arg(compare)
+  if(is.character(compare)){
+    if(!compare %in% c("unique","all"))
+      stop("compare should have the value 'unique' or 'all' in case it's a character value.")
+  }
   nodata <- missing(data)
   #vcov <- match.fun(vcov)
   link <- match.arg(link)
-  
-  if(model == "marginal" && compare == "unique")
-    compare <- "all"
   
   if(is.null(na.action)) na.action <- "na.fail"
   if(!is.character(na.action)) 

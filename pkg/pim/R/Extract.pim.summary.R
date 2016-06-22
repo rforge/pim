@@ -8,6 +8,14 @@
 #' 
 #' @return the selected matrix
 #' 
+#' @examples 
+#' data(FEVData)
+#' Model <- pim(FEV~ Smoke*Sex , data=FEVData, compare = "all")
+#' 
+#' thesummary <- summary(Model)
+#' thesummary[,2:3]
+#' thesummary["Sex"]
+#' 
 #' @docType methods
 #' @include pim.summary-class.R
 #' @rdname Extract.pim.summary

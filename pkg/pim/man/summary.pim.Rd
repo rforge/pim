@@ -19,6 +19,9 @@ summary(object, ...)
 \item{h0}{a numeric value or a vector as long as the number of coefficients
 with the value that defines the null hypothesis to test against}
 }
+\value{
+a \code{\link{pim.summary}} object
+}
 \description{
 The function \code{\link[base]{summary}} is a generic function. We provide
 a method for objects of the \code{\link{pim-class}}.

@@ -1,7 +1,7 @@
 #' Pseudo-observation variance sandwich estimator
 #' 
 #' The functions described here all implement an estimator for
-#' the variance of the coefficients. 
+#' the variance of the coefficients. This function is not exported.
 #' 
 #' @param U See the formula for sandwich estimator: 
 #' holds \code{U_{ij}}

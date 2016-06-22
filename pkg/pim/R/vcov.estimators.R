@@ -31,7 +31,8 @@
 #' @name vcov.estimators
 #' @aliases sandwich.vcov score.vcov
 #' @seealso \code{\link{sandwich.estimator}} for more information on the
-#' actual fitting process.
+#' actual fitting process. \code{\link{pim}} for a few examples in how
+#' these are used
 #' @export sandwich.vcov
 sandwich.vcov <- function(fitted, X, Y, W, link, poset, ...){
   Ulist <- U.sandwich(fitted, X, Y, link, W)

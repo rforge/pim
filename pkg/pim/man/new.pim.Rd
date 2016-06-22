@@ -14,6 +14,6 @@ an object of class \code{pim}. See \code{\link{pim-class}}
 }
 \description{
 This function is the constructor for an object of class pim. It is nothing
-but a placeholder for \code{new("pim", ...)}.
+but a placeholder for \code{new("pim", ...)}. This function is not exported.
 }
 

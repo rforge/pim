@@ -42,4 +42,12 @@ invisible NULL
 Printing \code{pim}, \code{pim.environment}, \code{pim.formula} and
 \code{pim.poset} objects.
 }
+\examples{
+data(FEVData)
+Model <- pim(FEV~ Smoke*Sex , data=FEVData)
+print(Model)
+print(penv(Model))
+# You get the drift
+
+}
 

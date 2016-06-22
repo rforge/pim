@@ -7,6 +7,9 @@
 #' For any other object it 
 #' does the same as \code{\link{length}}.
 #' 
+#' This package imports the generic \code{\link[stats]{nobs}} from the package
+#' \code{stats4}.
+#'  
 #' @param object an object of the class \code{\link{pim.environment}} or \code{\link{pim.poset}}
 #' @param ... arguments passed to other methods.
 #' 
@@ -15,7 +18,8 @@
 #' an integer with the number of (foreseen) observations. If the
 #' pim.environment is empty, it returns \code{0}. 
 #' 
-#' In all other cases, it returns the output of either \code{\link{nrow}}
+#' In all other cases, it returns the output of either \code{\link{nrow}} (for
+#' matrices and data.frames)
 #' or \code{\link{length}}. 
 #' 
 #' @include pim.environment-class.R

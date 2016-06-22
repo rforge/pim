@@ -13,6 +13,13 @@
 #' @return invisible NULL
 #' @include pim-class.R pim.environment-class.R pim.formula-class.R pim.poset-class.R
 #' 
+#' @examples 
+#' data(FEVData)
+#' Model <- pim(FEV~ Smoke*Sex , data=FEVData)
+#' print(Model)
+#' print(penv(Model))
+#' # You get the drift
+#' 
 #' @export
 setGeneric('print')
 

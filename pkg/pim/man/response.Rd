@@ -5,7 +5,7 @@
 \alias{response}
 \alias{response,pim-method}
 \alias{response,pim.formula-method}
-\title{Extract response from a pim.formula}
+\title{Extract response from a pim.formula or a pim object}
 \usage{
 response(object)
 
@@ -23,6 +23,19 @@ a pim.
 \description{
 This function extracts the response from a 
 \code{\link{pim.formula}} for use in \code{\link{pim.fit}}.
+}
+\examples{
+data('FEVData')
+Model <- pim(FEV~ Smoke*Sex , data=FEVData)
+response(Model)
+
+# In pieces
+FEVenv <- new.pim.env(FEVData, compare="unique")
+FEVform <- new.pim.formula(
+  Age ~ I(L(Height) - R(Height))  ,
+  FEVenv
+)
+response(FEVform)
 }
 \seealso{
 \code{\link{pim-class}} and \code{\link{pim.formula-class}}
