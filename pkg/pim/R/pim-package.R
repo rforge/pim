@@ -1,7 +1,6 @@
 #' Probabilistic Index Models
 #' 
-#' Fit a probabilistic index model. This package is the latest
-#' version of the pim package. Note that this
+#' Fit a probabilistic index model. Note that this
 #' version is NOT compatible with the previous version used in the original
 #' publications on probabilistic index models. If you want to try out the
 #' original code, please install the package pimold from R-Forge.
