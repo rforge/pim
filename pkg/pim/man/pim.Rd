@@ -115,8 +115,13 @@ data('FEVData')
 Model <- pim(FEV~ Smoke*Sex , data=FEVData)
 
 # A model with intercept
-Model2 <- pim(FEV ~ Age +1, data=FEVData,
-   compare="all")
+# The argument xscalm is passed to nleqslv via pim.fit and estimator.nleqslv
+# By constructing the estimator functions wisely, you can control most of
+# the fitting process from the pim() function.
+data('EngelData')
+Model2 <- pim(foodexp ~ income + 1, data=EngelData,
+   compare="all",
+   xscalm = 'auto')
 
 # A marginal model
 # It makes sense to use the identity link in combination with the 
@@ -126,24 +131,17 @@ Model3 <- pim(SPC_D2 ~ out, data = DysData,
   model = 'marginal', link = 'identity',
   vcov.estim = score.vcov)
 
-# How a model looks like internally
-Model3 <- pim(PO(L(Height),R(Height)) ~ I(R(Age) - L(Age)) + I(R(Sex) - L(Sex)),
-data=FEVData, 
-estim = "estimator.BB")
-# is the same as
-Model4 <- pim(Height ~ Age + Sex, data = FEVData, estim = "estimator.BB")
-summary(Model3)
-summary(Model4)
-
 # A Model using logical comparisons, this is also possible!
 # Model the chance that both observations have a different
 # outcome in function of whether they had a different Chemo treatment
-Model4 <- pim(P(L(out) != R(out)) ~ I(L(Chemo) != R(Chemo)),
+Model6 <- pim(P(L(out) != R(out)) ~ I(L(Chemo) != R(Chemo)),
    data=DysData,
    compare="all")
 
 # Implementation of the friedman test in the context of a pim
 # warpbreaks data where we consider tension as a block
+# To do so, you provide the argument compare with a custom 
+# set of comparisons
 data(warpbreaks)
 wb <- aggregate(warpbreaks$breaks,
                 by = list(w = warpbreaks$wool,
@@ -154,8 +152,16 @@ comp <- comp[wb$t[comp[,1]] == wb$t[comp[,2]],] # only compare within blocks
 m <- pim(x ~ w, data = wb, compare = comp, link = "identity",  vcov.estim = score.vcov)
 summary(m)
 friedman.test(x ~ w | t, data = wb)
-
-
+\dontrun{
+# This illustrates how a standard model is actually built in a pim contex
+Model4 <- pim(PO(L(Height),R(Height)) ~ I(R(Age) - L(Age)) + I(R(Sex) - L(Sex)),
+data=FEVData, 
+estim = "estimator.BB")
+# is the same as
+Model5 <- pim(Height ~ Age + Sex, data = FEVData, estim = "estimator.BB")
+summary(Model4)
+summary(Model5)
+}
 }
 \seealso{
 \code{\link{pim-class}} for more information on the returned
